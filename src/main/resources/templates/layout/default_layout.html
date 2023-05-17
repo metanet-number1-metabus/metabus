@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="fragments/head :: headFragment"></th:block>
+<body class="sb-nav-fixed sb-sidenav-toggled">
+<!--<body>-->
+<!--header1-->
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
+<div id="layoutSidenav">
+    <!--    header2-->
+<th:block th:replace="fragments/header2 :: header2Fragment"></th:block>
+<th:block layout:fragment="content"></th:block>
+</div>
+<th:block th:replace="fragments/footer2 :: footer2Fragment"></th:block>
+</body>
+</html>
