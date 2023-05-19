@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.11'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
 }
 
 group = 'com.metabus'
@@ -35,4 +36,20 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "0.8.7" // Jacoco 버전 설정 (필요에 따라 변경 가능)
+}
+
+test {
+	finalizedBy jacocoTestReport // 테스트 실행 후 Jacoco 보고서 생성
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true // XML 형식으로 커버리지 보고서 생성
+		html.enabled true // HTML 형식으로 커버리지 보고서 생성
+		html.destination file("${buildDir}/jacocoHtml") // HTML 보고서 생성 경로
+	}
 }
