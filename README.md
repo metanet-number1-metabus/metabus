@@ -1,5 +1,5 @@
 <p align="middle">
-    <img width="250px;" src="assets/METABUS_Logo.png"/>
+    <img width="250px;" src="assets/METABUS_Logo_W.png"/>
 </p>
 
 <div align="center">
