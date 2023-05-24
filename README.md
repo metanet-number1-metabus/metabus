@@ -15,6 +15,7 @@
 
 ## 📌 배포
 - [홈페이지](http://www.metabus.site/)
+- [FastAPI Server](http://43.201.165.100:8888/docs#/)
 
 <br>
 
