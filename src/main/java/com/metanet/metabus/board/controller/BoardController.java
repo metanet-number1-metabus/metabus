@@ -1,5 +1,6 @@
 package com.metanet.metabus.board.controller;
 
+import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.entity.LostBoard;
 import com.metanet.metabus.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +21,23 @@ import java.io.IOException;
 public class BoardController {
 
 
-   @Autowired
-   private BoardService boardService;
+    @Autowired
+    private BoardService boardService;
 
     @GetMapping("/board/write") //localhost:8090/board/write
-    public String boardwriteForm(){
+    public String boardwriteForm() {
 
         return "/board/boardwrite";
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(LostBoard board , Model model, MultipartFile file) throws IOException {
-        model.addAttribute("message" , "글 작성이 완료 되었습니다.");
-        model.addAttribute("SearchUrl" , "/board/list");
+    public String boardWritePro(LostBoard board, Model model, MultipartFile file) throws IOException {
+        model.addAttribute("message", "글 작성이 완료 되었습니다.");
+        model.addAttribute("SearchUrl", "/board/list");
         boardService.write(board, file);
 
         return "/board/Message";
     }
-
 
 
     @GetMapping("/board/list")
@@ -47,9 +47,9 @@ public class BoardController {
 
         Page<LostBoard> list = null;
 
-        if(searchKeyword == null) {
+        if (searchKeyword == null) {
             list = boardService.boardList(pageable);
-        }else {
+        } else {
             list = boardService.boardSearchList(searchKeyword, pageable);
         }
 
@@ -63,46 +63,43 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
 
         return "/board/boardlist";
-    
+
     }
 
     @GetMapping("/board/view")
-    public String boardView(Model model , Integer id){
+    public String boardView(Model model, Integer id) {
 
-        model.addAttribute("board",boardService.boardView(id));
+        model.addAttribute("board", boardService.boardView(id));
         return "/board/boardview";
     }
 
     @GetMapping("/board/delete")
-    public String boardDelete(Integer id ,Model model){
+    public String boardDelete(Integer id, Model model) {
         boardService.boardDelete(id);
 
-        model.addAttribute("message" , "글 삭제 완료.");
-        model.addAttribute("SearchUrl" , "/board/list");
+        model.addAttribute("message", "글 삭제 완료.");
+        model.addAttribute("SearchUrl", "/board/list");
 
         return "/board/Message";
     }
 
     @GetMapping("/board/modify/{id}")
-    public String boardModify(@PathVariable("id") Integer id , Model model){
+    public String boardModify(@PathVariable("id") Integer id, Model model) {
         System.out.println("제발류");
-        model.addAttribute("board",boardService.boardView(id));
+        model.addAttribute("board", boardService.boardView(id));
 
         return "/board/boardmodify";
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id , LostBoard board , Model model, MultipartFile file) throws IOException {
+    public String boardUpdate(LostBoardDto board, Model model, MultipartFile file) throws IOException {
 
-        LostBoard boardTemp = boardService.boardView(id);
-        boardTemp.setTitle(board.getTitle());
-        boardTemp.setContent(board.getContent());
 
-        model.addAttribute("message" , "글 수정 완료.");
-        model.addAttribute("SearchUrl" , "/board/list");
+        model.addAttribute("message", "글 수정 완료.");
+        model.addAttribute("SearchUrl", "/board/list");
 
         // 절대 이렇게 하면 안되고 Jpa에서 제공하는 변경감지나 Merge 기능을 따로 공부하자.
-        boardService.update(boardTemp, file);
+        boardService.update(board, file);
 
         return "/board/Message";
     }

@@ -1,20 +1,15 @@
 package com.metanet.metabus.board.entity;
 
-import com.metanet.metabus.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @Table(name = "LOST_BOARD")
 
 public class LostBoard {
@@ -32,11 +27,11 @@ public class LostBoard {
 
     private Integer hit;
 
-    private Timestamp create_date;
+    private Timestamp createDate;
 
-    private Timestamp edit_date;
+    private Timestamp editDate;
 
-    private Timestamp delete_date;
+    private Timestamp deleteDate;
 
     private String complete_YN;
 
@@ -46,9 +41,18 @@ public class LostBoard {
 
     @PrePersist
     protected void onCreate() {
-        if (create_date == null) {
-            create_date = new Timestamp(System.currentTimeMillis());
+        if (createDate == null) {
+            createDate = new Timestamp(System.currentTimeMillis());
         }
     }
+
+    public LostBoard(String title, String content, String filename, String filepath) {
+        super();
+        this.title = title;
+        this.content = content;
+        this.filename = filename;
+        this.filepath = filepath;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.metanet.metabus.board.service;
 
+import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.entity.LostBoard;
 import com.metanet.metabus.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
-
+    private LostBoardDto lostBoardDto ;
 
     //글 작성 처리
     public void write(LostBoard board , MultipartFile file) throws IOException {
@@ -40,11 +41,8 @@ public class BoardService {
         File saveFile = new File(projectPath, encodedFileName);
         file.transferTo(saveFile);
 
-        /*디비에 파일 넣기*/
-         board.setFilename(encodedFileName);
-//        /*저장되는 경로*/
-//        /*저장된파일의이름,저장된파일의경로*/
-        board.setFilepath("/files/" + encodedFileName);
+
+      board = new LostBoard(board.getTitle(), board.getContent(),encodedFileName,"/files/" + encodedFileName);
         boardRepository.save(board);
 
 
@@ -68,7 +66,7 @@ public class BoardService {
         return boardRepository.findByTitleContaining(SearchKeyword, pageable);
     }
 
-    public void update(LostBoard board, MultipartFile file) throws IOException {
+    public void update(LostBoardDto boardtemp, MultipartFile file) throws IOException {
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
 
@@ -84,11 +82,7 @@ public class BoardService {
         File saveFile = new File(projectPath, encodedFileName);
         file.transferTo(saveFile);
 
-        /*디비에 파일 넣기*/
-        board.setFilename(encodedFileName);
-//        /*저장되는 경로*/
-//        /*저장된파일의이름,저장된파일의경로*/
-        board.setFilepath("/files/" + encodedFileName);
+        LostBoard board = new LostBoard(boardtemp.getTitle(), boardtemp.getContent(),encodedFileName,"/files/" + encodedFileName);
 
         boardRepository.save(board);
     }
