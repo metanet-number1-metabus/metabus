@@ -11,7 +11,7 @@ public class BusController {
 
     private final BusService busService;
 
-    @GetMapping("/search")
+    @GetMapping("/bus/timetable")
     public String searchBus() {
         return "bus/busTimeTable";
     }
