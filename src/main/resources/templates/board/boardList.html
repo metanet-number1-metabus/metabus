@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+
+
+    <!--main-->
+    <main class="container" style="margin-top: 100px; border: 2px solid black; margin-bottom: 0; border-radius: 10px; height: calc(100vh - 300px);">
+        <div class="layout">
+            <div class="row">
+                <table class="table" id="article-table">
+                    <thead>
+                    <tr>
+                        <th class="title col-2"><a>게시글 번호</a></th>
+                        <th class="hashtag col-4"><a>제목</a></th>
+                        <th class="created-at"><a>작성일</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="board : ${list}">
+                        <td th:text="${board.id}">1</td>
+                        <td>
+                            <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+                        </td>
+                        <td th:text="${board.create_date}">1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="/board/write" class="btn btn-primary me-md-2" role="button" id="write-article">글쓰기</a>
+                </div>
+            </div>
+
+            <form th:action="@{/board/list}" method="get">
+                <input type="text" name="searchKeyword">
+                <button type="submit">검색</button>
+            </form>
+
+        </div>
+
+        <div class="row">
+            <nav id="pagination" aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                        <th:block th:if="${page != nowPage}">
+                            <a class="page-link" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
+                        </th:block>
+                        <th:block th:if="${page == nowPage}">
+                            <strong class="page-link" style="color: red;" th:text="${page}"></strong>
+                        </th:block>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</th:block>
+</html>
