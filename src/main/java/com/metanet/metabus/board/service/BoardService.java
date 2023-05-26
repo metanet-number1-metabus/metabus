@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,7 +25,7 @@ public class BoardService {
     private LostBoardDto lostBoardDto ;
 
     //글 작성 처리
-    public void write(LostBoard board , MultipartFile file) throws IOException {
+    public void write(LostBoardDto board , MultipartFile file) throws IOException {
 
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
@@ -42,19 +43,26 @@ public class BoardService {
         file.transferTo(saveFile);
 
 
-      board = new LostBoard(board.getTitle(), board.getContent(),encodedFileName,"/files/" + encodedFileName);
-        boardRepository.save(board);
+      LostBoard board1 = new LostBoard(board.getTitle(), board.getContent(),encodedFileName,"/files/" + encodedFileName);
+        boardRepository.save(board1);
 
 
     }
     //게시글 리스트 처리
-    public Page<LostBoard> boardList(Pageable pageable){
-        return  boardRepository.findAll(pageable);
+    public Page<LostBoardDto> boardList(Pageable pageable) {
+        Page<LostBoardDto> boardPage = boardRepository.findAll(pageable).map(LostBoardDto::of);
+        return boardPage;
+    }
+
+    public Page<LostBoardDto> boardSearchList(String searchKeyword, Pageable pageable) {
+        Page<LostBoardDto> boardPage = boardRepository.findByTitleContaining(searchKeyword, pageable).map(LostBoardDto::of);
+        return boardPage;
     }
 
     // 특정 게시글 불러오기
-    public LostBoard boardView(Integer id){
-        return boardRepository.findById(id).get();
+    public LostBoardDto boardView(Integer id) {
+        Optional<LostBoard> boardOptional = boardRepository.findById(id);
+        return boardOptional.map(LostBoardDto::of).orElse(null);
     }
 
 
@@ -62,9 +70,6 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-    public Page<LostBoard> boardSearchList(String SearchKeyword, Pageable pageable){
-        return boardRepository.findByTitleContaining(SearchKeyword, pageable);
-    }
 
     public void update(LostBoardDto boardtemp, MultipartFile file) throws IOException {
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/

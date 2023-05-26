@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(LostBoard board, Model model, MultipartFile file) throws IOException {
+    public String boardWritePro(LostBoardDto board, Model model, MultipartFile file) throws IOException {
         model.addAttribute("message", "글 작성이 완료 되었습니다.");
         model.addAttribute("SearchUrl", "/board/list");
         boardService.write(board, file);
@@ -45,7 +45,7 @@ public class BoardController {
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             String searchKeyword) {
 
-        Page<LostBoard> list = null;
+        Page<LostBoardDto> list = null;
 
         if (searchKeyword == null) {
             list = boardService.boardList(pageable);
@@ -68,8 +68,9 @@ public class BoardController {
 
     @GetMapping("/board/view")
     public String boardView(Model model, Integer id) {
+        LostBoardDto boardDto = boardService.boardView(id);
 
-        model.addAttribute("board", boardService.boardView(id));
+        model.addAttribute("board", boardDto);
         return "/board/boardview";
     }
 
@@ -85,7 +86,6 @@ public class BoardController {
 
     @GetMapping("/board/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model) {
-        System.out.println("제발류");
         model.addAttribute("board", boardService.boardView(id));
 
         return "/board/boardmodify";
