@@ -1,4 +1,4 @@
-package com.metanet.metabus.user.controller;
+package com.metanet.metabus.home.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
-public class userController {
-    @GetMapping(value = "/")
-    public String main() {
-        return "main/index";
+public class HomeController {
+    @GetMapping(value = "")
+    public String index() {
+        return "/main/index";
     }
 }
