@@ -44,7 +44,7 @@ dependencies {
 	implementation 'org.webjars:stomp-websocket:2.3.3'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	// </weSocket>
-	
+
 }
 
 tasks.named('test') {
