@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="icon" href="data:,">
+</head>
+<body>
+<div class="container" style="margin-top: 100px; margin-left: 100px;">
+<a href="#" data-toggle="modal" data-target="#roomModal">방 만들기</a><br>
+
+<!-- 방 만들기 모달 창 -->
+<div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomModalLabel">방 만들기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/room" method="post">
+                    <input name="name"><br>
+                    <input type="submit" value="방 만들기">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <table style="border-collapse: separate; border-spacing: 10px; border-radius: 10px;">
+        <tr th:each="room : ${roomList}">
+            <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; width: 400px;">
+                <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}"></a>
+            </td>
+        </tr>
+    </table>
+<div>
+</body>
+</html>
