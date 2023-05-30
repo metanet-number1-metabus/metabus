@@ -3,8 +3,13 @@
  * Copyright 2013-2018 David Deutsch
  * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
  */
+#myModal {
+    top: 25%;
+    margin-top: -50px;
+}
 .jb-box:hover {
-    transform: rotateX( 180deg )
+    /*transform: rotateX( 180deg )*/
+    transform: scale( 1.15 )
 }
 .jb-box {
     transition: all ease 1s;
