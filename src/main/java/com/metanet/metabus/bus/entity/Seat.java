@@ -1,6 +1,7 @@
 package com.metanet.metabus.bus.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Seat {
 
     @Id
@@ -22,7 +24,10 @@ public class Seat {
     @JoinColumn(name = "bus_id", foreignKey = @ForeignKey(name = "fk_seat_bus"))
     private Bus bus;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "reservation_id", foreignKey = @ForeignKey(name = "fk_seat_reservation"))
-    private Reservation reservation;
+    public static Seat of(Long seatNum, Bus bus) {
+        return Seat.builder()
+                .seatNum(seatNum)
+                .bus(bus)
+                .build();
+    }
 }
