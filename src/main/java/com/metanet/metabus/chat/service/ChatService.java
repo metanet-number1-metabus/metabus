@@ -1,14 +1,14 @@
 package com.metanet.metabus.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import com.metanet.metabus.chat.dto.ChatDto;
 import com.metanet.metabus.chat.dto.RoomDto;
 import com.metanet.metabus.chat.entity.Chat;
 import com.metanet.metabus.chat.entity.Room;
 import com.metanet.metabus.chat.repository.ChatRepository;
 import com.metanet.metabus.chat.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,11 +79,10 @@ public class ChatService {
 
 
     public List<ChatDto> findAllChatByRoomId(Long roomId) {
-        List<Chat> chats = chatRepository.findAll();
+        List<Chat> chats = chatRepository.findAllByRoomId(roomId);
         return chats.stream()
                 .map(ChatDto::of)
                 .collect(Collectors.toList());
     }
-
 
 }

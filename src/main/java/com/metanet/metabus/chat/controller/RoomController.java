@@ -1,14 +1,14 @@
 package com.metanet.metabus.chat.controller;
 
+import com.metanet.metabus.chat.dto.ChatDto;
+import com.metanet.metabus.chat.dto.RoomDto;
+import com.metanet.metabus.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.metanet.metabus.chat.dto.ChatDto;
-import com.metanet.metabus.chat.dto.RoomDto;
-import com.metanet.metabus.chat.service.ChatService;
 
 import java.util.List;
 
@@ -25,12 +25,17 @@ public class RoomController {
      */
     @GetMapping("/{roomId}")
     public String joinRoom(@PathVariable(required = false) Long roomId, Model model) {
-        List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);
-
-        model.addAttribute("roomId", roomId);
-        model.addAttribute("chatList", chatList);
+        // 채팅탭클릭시 채팅리스트만 띄우게하기위해 -1로 보냄
+        if (roomId != -1) {
+            List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);
+            model.addAttribute("roomId", roomId);
+            model.addAttribute("chatList", chatList);
+        }
+        List<RoomDto> roomList = chatService.findAllRoom();
+        model.addAttribute("roomList", roomList);
         return "chat/room";
     }
+
 
     /**
      * 채팅방 등록
@@ -43,15 +48,6 @@ public class RoomController {
         return "redirect:/roomList";
     }
 
-    /**
-     * 채팅방 리스트 보기
-     */
-    @GetMapping("/roomList")
-    public String roomList(Model model) {
-        List<RoomDto> roomList = chatService.findAllRoom();
-        model.addAttribute("roomList", roomList);
-        return "chat/roomList";
-    }
 
     /**
      * 방만들기 폼
