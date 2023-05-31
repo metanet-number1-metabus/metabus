@@ -5,11 +5,15 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ErrorResponse<T> {
+public class ErrorResponse {
     private ErrorCode errorCode;
-    private T result;
+    private String message;
 
-    public static <T> ErrorResponse<T> error(ErrorCode errorCode, T result) {
-        return new ErrorResponse<>(errorCode, result);
+    public static String error(String message){
+        return message;
+    }
+
+    public static ErrorResponse error(ErrorCode errorCode, String message) {
+        return new ErrorResponse(errorCode, message);
     }
 }
