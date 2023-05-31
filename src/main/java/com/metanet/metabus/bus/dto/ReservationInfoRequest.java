@@ -8,25 +8,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class ReservationInfoRequest {
     private Long busNum;
-    private LocalDate departureDate;
+    private String departureDate;
 
-    private Long memberId;
     private String departure;
     private String destination;
-    private LocalTime departureTime;
-    private LocalTime arrivalTime;
+    private String departureTime;
+    private String arrivalTime;
     private Long payment;
     private Long[] seatNum;
     private int[] passengerType;
 
-    public Reservation toEntity(Member member, Seat seat, Long payment, String passengerType) {
+    public Reservation toEntity(Member member, String departureTime, String arrivalTime, LocalDate departureDate, Long payment, Seat seat, String passengerType) {
         return Reservation.builder()
                 .member(member)
                 .departure(departure)
