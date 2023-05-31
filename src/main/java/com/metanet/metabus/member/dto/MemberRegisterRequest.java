@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 public class MemberRegisterRequest {
+    @NotBlank(message = "이메일을 입력해주세요.")
     @Email(message = "올바른 형식의 이메일 주소여야 합니다.")
     private String email;
 
