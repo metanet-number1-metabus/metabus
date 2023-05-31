@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Builder
 public class Bus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private Long busNum;
