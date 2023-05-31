@@ -8,14 +8,15 @@ import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
+import com.metanet.metabus.member.dto.MemberDto;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -26,30 +27,26 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
 
-    public List<Long> create(ReservationInfoRequest reservationInfoRequest) {
+    public void create(MemberDto memberDto, ReservationInfoRequest reservationInfoRequest) {
 
-        List<Long> reservationsIds = new ArrayList<>();
-
-        // 1. 버스 - 있으면 pass, 없으면 저장
-        Long busNum = reservationInfoRequest.getBusNum();
-        LocalDate departureDate = reservationInfoRequest.getDepartureDate();
-
-        Bus bus = createBusByBusNumAndDepartureDate(busNum, departureDate);
-
-        // 2. 예약자 정보
-        Long memberId = reservationInfoRequest.getMemberId();
+        Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
+        String departureTime = makeLocalTime(reservationInfoRequest.getDepartureTime());
+        String arrivalTime = makeLocalTime(reservationInfoRequest.getArrivalTime());
+
+        Long busNum = reservationInfoRequest.getBusNum();
+        LocalDate departureDate = makeLocalDate(reservationInfoRequest.getDepartureDate());
+        Bus bus = createBusByBusNumAndDepartureDate(busNum, departureDate);
+
+        Long payment = reservationInfoRequest.getPayment();
         Long[] seatNum = reservationInfoRequest.getSeatNum();
         String[] passengerType = makePassengerType(reservationInfoRequest);
-        Long payment = reservationInfoRequest.getPayment();
 
         for (int i = 0; i < seatNum.length; i++) {
 
-            // 3. 자리 정보 저장
             Seat seat = seatRepository.save(Seat.of(seatNum[i], bus));
 
-            // 4. 승객 타입에 따른 가격 할인
             switch (passengerType[i]) {
                 case "성인":
                     break;
@@ -61,18 +58,34 @@ public class ReservationService {
                     break;
             }
 
-            // 5. 예약 정보 저장
-            Reservation reservation = reservationInfoRequest.toEntity(member, seat, payment, passengerType[i]);
-            Reservation savedReservation = reservationRepository.save(reservation);
-            reservationsIds.add(savedReservation.getId());
+            Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i]);
+            reservationRepository.save(reservation);
         }
 
-        return reservationsIds;
+    }
+
+    private String makeLocalTime(String timeString) {
+
+        int hour = Integer.parseInt(timeString.substring(0, 2));
+        int minute = Integer.parseInt(timeString.substring(3, 5));
+        LocalTime time = LocalTime.of(hour, minute);
+
+        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    private LocalDate makeLocalDate(String dateString) {
+
+        int currentYear = LocalDate.now().getYear();
+        String newDateString = currentYear + "/" + dateString;
+
+        int year = Integer.parseInt(newDateString.substring(0, 4));
+        int month = Integer.parseInt(newDateString.substring(5, 7));
+        int day = Integer.parseInt(newDateString.substring(8, 10));
+
+        return LocalDate.of(year, month, day);
     }
 
     private Bus createBusByBusNumAndDepartureDate(Long busNum, LocalDate departureDate) {
-        // 기존에 존재하는 버스는 검색하여 반환
-        // 새로운 버스는 저장하고 반환
         return busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseGet(() -> busRepository.save(Bus.of(busNum, departureDate)));
     }
 
