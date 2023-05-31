@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout/default_layout">
+      layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
     <!--            본문-->
     <div id="layoutSidenav_content">
@@ -11,22 +11,74 @@
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ol> -->
-                <div class="row">
-                    <div class="col-xl-6 col-md-12">
-                        <table id="busTable" class="table table-striped" style="width:100%">
-                            <thead>
-                            <tr>
-                                <th>버스 아이디</th>
-                                <th>출발시간</th>
-                                <th>도착시간</th>
-                                <th>버스등급</th>
-                                <th>비용</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                <div class="content">
+
+                    <div class="container">
+                        <h2 class="mb-5">Table #4</h2>
+
+                        <div class="table-responsive custom-table-responsive">
+
+                            <table class="table custom-table" id="busTable">
+                                <thead>
+                                <tr>
+
+                                    <th scope="col">버스 아이디</th>
+                                    <th scope="col">출발시간</th>
+                                    <th scope="col">도착시간</th>
+                                    <th scope="col">버스등급</th>
+                                    <th scope="col">비용</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+<!--                                <tr scope="row">-->
+<!--                                    <td>-->
+<!--                                        1392-->
+<!--                                    </td>-->
+<!--                                    <td><a href="#">James Yates</a></td>-->
+<!--                                    <td>-->
+<!--                                        Web Designer-->
+<!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
+<!--                                    </td>-->
+<!--                                    <td>+63 983 0962 971</td>-->
+<!--                                    <td>NY University</td>-->
+<!--                                </tr>-->
+<!--                                <tr class="spacer"><td colspan="100"></td></tr>-->
+<!--                                <tr>-->
+
+<!--                                    <td>4616</td>-->
+<!--                                    <td><a href="#">Matthew Wasil</a></td>-->
+<!--                                    <td>-->
+<!--                                        Graphic Designer-->
+<!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
+<!--                                    </td>-->
+<!--                                    <td>+02 020 3994 929</td>-->
+<!--                                    <td>London College</td>-->
+<!--                                </tr>-->
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
                     </div>
+
                 </div>
+<!--                <div class="row">-->
+<!--                    <div class="col-xl-6 col-md-12">-->
+<!--                        <table id="busTable" class="table table-striped" style="width:100%">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th scope="col">버스 아이디</th>-->
+<!--                                <th scope="col">출발시간</th>-->
+<!--                                <th scope="col">도착시간</th>-->
+<!--                                <th scope="col">버스등급</th>-->
+<!--                                <th scope="col">비용</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody></tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <form class="row" action="/test">
                     <div class="modal" tabindex="-1" id="myModal">
                         <div class="modal-dialog">
@@ -62,9 +114,6 @@
     </div>
     <!--            본문-->
     <script th:inline="javascript">
-        $(document).ready(function () {
-            $('#busTable').DataTable();
-        });
         var busDataList;
         $(document).ready(function() {
             var url = "http://43.201.165.100:8888/metabusapi/get_bus_list";
@@ -82,7 +131,18 @@
                     busDataList = data;
                     $.each(data, function(index, bus) {
                         // 테이블에 데이터 추가
+                        // <tr className="spacer">
+                        //     <td colSpan="100"></td>
+                        // </tr>
                         var row = $("<tr>");
+                        var row_spacer = $("<tr>");
+                        row_spacer.attr("class","spacer");
+                        var col_spacer = $("<td>");
+                        col_spacer.attr("colSpan","100");
+                        col_spacer.appendTo(row_spacer);
+                        if (index==0){
+                            row.attr("scope","row");
+                        }
                         row.on("click", function () {
                             //
                             var temp = busDataList[$(this).attr("meta")];
@@ -109,6 +169,7 @@
                         $("<td>").text(bus.bus_grade).appendTo(row);
                         $("<td>").text(bus.cost).appendTo(row);
                         row.appendTo(tbody);
+                        row_spacer.appendTo(tbody);
                     });
                 },
                 error: function(xhr, status, error) {

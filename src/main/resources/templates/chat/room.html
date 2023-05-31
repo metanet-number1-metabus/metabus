@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<main style="margin-top: 100px; margin-left: 300px;display: flex; flex-direction: row;">
+    <!--채팅방 리스트-->
+<div class="container" style=" border: 1px solid skyblue; padding: 10px; border-radius: 5px; width: 250px;height: 535px">
+    <div class="text-center" style="background-color: white">
+        <h3 style="color: dodgerblue">채팅 방 목록</h3>
+    </div>
+
+    <!-- 방 만들기 모달 창 -->
+    <div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="/room" method="post">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">방 제목</span>
+                                </div>
+                                <input name="name" class="form-control" style="border-radius: 0;" placeholder="제목을 입력하세요">
+                                <input type="submit" value="방 만들기" class="btn btn-primary" style="background-color: skyblue;border-color: skyblue;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="roomTable" style="border-collapse: separate; border-spacing: 10px; border-radius: 10px;">
+        <tr th:each="room : ${roomList}" class="room-row">
+            <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; width: 400px; text-align: center; ">
+                <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: dodgerblue; font-size: medium"></a>
+            </td>
+        </tr>
+    </table>
+    <div class="text-center" style="margin-left: 100px">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal" style="background-color: skyblue;border-color: skyblue;height: auto">방 만들기</button>
+    </div>
+    <div class="pagination-container text-center">
+        <ul class="pagination" id="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous" id="previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 채팅방 -->
+<!-- 채팅방 chatList에 값이 들어가 있을때만 보이게 if문으로 덮음 -->
+<div th:if="${chatList}">
+    <div class="chat-container" style="display:inline-block;width: 800px;height: 535px;border-color: skyblue;margin-left: 0">
+        <div style="height: 60px; font-size: larger; display: flex; align-items: center; justify-content: center;">
+            <h1>Chatting</h1>
+        </div>
+        <div class="chat-bubbles" id="chatting" style="overflow-y: auto;">
+        </div>
+        <form class="form-inline" >
+            <div class="form-group">
+                <input type="hidden" id="sender" class="form-control" placeholder="Your name here..." value="User">
+            </div>
+            <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+                <input type="text" id="message" class="form-control" style="flex-grow: 1; margin-right: 0; height: 40px;width: 630px;" placeholder="메시지를 입력해주세요">
+                <button id="send" class="btn btn-default" type="submit" style="height: 40px;color: dodgerblue;border-color: dodgerblue">보내기</button>
+            </div>
+        </form>
+    </div>
+</div>
+</main>
+<script th:inline="javascript">
+
+    var stompClient = null;
+    var roomId = [[${roomId}]];
+    var chatList = [[${chatList}]];
+
+    function scrollToBottom() {
+        var chatContainer = document.getElementById("chatting");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    function setConnected(connected) {
+        $("#connect").prop("disabled", connected);
+        $("#disconnect").prop("disabled", !connected);
+        if (connected) {
+            $("#conversation").show();
+        }
+        else {
+            $("#conversation").hide();
+        }
+        $("#chatting").html("");
+    }
+
+    function connect() {
+        var socket = new SockJS('/ws-stomp');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            loadChat(chatList)  //저장된 채팅 불러오기
+
+            //구독
+            stompClient.subscribe('/room/'+roomId, function (chatMessage) {
+                showChat(JSON.parse(chatMessage.body));
+            });
+        });
+    }
+
+    function disconnect() {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    //html 에서 입력값, roomId 를 받아서 Controller 로 전달
+    function sendChat() {
+        stompClient.send("/send/"+roomId, {},
+            JSON.stringify({
+                'sender': $("#sender").val(),
+                'message' : $("#message").val()
+            }));
+    }
+
+    //저장된 채팅 불러오기
+    function loadChat(chatList) {
+        if (chatList != null) {
+            for (chat in chatList) {
+                $("#chatting").append(
+                    "<div class='sender' style=\"color: black;font-size: small\">" + chatList[chat].sender + "</div>" +
+                    "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
+                    "<div class='message' style=\"color: white; font-size: medium;\">" + chatList[chat].message + "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>"
+                );
+            }
+        }
+    }
+
+    //보낸 채팅 보기
+    function showChat(chatMessage) {
+        $("#chatting").append(
+            "<div class='sender' style=\"color: black;font-size: small\">" + chatMessage.sender + "</div>" +
+            "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
+            "<div class='message' style=\"color: white;font-size: medium;\">" + chatMessage.message + "</div>" +
+            "<div class='triangle'></div>" +
+            "</div>"
+        );
+        scrollToBottom();
+    }
+
+    $(function () {
+        $("form").on('submit', function (e) {
+            e.preventDefault();
+        });
+        $( "#connect" ).click(function() { connect(); });
+        $( "#disconnect" ).click(function() { disconnect(); });
+        $( "#send" ).click(function() { sendChat(); });
+    });
+
+
+</script>
+<script>
+    //창 키면 바로 연결
+    window.onload = function (){
+        connect();
+    }
+
+    window.BeforeUnloadEvent = function (){
+        disconnect();
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Number of items per page
+        var perPage = 7;
+
+        // Hide all rows initially
+        $(".room-row").hide();
+
+        // Show the first page
+        $(".room-row").slice(0, perPage).show();
+
+        // Get the total number of pages
+        var numPages = Math.ceil($(".room-row").length / perPage);
+
+        // Generate pagination links
+        for (var i = 1; i <= numPages; i++) {
+            $("#pagination").append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
+        }
+
+        // Add click event to pagination links
+        $("#pagination li").on('click', function (e) {
+            e.preventDefault();
+
+            // Get the selected page number
+            var page = $(this).text();
+
+            // Calculate the start and end index of the items to show
+            var start = (page - 1) * perPage;
+            var end = start + perPage;
+
+            // Hide all rows and show the selected page
+            $(".room-row").hide().slice(start, end).show();
+        });
+
+        // Add click event to previous and next links
+        $("#previous").on('click', function (e) {
+            e.preventDefault();
+
+            // Get the currently active page
+            var activePage = $("#pagination li.active").index();
+
+            // Show the previous page if available
+            if (activePage > 0) {
+                $("#pagination li").eq(activePage - 1).trigger('click');
+            }
+        });
+
+        $("#next").on('click', function (e) {
+            e.preventDefault();
+
+            // Get the currently active page
+            var activePage = $("#pagination li.active").index();
+
+            // Show the next page if available
+            if (activePage < numPages - 1) {
+                $("#pagination li").eq(activePage + 1).trigger('click');
+            }
+        });
+    });
+</script>
+</th:block>
+</html>
+<style>
+    body {
+        background-color: #f5f5f5;
+    }
+
+    .chat-container {
+        max-width: 940px;
+        padding: 2em 3em;
+        margin: 0 auto 20px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
+    }
+
+    .chat-bubbles {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow-y: scroll;
+        max-height: 400px;
+    }
+
+    .chat-bubble {
+        position: relative;
+        background-color: #f1f1f1;
+        border-radius: 15px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .chat-bubble .sender {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .chat-bubble .triangle {
+        position: absolute;
+        bottom: -10px;
+        left: 10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 10px 10px 10px;
+        border-color: transparent transparent #f1f1f1 transparent;
+    }
+
+</style>
