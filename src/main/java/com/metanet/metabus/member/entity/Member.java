@@ -39,7 +39,7 @@ public class Member extends BaseEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.ROLE_USER;
+    private Role role = Role.USER;
 
     @Column(nullable = false)
     private String phoneNum;
@@ -51,7 +51,7 @@ public class Member extends BaseEntity implements UserDetails {
         this.password = password;
         this.email = email;
         this.mileage = 0L;
-        this.role = role == null ? Role.ROLE_USER : role;
+        this.role = role == null ? Role.USER : role;
         this.phoneNum = phoneNum;
     }
 
