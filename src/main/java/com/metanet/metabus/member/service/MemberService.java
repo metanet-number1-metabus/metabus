@@ -44,6 +44,7 @@ public class MemberService {
             throw new InvalidPasswordException();
 
         return MemberDto.builder()
+                .id(member.getId())
                 .name(member.getName())
                 .email(memberLoginRequest.getEmail())
                 .password(memberLoginRequest.getPassword())
