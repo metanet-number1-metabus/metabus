@@ -41,7 +41,7 @@ public class ReservationService {
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
         Long[] seatNum = reservationInfoRequest.getSeatNum();
-        String[] passengerType = reservationInfoRequest.getPassengerType();
+        String[] passengerType = makePassengerType(reservationInfoRequest);
         Long payment = reservationInfoRequest.getPayment();
 
         for (int i = 0; i < seatNum.length; i++) {
@@ -51,13 +51,13 @@ public class ReservationService {
 
             // 4. 승객 타입에 따른 가격 할인
             switch (passengerType[i]) {
+                case "성인":
+                    break;
                 case "중고생":
                     payment = payment * 8 / 10; // 20% 할인
                     break;
                 case "아동":
                     payment = payment * 5 / 10; // 50% 할인
-                    break;
-                default:
                     break;
             }
 
@@ -75,4 +75,27 @@ public class ReservationService {
         // 새로운 버스는 저장하고 반환
         return busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseGet(() -> busRepository.save(Bus.of(busNum, departureDate)));
     }
+
+    private String[] makePassengerType(ReservationInfoRequest reservationInfoRequest) {
+
+        int[] pType = reservationInfoRequest.getPassengerType();
+        int adult = pType[0];
+        int teenager = pType[1];
+        int kid = pType[2];
+
+        String[] passengerType = new String[adult + teenager + kid];
+
+        for (int i = 0; i < passengerType.length; i++) {
+            if (i < adult) {
+                passengerType[i] = "성인";
+            } else if (i < adult + teenager) {
+                passengerType[i] = "중고생";
+            } else {
+                passengerType[i] = "아동";
+            }
+        }
+
+        return passengerType;
+    }
+
 }
