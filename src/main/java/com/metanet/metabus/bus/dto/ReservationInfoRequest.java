@@ -24,7 +24,7 @@ public class ReservationInfoRequest {
     private LocalTime arrivalTime;
     private Long payment;
     private Long[] seatNum;
-    private String[] passengerType;
+    private int[] passengerType;
 
     public Reservation toEntity(Member member, Seat seat, Long payment, String passengerType) {
         return Reservation.builder()
