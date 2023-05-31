@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 @AllArgsConstructor
@@ -28,8 +27,8 @@ public class Reservation extends BaseEntity {
 
     private String departure;
     private String destination;
-    private LocalTime departureTime;
-    private LocalTime arrivalTime;
+    private String departureTime;
+    private String arrivalTime;
     private LocalDate departureDate;
     private Long payment;
 
