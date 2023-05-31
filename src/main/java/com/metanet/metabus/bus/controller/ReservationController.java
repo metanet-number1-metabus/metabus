@@ -2,14 +2,13 @@ package com.metanet.metabus.bus.controller;
 
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
 import com.metanet.metabus.bus.service.ReservationService;
+import com.metanet.metabus.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,10 +17,13 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/bus/reservation")
-    public ResponseEntity<List<Long>> makeReservation(@RequestBody ReservationInfoRequest reservationInfoRequest) {
+    public String makeReservation(HttpSession session, @RequestBody ReservationInfoRequest reservationInfoRequest) {
 
-        List<Long> reservationIds = reservationService.create(reservationInfoRequest);
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        System.out.println(memberDto.getEmail());
+        System.out.println(memberDto.getId());
+        reservationService.create(memberDto, reservationInfoRequest);
 
-        return new ResponseEntity<>(reservationIds, HttpStatus.OK);
+        return "redirect:/";
     }
 }
