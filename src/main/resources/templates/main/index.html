@@ -51,11 +51,11 @@
 
                                 <form class="needs-validation" novalidate>
                                     <div class="mb-3 mt-3">
-                                        <label for="departureHome" class="form-label">출발지:</label>
-                                        <input type="text" class="form-control" id="departureHome" readonly placeholder="출발지 선택 (클릭)" name="departureHome">
+                                        <label for="departurehome" class="form-label">출발지:</label>
+                                        <input type="text" class="form-control" id="departurehome" readonly placeholder="출발지 선택 (클릭)" name="departurehome">
                                         <div class="valid-feedback">
                                         </div>
-                                        <!-- <select class="form-select" id="departureHome" name="departureHome">
+                                        <!-- <select class="form-select" id="departurehome" name="departurehome">
                                           <option value="남부터미널">남부터미널</option>
                                           <option value="고속터미널">고속터미널</option>
                                           <option value="센트럴시티">센트럴시티</option>
@@ -63,8 +63,8 @@
                                       </select> -->
                                     </div>
                                     <div class="mb-3 mt-3">
-                                        <label for="destinationHome" class="form-label">목적지:</label>
-                                        <input type="text" class="form-control" id="destinationHome" name="destinationHome" placeholder="..." required>
+                                        <label for="destinationhome" class="form-label">목적지:</label>
+                                        <input type="text" class="form-control" id="destinationhome" name="destinationhome" placeholder="..." required>
                                         <div class="invalid-feedback">
                                             출발지와 목적지를 정해주세요.
                                         </div>
@@ -73,8 +73,8 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="departureDate" class="form-label">출발일:</label>
-                                        <input type="text" class="form-control" id="departureDate" required placeholder="날짜 선택 (클릭)" name="departureDate">
+                                        <label for="departuredate" class="form-label">출발일:</label>
+                                        <input type="text" class="form-control" id="departuredate" required placeholder="날짜 선택 (클릭)" name="departuredate">
                                         <div class="invalid-feedback">
                                             출발날짜를 선택 해주세요. (년도 무시)
                                         </div>
@@ -188,14 +188,14 @@
     </div>
     <!--            본문-->
     <script th:inline="javascript">
-        $('#departureDate').datepicker({
+        $('#departuredate').datepicker({
             uiLibrary: 'bootstrap5'
             ,format: 'mm/dd'
         });
 
 
-        const selector = document.getElementById('departureHome');
-        const selector2 = document.getElementById('destinationHome');
+        const selector = document.getElementById('departurehome');
+        const selector2 = document.getElementById('destinationhome');
 
         // 모달창 열기
         selector.addEventListener('click', function() {
@@ -318,7 +318,7 @@
                             event.preventDefault()
                             event.stopPropagation()
                         }else {
-                            form.action = "/search"; // /search로 폼 전송을 원한다면 action 설정
+                            form.action = "/bus/timetable"; // /timetable로 폼 전송을 원한다면 action 설정
                         }
 
                         form.classList.add('was-validated')
