@@ -3,13 +3,14 @@ package com.metanet.metabus.chat.controller;
 import com.metanet.metabus.chat.dto.ChatDto;
 import com.metanet.metabus.chat.dto.RoomDto;
 import com.metanet.metabus.chat.service.ChatService;
+import com.metanet.metabus.member.controller.SessionConst;
+import com.metanet.metabus.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -24,15 +25,21 @@ public class RoomController {
      * @param roomId 채팅방 id
      */
     @GetMapping("/{roomId}")
-    public String joinRoom(@PathVariable(required = false) Long roomId, Model model) {
+    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,@PathVariable(required = false) Long roomId, Model model) {
         // 채팅탭클릭시 채팅리스트만 띄우게하기위해 -1로 보냄
         if (roomId != -1) {
             List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);
             model.addAttribute("roomId", roomId);
             model.addAttribute("chatList", chatList);
         }
-        List<RoomDto> roomList = chatService.findAllRoom();
+        List<RoomDto> roomList = null;
+        if(memberDto.getRole().name().equals("ADMIN")){
+            roomList = chatService.findAllRoom();
+        } else if (memberDto.getRole().name().equals("USER")){
+            roomList = chatService.findUserRoom(memberDto.getId());
+        }
         model.addAttribute("roomList", roomList);
+        model.addAttribute("roomForm", new RoomForm());
         return "chat/room";
     }
 
@@ -42,10 +49,19 @@ public class RoomController {
      *
      * @param form
      */
-    @PostMapping("/room")
-    public String createRoom(RoomForm form) {
-        chatService.createRoom(form.getName());
-        return "redirect:/roomList";
+    @PostMapping("/chat/room")
+    @ResponseBody
+    public Long createRoom(HttpSession session, String name) {
+        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+        Long id = loginMember.getId();
+        if(name!=null) {
+            // 세션에 값을 저장하거나 가져와 사용합니다.
+            chatService.createRoom(name, id);
+            return id;
+        }else{
+            return (long) -1;
+        }
+
     }
 
 

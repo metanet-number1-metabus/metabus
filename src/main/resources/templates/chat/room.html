@@ -9,7 +9,7 @@
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 <main style="margin-top: 100px; margin-left: 300px;display: flex; flex-direction: row;">
@@ -24,13 +24,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form action="/room" method="post">
+                    <form id = "myForm">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">방 제목</span>
                                 </div>
-                                <input name="name" class="form-control" style="border-radius: 0;" placeholder="제목을 입력하세요">
+                                <input name="name" id="nameId" class="form-control" style="border-radius: 0;" placeholder="제목을 입력하세요">
                                 <input type="submit" value="방 만들기" class="btn btn-primary" style="background-color: skyblue;border-color: skyblue;">
                             </div>
                         </div>
@@ -47,8 +47,10 @@
             </td>
         </tr>
     </table>
+    <div th:if="${session.loginMember.getRole().name().equals('USER')}">
     <div class="text-center" style="margin-left: 100px">
         <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal" style="background-color: skyblue;border-color: skyblue;height: auto">방 만들기</button>
+    </div>
     </div>
     <div class="pagination-container text-center">
         <ul class="pagination" id="pagination">
@@ -72,7 +74,8 @@
         </div>
         <form class="form-inline" >
             <div class="form-group">
-                <input type="hidden" id="sender" class="form-control" placeholder="Your name here..." value="User">
+                <input type="hidden" id="sender" class="form-control" placeholder="Your name here..."
+                       th:value="${session.loginMember.getRole().name()}">
             </div>
             <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
                 <input type="text" id="message" class="form-control" style="flex-grow: 1; margin-right: 0; height: 40px;width: 630px;" placeholder="메시지를 입력해주세요">
@@ -163,6 +166,40 @@
         scrollToBottom();
     }
 
+    $(function roomCreate() {
+        $("#myForm").on('submit', function (e) {
+            e.preventDefault();
+            $(document).ready(function() {
+
+
+                    // 폼 데이터를 직렬화하여 AJAX 요청의 데이터로 사용합니다.
+                    var name = $("#nameId");
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/chat/room',
+                        data: name,
+                        success: function(response) {
+                            // AJAX 요청이 성공하면 실행할 코드를 작성합니다.
+                            console.log('Success:', response);
+
+                                var redirectUrl = '/'+response;
+                                // 리디렉션할 페이지의 URL로 변경해야 합니다.
+                                // 페이지 리디렉션을 수행합니다.
+                                window.location.href = redirectUrl;
+
+
+                        },
+                        error: function(xhr, status, error) {
+                            // AJAX 요청이 실패하면 실행할 코드를 작성합니다.
+                            console.log('Error:', error);
+
+                        }
+                    });
+
+            });
+        });
+    });
     $(function () {
         $("form").on('submit', function (e) {
             e.preventDefault();
@@ -171,7 +208,6 @@
         $( "#disconnect" ).click(function() { disconnect(); });
         $( "#send" ).click(function() { sendChat(); });
     });
-
 
 </script>
 <script>

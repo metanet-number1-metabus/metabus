@@ -1,7 +1,8 @@
 package com.metanet.metabus.board.controller;
 
+
 import com.metanet.metabus.board.dto.LostBoardDto;
-import com.metanet.metabus.board.entity.LostBoard;
+import com.metanet.metabus.board.service.AwsS3Service;
 import com.metanet.metabus.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Controller
 public class BoardController {
@@ -23,6 +25,14 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private final AwsS3Service awsS3Service;
+
+    public BoardController(AwsS3Service awsS3Service) {
+        this.awsS3Service = awsS3Service;
+    }
+
 
     @GetMapping("/board/write") //localhost:8090/board/write
     public String boardwriteForm() {
@@ -34,9 +44,18 @@ public class BoardController {
     public String boardWritePro(LostBoardDto board, Model model, MultipartFile file) throws IOException {
         model.addAttribute("message", "글 작성이 완료 되었습니다.");
         model.addAttribute("SearchUrl", "/board/list");
-        boardService.write(board, file);
+        /*식별자 . 랜덤으로 이름 만들어줌*/
+        UUID uuid = UUID.randomUUID();
 
-        return "/board/Message";
+        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
+        String fileName = uuid + ".png";
+
+
+        awsS3Service.upload(file, "upload", fileName);
+
+        boardService.write(board, fileName);
+
+        return "redirect:/board/list";
     }
 
 
@@ -97,10 +116,17 @@ public class BoardController {
 
         model.addAttribute("message", "글 수정 완료.");
         model.addAttribute("SearchUrl", "/board/list");
+        /*식별자 . 랜덤으로 이름 만들어줌*/
+        UUID uuid = UUID.randomUUID();
 
-        // 절대 이렇게 하면 안되고 Jpa에서 제공하는 변경감지나 Merge 기능을 따로 공부하자.
-        boardService.update(board, file);
+        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
+        String fileName = uuid + ".png";
 
-        return "/board/Message";
+
+        awsS3Service.upload(file, "upload", fileName);
+
+        boardService.update(board, fileName);
+
+        return "redirect:/board/list";
     }
 }

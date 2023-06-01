@@ -33,6 +33,13 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    public List<RoomDto> findUserRoom(Long id) {
+        List<Room> rooms = roomRepository.findUser(id);
+        return rooms.stream()
+                .map(RoomDto::of)
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * 특정 채팅방 찾기
@@ -51,8 +58,9 @@ public class ChatService {
      *
      * @param name 방 이름
      */
-    public void createRoom(String name) {
-        roomRepository.save(Room.createRoom(name));
+    public void createRoom(String name,Long id) {
+
+        roomRepository.save(Room.createRoom(name,id));
     }
 
     /////////////////
@@ -84,5 +92,6 @@ public class ChatService {
                 .map(ChatDto::of)
                 .collect(Collectors.toList());
     }
+
 
 }

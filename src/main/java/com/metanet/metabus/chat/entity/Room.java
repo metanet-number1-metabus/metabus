@@ -1,9 +1,6 @@
 package com.metanet.metabus.chat.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +10,8 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Room {
     @Id
     @GeneratedValue
@@ -24,10 +23,10 @@ public class Room {
     @Column(name = "MEMBER_ID")
     private Long memId;
 
-    @Builder
-    public Room(String name) {
-        this.name = name;
-    }
+//    @Builder
+//    public Room(String name) {
+//        this.name = name;
+//    }
 
     /**
      * 채팅방 생성
@@ -35,9 +34,10 @@ public class Room {
      * @param name 방 이름
      * @return Room Entity
      */
-    public static Room createRoom(String name) {
+    public static Room createRoom(String name,Long memId) {
         return Room.builder()
                 .name(name)
+                .memId(memId)
                 .build();
     }
 
