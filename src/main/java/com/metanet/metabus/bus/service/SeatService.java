@@ -20,7 +20,7 @@ public class SeatService {
 
     public List<Long> read(Long busNum, LocalDate departureDate) {
         try {
-            Bus bus = busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseThrow(BusNotFoundException::new);]
+            Bus bus = busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseThrow(BusNotFoundException::new);
 
             List<Seat> seats = seatRepository.findByBus(bus);
             List<Long> list = new ArrayList<>();
