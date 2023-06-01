@@ -25,27 +25,16 @@ public class BoardService {
     private LostBoardDto lostBoardDto ;
 
     //글 작성 처리
-    public void write(LostBoardDto board , MultipartFile file) throws IOException {
+    public void write(LostBoardDto board ,String fileName) throws IOException {
 
-        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
+        /*디비에 파일 넣기*/
+        board.setFilename(fileName);
+        /*저장되는 경로*/
+        /*저장된파일의이름,저장된파일의경로*/
+        board.setFilepath("/files/" + fileName);
 
-        /*식별자 . 랜덤으로 이름 만들어줌*/
-        UUID uuid = UUID.randomUUID();
-
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-        String fileName = uuid+".png";
-        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
-
-        /*빈 껍데기 생성*/
-        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-        File saveFile = new File(projectPath, encodedFileName);
-        file.transferTo(saveFile);
-
-
-      LostBoard board1 = new LostBoard(board.getTitle(), board.getContent(),encodedFileName,"/files/" + encodedFileName);
+      LostBoard board1 = new LostBoard(board.getTitle(), board.getContent(),fileName,"/files/" + fileName);
         boardRepository.save(board1);
-
 
     }
     //게시글 리스트 처리
@@ -71,24 +60,15 @@ public class BoardService {
     }
 
 
-    public void update(LostBoardDto boardtemp, MultipartFile file) throws IOException {
-        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
+    public void update(LostBoardDto boardtemp, String fileName) throws IOException {
+        /*디비에 파일 넣기*/
+        boardtemp.setFilename(fileName);
+        /*저장되는 경로*/
+        /*저장된파일의이름,저장된파일의경로*/
+        boardtemp.setFilepath("/files/" + fileName);
 
-        /*식별자 . 랜덤으로 이름 만들어줌*/
-        UUID uuid = UUID.randomUUID();
+        LostBoard board1 = new LostBoard(boardtemp.getTitle(), boardtemp.getContent(),fileName,"/files/" + fileName);
+        boardRepository.save(board1);
 
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-        String fileName = uuid+".png";
-        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
-
-        /*빈 껍데기 생성*/
-        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-        File saveFile = new File(projectPath, encodedFileName);
-        file.transferTo(saveFile);
-
-        LostBoard board = new LostBoard(boardtemp.getTitle(), boardtemp.getContent(),encodedFileName,"/files/" + encodedFileName);
-
-        boardRepository.save(board);
     }
 }

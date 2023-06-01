@@ -2,35 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/default_layout">
+
 <th:block layout:fragment="content">
-    <main class="container" style="margin-top: 100px;">
-        <div class="layoutwrite">
-            <form action="/board/writepro" method="post" enctype="multipart/form-data">
-                <input id="title" class="inputwrite" name="title" type="text" placeholder="제목">
-                <textarea class="textareawrite" name="content" placeholder="내용"></textarea>
-                <input type="file" class="inputwrite" name="file">
-                <button type="submit">작성</button>
-            </form>
-        </div>
-    </main>
+<div class="layout" STYLE="margin-top: 100px">
+    <form action="/board/writepro" method="post" enctype="multipart/form-data">
+        <input name="title" type="text" PLACEHOLDER="제목을 입력하세요">
+        <textarea name="content" PLACEHOLDER="내용을 입력하세요"></textarea>
+        <input type="file" class="inputwrite" name="file">
+        <div id="preview"></div>
+        <button type="submit">작성</button>
+    </form>
+</div>
+<script>
+    const fileInput = document.querySelector('.inputwrite');
+    const previewContainer = document.querySelector('#preview');
+
+    fileInput.addEventListener('change', handleFiles);
+
+    function handleFiles(event) {
+        const files = event.target.files;
+        previewContainer.innerHTML = ''; // 기존에 표시된 이미지 초기화
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview-image');
+                previewContainer.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 </th:block>
 </html>
-
 <style>
-    .layoutwrite {
-        width: 500px;
+    .layout{
+        width : 500px;
         margin: 0 auto;
-        margin-top: 40px;
+        margin-top :40px;
     }
 
-    .layoutwrite input,
-    .layoutwrite textarea {
-        width: 100%;
-        margin-top: 10px;
-        box-sizing: border-box;
+    .layout  input, textarea {
+        width : 100%;
+        margin-top :10px;
+        box-sizing : border-box;
     }
 
-    .layoutwrite textarea {
-        height: 300px;
+    textarea{
+        height : 300px;
     }
 </style>

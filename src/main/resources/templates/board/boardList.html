@@ -6,8 +6,9 @@
 
 
     <!--main-->
-    <main class="container" style="margin-top: 100px; border: 2px solid black; margin-bottom: 0; border-radius: 10px; height: calc(100vh - 300px);">
+    <main class="container" style="margin-top: 100px; border: 2px solid black;margin-left:300px ;margin-bottom: 0; border-radius: 10px; height: calc(105vh - 300px);">
         <div class="layout">
+            <h3 style="text-align: center;margin-top: 30px;margin-bottom: 30px">분실물 게시판</h3>
             <div class="row">
                 <table class="table" id="article-table">
                     <thead>
@@ -23,17 +24,20 @@
                         <td>
                             <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
                         </td>
-                        <td th:text="${board.create_date}">1</td>
+                        <td th:text="${board.createDate}">1</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+            <div th:if="${session.loginMember!=null}">
+            <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
             <div class="row">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="/board/write" class="btn btn-primary me-md-2" role="button" id="write-article">글쓰기</a>
                 </div>
             </div>
-
+            </div>
+            </div>
             <form th:action="@{/board/list}" method="get">
                 <input type="text" name="searchKeyword">
                 <button type="submit">검색</button>
