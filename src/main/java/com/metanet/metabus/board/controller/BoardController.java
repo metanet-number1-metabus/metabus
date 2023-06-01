@@ -51,9 +51,9 @@ public class BoardController {
         String fileName = uuid + ".png";
 
 
-      awsS3Service.upload(file,"upload", fileName);
+        awsS3Service.upload(file, "upload", fileName);
 
-        boardService.write(board,fileName);
+        boardService.write(board, fileName);
 
         return "redirect:/board/list";
     }
@@ -123,7 +123,7 @@ public class BoardController {
         String fileName = uuid + ".png";
 
 
-        awsS3Service.upload(file,"upload", fileName);
+        awsS3Service.upload(file, "upload", fileName);
 
         boardService.update(board, fileName);
 
