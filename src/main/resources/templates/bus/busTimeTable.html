@@ -227,6 +227,7 @@
     <!--            본문-->
     <script th:inline="javascript">
 
+        var seat_booked_list = [];
         var busDataList;
         $(document).ready(function() {
             var url = "http://43.201.165.100:8888/metabusapi/get_bus_list";
@@ -261,7 +262,19 @@
                             var temp = busDataList[$(this).attr("meta")];
                             // console.log(temp);
                             //모달창 열기
-                            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+
+                            // 모달 숨겨질 때 이벤트 처리
+                            var modalobj = document.getElementById('myModal');
+                            modalobj.addEventListener('hidden.bs.modal', function () {
+                                // 모달이 닫힐 때 실행할 코드 작성
+                                console.log('모달이 닫혔습니다.');
+                                // 여기에 원하는 동작을 추가하세요
+                                personCnt = 0;
+                                seatArrForForm = [];
+
+                            });
+
+                            var myModal = new bootstrap.Modal(modalobj);
                             myModal.show();
                             // alert(temp.bus_id);
                             // bus_id 값 설정
@@ -278,9 +291,14 @@
                             // 좌석 로직
 
                             // 예약된 좌석 리스트 <<-- ajax return
-                            var seat_booked_list = [];
+
                             // ajax를 사용해 자리 조회
-                            var url = '/read/' + encodeURIComponent(temp.bus_id) + '/' + encodeURIComponent("20200323");
+                            const currentDate = new Date();
+                            const currentYear = currentDate.getFullYear();
+                            const data = [[${departureDate}]];
+                            const formattedData = currentYear + (data.toString()).replaceAll("\/","");
+                            console.log(formattedData);
+                            var url = '/read/' + encodeURIComponent(temp.bus_id) + '/' + encodeURIComponent(formattedData);
                             $.ajax({
                                 url: url,
                                 method: 'GET',
@@ -293,7 +311,8 @@
                                     // Handle error
                                     console.log(error);
                                     console.log("아작스 애러");
-                                }
+                                },
+                                async:false
                             });
 
                             // test
