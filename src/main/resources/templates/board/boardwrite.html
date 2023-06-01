@@ -8,7 +8,7 @@
     <form action="/board/writepro" method="post" enctype="multipart/form-data">
         <input name="title" type="text" PLACEHOLDER="제목을 입력하세요">
         <textarea name="content" PLACEHOLDER="내용을 입력하세요"></textarea>
-        <input type="file" class="inputwrite" name="file">
+        <input type="file" class="inputwrite" name="file" multiple>
         <div id="preview"></div>
         <button type="submit">작성</button>
     </form>

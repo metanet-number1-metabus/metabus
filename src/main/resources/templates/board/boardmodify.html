@@ -28,9 +28,35 @@
   <form th:action="@{/board/update/{id}(id = ${board.id})}" method="post" enctype="multipart/form-data">
     <input name="title" type="text" th:value="${board.title}">
     <textarea name="content" th:text ="${board.content}"></textarea>
-    <input type="file" class="inputwrite" name="file">
+    <input type="file" class="inputwrite" name="file" multiple>
+    <div id="preview"></div>
     <button>수정</button>
   </form>
 </div>
+<script>
+  const fileInput = document.querySelector('.inputwrite');
+  const previewContainer = document.querySelector('#preview');
+
+  fileInput.addEventListener('change', handleFiles);
+
+  function handleFiles(event) {
+    const files = event.target.files;
+    previewContainer.innerHTML = ''; // 기존에 표시된 이미지 초기화
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('preview-image');
+        previewContainer.appendChild(img);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
 </body>
 </html>
