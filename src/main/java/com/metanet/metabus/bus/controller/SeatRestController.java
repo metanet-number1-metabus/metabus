@@ -1,6 +1,5 @@
 package com.metanet.metabus.bus.controller;
 
-import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +16,7 @@ public class SeatRestController {
     private final SeatService seatService;
 
     @GetMapping("/read/{busNum}/{departureDate}")
-    public List<Seat> read(@PathVariable Long busNum, @PathVariable @DateTimeFormat(pattern = "yyyyMMdd") LocalDate departureDate) {
+    public List<Long> read(@PathVariable Long busNum, @PathVariable @DateTimeFormat(pattern = "yyyyMMdd") LocalDate departureDate) {
         return seatService.read(busNum, departureDate);
     }
 }

@@ -4,10 +4,12 @@ import com.metanet.metabus.bus.entity.Bus;
 import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
+import com.metanet.metabus.common.exception.not_found.BusNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,9 +18,21 @@ public class SeatService {
     private final SeatRepository seatRepository;
     private final BusRepository busRepository;
 
-    public List<Seat> read(Long busNum, LocalDate departureDate) {
-        Bus bus = busRepository.findByBusNumAndDepartureDate(busNum, departureDate);
-        return seatRepository.findByBus(bus);
+    public List<Long> read(Long busNum, LocalDate departureDate) {
+        try {
+            Bus bus = busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseThrow(BusNotFoundException::new);
+
+            List<Seat> seats = seatRepository.findByBus(bus);
+            List<Long> list = new ArrayList<>();
+
+            for (Seat seat : seats) {
+                list.add(seat.getSeatNum());
+            }
+
+            return list;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
 }

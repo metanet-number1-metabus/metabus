@@ -7,7 +7,6 @@
     top: 25%;
     margin-top: -50px;
 }
-
 .jb-box:hover {
     /*transform: rotateX( 180deg )*/
     transform: scale( 1.15 )

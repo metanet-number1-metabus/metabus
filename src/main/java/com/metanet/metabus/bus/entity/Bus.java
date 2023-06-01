@@ -1,6 +1,7 @@
 package com.metanet.metabus.bus.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,12 +15,19 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Bus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private Long busNum;
     private LocalDate departureDate;
-    private String type;
+
+    public static Bus of(Long busNum, LocalDate departureDate) {
+        return Bus.builder()
+                .busNum(busNum)
+                .departureDate(departureDate)
+                .build();
+    }
 }
