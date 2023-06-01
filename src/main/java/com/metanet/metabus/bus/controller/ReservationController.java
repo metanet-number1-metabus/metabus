@@ -20,8 +20,6 @@ public class ReservationController {
     public String makeReservation(HttpSession session, @RequestBody ReservationInfoRequest reservationInfoRequest) {
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
-        System.out.println(memberDto.getEmail());
-        System.out.println(memberDto.getId());
         reservationService.create(memberDto, reservationInfoRequest);
 
         return "redirect:/";

@@ -15,6 +15,7 @@ public enum ErrorCode {
     BAD_CONSTANT(BAD_REQUEST, "잘못된 인자입니다."),
     API_REQUEST_TIMEOUT(REQUEST_TIMEOUT, "요청 시간이 초과되었습니다."),
     DUPLICATED_NICKNAME(CONFLICT, "이미 사용중인 닉네임입니다."),
+    DUPLICATED_SEAT(CONFLICT, "이미 예약된 자리입니다."),
     DUPLICATED_EMAIL(CONFLICT, "이미 사용중인 이메일입니다."),
     DUPLICATED_CONFIRMED(CONFLICT, "이미 읽음 처리된 알림입니다."),
     FILE_NOT_EXISTS(BAD_REQUEST, "파일이 첨부되지 않았습니다."),

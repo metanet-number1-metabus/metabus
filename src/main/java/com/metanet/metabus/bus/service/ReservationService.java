@@ -7,6 +7,7 @@ import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
+import com.metanet.metabus.common.exception.conflict.DuplicateSeatException;
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.member.dto.MemberDto;
 import com.metanet.metabus.member.entity.Member;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class ReservationService {
 
         for (int i = 0; i < seatNum.length; i++) {
 
-            Seat seat = seatRepository.save(Seat.of(seatNum[i], bus));
+            Seat seat = saveSeatBySeatNumAndBus(seatNum[i], bus);
 
             switch (passengerType[i]) {
                 case "성인":
@@ -87,6 +89,17 @@ public class ReservationService {
 
     private Bus createBusByBusNumAndDepartureDate(Long busNum, LocalDate departureDate) {
         return busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseGet(() -> busRepository.save(Bus.of(busNum, departureDate)));
+    }
+
+    private Seat saveSeatBySeatNumAndBus(Long seatNum, Bus bus) {
+        Seat seat;
+        Optional<Seat> seatBySeatNumAndBus = seatRepository.findBySeatNumAndBus(seatNum, bus);
+        if (seatBySeatNumAndBus.isPresent()) {
+            throw new DuplicateSeatException();
+        } else {
+            seat = seatRepository.save(Seat.of(seatNum, bus));
+        }
+        return seat;
     }
 
     private String[] makePassengerType(ReservationInfoRequest reservationInfoRequest) {
