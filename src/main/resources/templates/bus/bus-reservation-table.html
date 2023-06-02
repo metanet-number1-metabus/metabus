@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+  <!--            본문-->
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <div class="content">
+
+
+
+            <div class="container-fluid">
+
+
+              <div class="row">
+
+                <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 gx-5 gy-4"> <!--티켓 col-->
+
+                  <div class="container-fluid rounded shadow-lg" style="width:295px">
+                  <!--                    티켓-->
+
+                    <div class="row">
+                      <div class="col-12 bg-warning rounded-top" style="height: 210px">
+                        <div class="row" style="height: 30px"></div>
+                        <div class="row" style="height: 30px">
+                          <div class="col-12 d-flex justify-content-center">
+                            <p class="fw-bold" style="color: black">Bus Pass</p>
+                          </div>
+                        </div>
+                        <div class="row" style="height: 40px"></div>
+                        <div class="row">
+                          <div class="col-6">
+                            <h1 class="d-flex justify-content-center" style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">간성</h1>
+                            <h2 style="position: relative;left: 30px;"><i class="fas fa-arrow-right"></i> 동서울</h2>
+                          </div>
+                          <div class="col-6 gx-4 gy-2">
+                            <h2 class="d-flex justify-content-center"><i class="fa-solid fa-bus"></i></h2>
+                            <div style="height: 15px"></div>
+                            <p class="d-flex justify-content-center" style="color: black">심야 우등</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+<!--                    1열-->
+                    <div class="row">
+                      <div class="col-4 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>BusID</p></div>
+                          <div class="col-12 fw-bold">AA2005</div>
+                        </div>
+                      </div>
+                      <div class="col-4 p-3"></div>
+                      <div class="col-4 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>Home</p></div>
+                          <div class="col-12 fw-bold">동서울</div>
+                        </div>
+                      </div>
+                    </div>
+<!--                    2열-->
+                    <div class="row">
+                      <div class="col-4 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>Boards</p></div>
+                          <div class="col-12 fw-bold">10:25 AM</div> <!--탑승시간-->
+                        </div>
+                      </div>
+                      <div class="col-4 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>Departs</p></div>
+                          <div class="col-12 fw-bold">11:00 AM</div>
+                        </div>
+                      </div>
+                      <div class="col-4 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>Arrivers</p></div>
+                          <div class="col-12 fw-bold">1:05 PM</div>
+                        </div>
+                      </div>
+                    </div>
+<!--                    3열-->
+                    <div class="row">
+                      <div class="col-12"><hr></div>
+                    </div>
+<!--                    4열-->
+                    <div class="row">
+                      <div class="col-5 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>PassengerType</p></div>
+                          <div class="col-12 fw-bold">성인</div>
+                        </div>
+                      </div>
+                      <div class="col-3 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>Seat</p></div>
+                          <div class="col-12 fw-bold">A-2</div>
+                        </div>
+                      </div>
+                      <div class="col-4 p-3">
+                        <div class="row">
+                          <div class="col-12"><p>Cost</p></div>
+                          <div class="col-12 fw-bold">13000원</div>
+                        </div>
+                      </div>
+                    </div>
+<!--                    5열-->
+                    <div class="row">
+                      <div class="col-12 d-flex justify-content-center"><img src="../assets/img/testqr.png" style="width: 65px;height: 65px;"></div>
+                    </div>
+<!--                    6열-->
+                    <div class="row">
+                      <div class="col-12"><hr></div>
+                    </div>
+                    <!--                    티켓-->
+                  </div>
+
+                </div>
+                <div class="col-xl-2 col-lg-1 col-md-1 col-sm-0"></div>
+                <div class="col-xl-6 col-lg-7 col-md-6 col-sm-6"> <!--테이블 col-->
+
+                  <!--                  테이블-->
+                  <div class="table-responsive custom-table-responsive overflow-scroll" style="height: 650px">
+
+                    <table class="table custom-table" id="busTable">
+                      <thead>
+                      <tr>
+
+                        <th scope="col">버스 아이디</th>
+                        <th scope="col">출발시간</th>
+                        <th scope="col">도착시간</th>
+                        <th scope="col">버스등급</th>
+                        <th scope="col">비용</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <!--                    자바스크립트-->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!--                  테이블-->
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+        </div>
+      </div>
+    </main>
+
+  </div>
+  <!--            본문-->
+  <script th:inline="javascript">
+
+    var busDataList;
+    $(document).ready(function() {
+      var url = "우리 서비스 rest url";
+      console.log(url);
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+
+          console.log("API 로딩 성공")
+          var tbody = $("#busTable tbody");
+          busDataList = data;
+
+          $.each(data, function(index, bus) {
+            var row = $("<tr>");
+            var row_spacer = $("<tr>");
+            row_spacer.attr("class","spacer");
+            var col_spacer = $("<td>");
+            col_spacer.attr("colSpan","100");
+            col_spacer.appendTo(row_spacer);
+            if (index==0){
+              row.attr("scope","row");
+            }
+            row.on("click", function () {
+
+              // 리스트항목 클릭시
+
+            });
+            row.attr("meta",index);
+            $("<td>").text(bus.bus_id).appendTo(row);
+            $("<td>").text(bus.departure_time).appendTo(row);
+            $("<td>").text(bus.arrival_time).appendTo(row);
+            $("<td>").text(bus.bus_grade).appendTo(row);
+            $("<td>").text(bus.cost).appendTo(row);
+            row.appendTo(tbody);
+            row_spacer.appendTo(tbody);
+
+          });
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+        }
+      });
+    });
+
+
+
+  </script>
+</th:block>
+
+</html>
+<style>
+</style>
+
+

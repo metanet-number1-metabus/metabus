@@ -5,6 +5,7 @@ import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,5 +23,10 @@ public class ReservationController {
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
         return reservationService.create(memberDto, reservationInfoRequest);
+    }
+
+    @GetMapping("/bus/reservation")
+    public String makeReservation() {
+        return "bus/bus-reservation-table";
     }
 }

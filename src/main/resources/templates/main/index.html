@@ -52,7 +52,7 @@
                                 <form class="needs-validation" novalidate>
                                     <div class="mb-3 mt-3">
                                         <label for="departurehome" class="form-label">출발지:</label>
-                                        <input type="text" class="form-control" id="departurehome" readonly placeholder="출발지 선택 (클릭)" name="departurehome">
+                                        <input type="text" class="form-control" autocomplete="off" id="departurehome" readonly placeholder="출발지 선택 (클릭)" name="departurehome">
                                         <div class="valid-feedback">
                                         </div>
                                         <!-- <select class="form-select" id="departurehome" name="departurehome">
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="mb-3 mt-3">
                                         <label for="destinationhome" class="form-label">목적지:</label>
-                                        <input type="text" class="form-control" id="destinationhome" name="destinationhome" placeholder="..." required>
+                                        <input type="text" class="form-control" autocomplete="off" id="destinationhome" name="destinationhome" placeholder="..." required>
                                         <div class="invalid-feedback">
                                             출발지와 목적지를 정해주세요.
                                         </div>
@@ -74,7 +74,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="departuredate" class="form-label">출발일:</label>
-                                        <input type="text" class="form-control" id="departuredate" required placeholder="날짜 선택 (클릭)" name="departuredate">
+                                        <input type="text" class="form-control" autocomplete="off" id="departuredate" required readonly placeholder="날짜 선택 (클릭)" name="departuredate">
                                         <div class="invalid-feedback">
                                             출발날짜를 선택 해주세요. (년도 무시)
                                         </div>
@@ -153,7 +153,7 @@
 <!--                </div>-->
                 <!-- 모달창 -->
                 <div class="modal" id="myModal">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">리스트 선택</h5>
@@ -188,9 +188,23 @@
     </div>
     <!--            본문-->
     <script th:inline="javascript">
-        $('#departuredate').datepicker({
-            uiLibrary: 'bootstrap5'
-            ,format: 'mm/dd'
+        $(function() {
+            const currentDate = new Date();
+            // const currentYear = currentDate.getFullYear();
+            $('#departuredate').datepicker({
+                dateFormat: 'mm/dd'
+                ,changeYear: false
+                ,dayNamesMin: ['일','월','화','수','목','금','토']
+                ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+                ,changeMonth: true //option값  월 선택 가능
+                ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+                ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+                ,yearSuffix: "년"
+                ,minDate: 0
+                ,maxDate: 60
+            });
+
+            $('#datepicker').datepicker('setDate', 'today');
         });
 
 
