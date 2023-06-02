@@ -40,4 +40,6 @@ public class Reservation extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
+
+    private String busType;
 }
