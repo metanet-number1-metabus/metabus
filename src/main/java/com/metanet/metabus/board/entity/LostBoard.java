@@ -18,15 +18,15 @@ public class LostBoard extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    private Integer id;
+    private Long id;
 
-    private Integer memberId;
+    private Long memberId;
 
     private String title;
 
     private String content;
 
-    private Integer hit;
+    private Long hit;
 
     private String completeYN;
 
@@ -46,7 +46,7 @@ public class LostBoard extends BaseEntity {
 
     }
 
-    public LostBoard(Integer id,String title, String content, String filename, String filepath) {
+    public LostBoard(Long id,String title, String content, String filename, String filepath) {
         super();
         this.id = id;
         this.title = title;

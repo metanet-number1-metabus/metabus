@@ -49,18 +49,18 @@ public class BoardService {
     }
 
     // 특정 게시글 불러오기
-    public LostBoardDto boardView(Integer id) {
+    public LostBoardDto boardView(Long id) {
         Optional<LostBoard> boardOptional = boardRepository.findById(id);
         return boardOptional.map(LostBoardDto::of).orElse(null);
     }
 
 
-    public void boardDelete(Integer id){
+    public void boardDelete(Long id){
         boardRepository.deleteById(id);
     }
 
 
-    public void update(LostBoardDto boardtemp, String fileName , Integer id) throws IOException {
+    public void update(LostBoardDto boardtemp, String fileName , Long id) throws IOException {
         /*디비에 파일 넣기*/
         boardtemp.setFilename(fileName);
         /*저장되는 경로*/
