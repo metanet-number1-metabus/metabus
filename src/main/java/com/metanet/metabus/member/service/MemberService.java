@@ -4,9 +4,7 @@ import com.metanet.metabus.common.exception.conflict.DuplicateEmailException;
 import com.metanet.metabus.common.exception.not_found.AlreadyDeletedMemberException;
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
-import com.metanet.metabus.member.dto.MemberDto;
-import com.metanet.metabus.member.dto.MemberLoginRequest;
-import com.metanet.metabus.member.dto.MemberRegisterRequest;
+import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +25,7 @@ public class MemberService {
 
     @Transactional
     public Long register(MemberRegisterRequest memberRegisterRequest) {
+        //이메일 중복
         memberRepository.findByEmail(memberRegisterRequest.getEmail()).ifPresent(member -> {
             throw new DuplicateEmailException();
         });
@@ -38,8 +37,15 @@ public class MemberService {
 
     @Transactional
     public MemberDto login(MemberLoginRequest memberLoginRequest) {
+
         Member member = memberRepository.findByEmail(memberLoginRequest.getEmail()).orElseThrow(MemberNotFoundException::new);
-        if (!member.isEnabled() && member.getDeletedDate() != null) throw new AlreadyDeletedMemberException();
+
+        //탈퇴한 회원
+        memberRepository.findByEmailAndDeletedDateIsNotNull(memberLoginRequest.getEmail()).ifPresent(member1 -> {
+            throw new AlreadyDeletedMemberException();
+        });
+
+        //비밀번호 불일치
         if (!passwordEncoder.matches(memberLoginRequest.getPassword(), member.getPassword()))
             throw new InvalidPasswordException();
 
@@ -51,6 +57,75 @@ public class MemberService {
                 .role(member.getRole())
                 .phoneNum(member.getPhoneNum())
                 .build();
+    }
+
+    @Transactional
+    public MemberDto editInfo(MemberEditInfoRequest memberEditInfoRequest, MemberDto memberDto){ //이미 비밀번호 확인하고 들어가서 체크x
+        String encoded = passwordEncoder.encode(memberDto.getPassword());
+
+        Member member = Member.builder()
+                .id(memberDto.getId())
+                .email(memberEditInfoRequest.getEmail())
+                .password(encoded)
+                .name(memberEditInfoRequest.getName())
+                .role(memberDto.getRole())
+                .phoneNum(memberEditInfoRequest.getPhoneNum())
+                .build();
+
+        memberRepository.save(member);
+
+        return MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .role(member.getRole())
+                .phoneNum(member.getPhoneNum())
+                .build();
+    }
+
+    @Transactional
+    public MemberDto editPassword(MemberPasswordRequest memberEditPasswordRequest, MemberDto memberDto){ //이미 비밀번호 확인하고 들어가서 체크x
+
+        String encoded = passwordEncoder.encode(memberEditPasswordRequest.getPassword());
+
+        Member member = Member.builder()
+                .id(memberDto.getId())
+                .email(memberDto.getEmail())
+                .password(encoded)
+                .name(memberDto.getName())
+                .role(memberDto.getRole())
+                .phoneNum(memberDto.getPhoneNum())
+                .build();
+
+        memberRepository.save(member);
+
+        return MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .role(member.getRole())
+                .phoneNum(member.getPhoneNum())
+                .build();
+    }
+
+    @Transactional
+    public void checkPwd(MemberLoginRequest memberLoginRequest, MemberDto memberDto){
+        Member member = memberRepository.findByEmail(memberDto.getEmail()).orElseThrow(MemberNotFoundException::new);
+
+        //비밀번호 불일치
+        if (!passwordEncoder.matches(memberLoginRequest.getPassword(), member.getPassword()))
+            throw new InvalidPasswordException();
+    }
+
+    @Transactional
+    public void delete(MemberDto memberDto){
+        Member member = memberRepository.findByEmail(memberDto.getEmail()).orElseThrow(MemberNotFoundException::new);
+
+        member.delete();
+
+        memberRepository.save(member);
     }
 
     @Transactional
