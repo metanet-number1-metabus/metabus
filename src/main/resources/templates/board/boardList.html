@@ -3,10 +3,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/default_layout">
 <th:block layout:fragment="content">
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <div id="layoutSidenav_content" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('../assets/img/main-2.jpeg');
+    background-size: cover;background-position: center;">
 
     <!--main-->
-    <main class="container" style="margin-top: 100px; border: 2px solid black;margin-left:300px ;margin-bottom: 0; border-radius: 10px; height: calc(105vh - 300px);">
+    <main >
+        <div class="container-fluid px-4">
+        <div class="container overflow-auto" style="background-color: white;margin-top: 100px; border: 1px solid black;">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
         <div class="layout">
             <h3 style="text-align: center;margin-top: 30px;margin-bottom: 30px">분실물 게시판</h3>
             <div class="row">
@@ -14,7 +21,7 @@
                     <thead>
                     <tr>
                         <th class="title col-2"><a>게시글 번호</a></th>
-                        <th class="hashtag col-4"><a>제목</a></th>
+                        <th class="hashtag col-5"><a>제목</a></th>
                         <th class="created-at"><a>작성일</a></th>
                     </tr>
                     </thead>
@@ -61,8 +68,13 @@
                 </ul>
             </nav>
         </div>
+            </div>
 
+            </div>
+            </div>
+        </div>
     </main>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 </th:block>
 </html>

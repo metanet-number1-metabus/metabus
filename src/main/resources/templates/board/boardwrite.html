@@ -4,6 +4,13 @@
       layout:decorate="layout/default_layout">
 
 <th:block layout:fragment="content">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <div id="layoutSidenav_content" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('../assets/img/main-2.jpeg');
+    background-size: cover;background-position: center;">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="container overflow-auto">
+                    <div class="row">
 <div class="layout" STYLE="margin-top: 100px">
     <form action="/board/writepro" method="post" enctype="multipart/form-data">
         <input name="title" type="text" PLACEHOLDER="제목을 입력하세요">
@@ -13,6 +20,11 @@
         <button type="submit">작성</button>
     </form>
 </div>
+                </div>
+                </div>
+            </div>
+        </main>
+    </div>
 <script>
     const fileInput = document.querySelector('.inputwrite');
     const previewContainer = document.querySelector('#preview');
