@@ -2,13 +2,18 @@ package com.metanet.metabus.bus.service;
 
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
 import com.metanet.metabus.bus.entity.Bus;
+import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
+import com.metanet.metabus.common.exception.bad_request.BadDateException;
+import com.metanet.metabus.common.exception.bad_request.BadTimeException;
 import com.metanet.metabus.common.exception.conflict.DuplicateSeatException;
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
+import com.metanet.metabus.common.exception.unauthorized.InvalidSeatCountException;
+import com.metanet.metabus.common.exception.unauthorized.InvalidSeatException;
 import com.metanet.metabus.member.dto.MemberDto;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.repository.MemberRepository;
@@ -18,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +36,9 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
 
-    public void create(MemberDto memberDto, ReservationInfoRequest reservationInfoRequest) {
+    public List<Long> create(MemberDto memberDto, ReservationInfoRequest reservationInfoRequest) {
+
+        List<Long> reservationIdList = new ArrayList<>();
 
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
@@ -38,67 +47,132 @@ public class ReservationService {
         String arrivalTime = makeLocalTime(reservationInfoRequest.getArrivalTime());
 
         Long busNum = reservationInfoRequest.getBusNum();
-        LocalDate departureDate = makeLocalDate(reservationInfoRequest.getDepartureDate());
+        LocalDate departureDate = verifyLocalDate(makeLocalDate(reservationInfoRequest.getDepartureDate()));
         Bus bus = createBusByBusNumAndDepartureDate(busNum, departureDate);
 
         Long payment = reservationInfoRequest.getPayment();
         Long[] seatNum = reservationInfoRequest.getSeatNum();
+
+        int seatCount = verifySeatCount(seatNum.length);
+
+        int maxSeatNum = getMaxSeatNum(reservationInfoRequest.getBusType());
+
         String[] passengerType = makePassengerType(reservationInfoRequest);
 
-        for (int i = 0; i < seatNum.length; i++) {
+        PaymentStatus paymentStatus = PaymentStatus.UNPAID;
 
-            Seat seat = saveSeatBySeatNumAndBus(seatNum[i], bus);
+        for (int i = 0; i < seatCount; i++) {
 
-            switch (passengerType[i]) {
-                case "성인":
-                    break;
-                case "중고생":
-                    payment = payment * 8 / 10; // 20% 할인
-                    break;
-                case "아동":
-                    payment = payment * 5 / 10; // 50% 할인
-                    break;
+            if (seatNum[i] < 1 || seatNum[i] > maxSeatNum) {
+                throw new InvalidSeatException();
+            } else {
+                Seat seat = saveSeatBySeatNumAndBus(seatNum[i], bus);
+
+                switch (passengerType[i]) {
+                    case "성인":
+                        break;
+                    case "중고생":
+                        payment = payment * 8 / 10; // 20% 할인
+                        break;
+                    case "아동":
+                        payment = payment * 5 / 10; // 50% 할인
+                        break;
+                }
+
+                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], paymentStatus);
+                Reservation savedReservation = reservationRepository.save(reservation);
+                reservationIdList.add(savedReservation.getId());
             }
 
-            Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i]);
-            reservationRepository.save(reservation);
         }
+
+        return reservationIdList;
 
     }
 
     private String makeLocalTime(String timeString) {
 
-        int hour = Integer.parseInt(timeString.substring(0, 2));
-        int minute = Integer.parseInt(timeString.substring(3, 5));
-        LocalTime time = LocalTime.of(hour, minute);
+        if (timeString.matches("\\d{2}시\\d{2}분")) {
+            int hour = Integer.parseInt(timeString.substring(0, 2));
+            int minute = Integer.parseInt(timeString.substring(3, 5));
 
-        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+            if (!(hour >= 0 && hour <= 23) || !(minute >= 0 && minute <= 59)) {
+                throw new BadTimeException();
+
+            } else {
+                LocalTime time = LocalTime.of(hour, minute);
+
+                return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+            }
+
+        } else {
+            throw new BadTimeException();
+        }
     }
 
     private LocalDate makeLocalDate(String dateString) {
 
-        int currentYear = LocalDate.now().getYear();
-        String newDateString = currentYear + "/" + dateString;
+        if (dateString.matches("\\d{2}/\\d{2}")) {
+            int currentYear = LocalDate.now().getYear();
 
-        int year = Integer.parseInt(newDateString.substring(0, 4));
-        int month = Integer.parseInt(newDateString.substring(5, 7));
-        int day = Integer.parseInt(newDateString.substring(8, 10));
+            int month = Integer.parseInt(dateString.substring(0, 2));
+            int day = Integer.parseInt(dateString.substring(3, 5));
 
-        return LocalDate.of(year, month, day);
+            return LocalDate.of(currentYear, month, day);
+
+        } else {
+            throw new BadDateException();
+        }
+    }
+
+    private LocalDate verifyLocalDate(LocalDate date) {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now().plusDays(60);
+
+        if (date.isAfter(startDate) && date.isBefore(endDate)) {
+            return date;
+
+        } else {
+            throw new BadDateException();
+        }
+
     }
 
     private Bus createBusByBusNumAndDepartureDate(Long busNum, LocalDate departureDate) {
         return busRepository.findByBusNumAndDepartureDate(busNum, departureDate).orElseGet(() -> busRepository.save(Bus.of(busNum, departureDate)));
     }
 
+    private int verifySeatCount(int seatCount) {
+        if (seatCount > 5) {
+            throw new InvalidSeatCountException();
+        }
+
+        return seatCount;
+    }
+
+    private int getMaxSeatNum(String busType) {
+        int maxSeatNum = 0;
+
+        if (busType.contains("일반")) {
+            maxSeatNum = 41;
+        } else if (busType.contains("우등") || busType.contains("프리")) {
+            maxSeatNum = 31;
+        }
+
+        return maxSeatNum;
+    }
+
     private Seat saveSeatBySeatNumAndBus(Long seatNum, Bus bus) {
         Seat seat;
         Optional<Seat> seatBySeatNumAndBus = seatRepository.findBySeatNumAndBus(seatNum, bus);
+
         if (seatBySeatNumAndBus.isPresent()) {
+
             throw new DuplicateSeatException();
         } else {
             seat = seatRepository.save(Seat.of(seatNum, bus));
         }
+
         return seat;
     }
 

@@ -1,5 +1,6 @@
 package com.metanet.metabus.bus.dto;
 
+import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.member.entity.Member;
@@ -23,8 +24,9 @@ public class ReservationInfoRequest {
     private Long payment;
     private Long[] seatNum;
     private int[] passengerType;
+    private String busType;
 
-    public Reservation toEntity(Member member, String departureTime, String arrivalTime, LocalDate departureDate, Long payment, Seat seat, String passengerType) {
+    public Reservation toEntity(Member member, String departureTime, String arrivalTime, LocalDate departureDate, Long payment, Seat seat, String passengerType, PaymentStatus paymentStatus) {
         return Reservation.builder()
                 .member(member)
                 .departure(departure)
@@ -35,6 +37,8 @@ public class ReservationInfoRequest {
                 .payment(payment)
                 .seatId(seat)
                 .passengerType(passengerType)
+                .paymentStatus(paymentStatus)
+                .busType(busType)
                 .build();
     }
 }
