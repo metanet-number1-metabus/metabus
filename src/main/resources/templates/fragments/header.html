@@ -20,16 +20,41 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" th:href="@{/member/register}" sec:authorize="!isAuthenticated()">회원 가입</a></li>
-                    <li><a class="dropdown-item" th:href="@{/member/login}" sec:authorize="!isAuthenticated()">로그인</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+<!--                    <li><a class="dropdown-item" th:href="@{/member/register}" sec:authorize="!isAuthenticated()">회원 가입</a></li>-->
+<!--                    <li><a class="dropdown-item" th:href="@{/member/login}" sec:authorize="!isAuthenticated()">로그인</a></li>-->
+<!--                    <li><hr class="dropdown-divider" /></li>-->
+<!--                    <li><a class="dropdown-item" href="#!">Logout</a></li>-->
 
-                    <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                        <span class="text-white mr-2 mx-2" sec:authentication="name">사용자</span>
-                        <span class="text-white mr-2 mx-2" sec:authentication="principal.authorities">권한</span>
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">logout</button>
-                    </form>
+<!--                    <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">-->
+<!--                        <span class="text-white mr-2 mx-2" sec:authentication="name">사용자</span>-->
+<!--                        <span class="text-white mr-2 mx-2" sec:authentication="principal.authorities">권한</span>-->
+<!--                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">logout</button>-->
+<!--                    </form>-->
+                    <th:block th:if="${memberDto == null}">
+                        <div class="header_columns">
+                            <div class="header_columns_column">
+                                <a th:href="@{/member/register}">회원가입</a>
+                            </div>
+                            <div class="header_columns_column">
+                                <a th:href="@{/member/login}">로그인</a>
+                            </div>
+                        </div>
+                    </th:block>
+                    <th:block th:unless="${memberDto == null}">
+                        <div class="header_columns">
+                            <div class="header_columns_column">
+                                <a th:href="@{/member/mypage}">마이페이지</a>
+                            </div>
+                            <div class="header_columns_column">
+                                <span th:text="${memberDto.name}"></span>
+                            </div>
+                            <div class="header_columns_column">
+                                <form th:action="@{/member/logout}" method="post">
+                                    <button type="submit">로그아웃</button>
+                                </form>
+                            </div>
+                        </div>
+                    </th:block>
                 </ul>
             </li>
         </ul>
