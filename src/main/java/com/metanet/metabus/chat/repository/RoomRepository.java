@@ -9,4 +9,6 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT r from Room r where r.memId = :id")
     List<Room> findUser(Long id);
+
+
 }

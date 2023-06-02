@@ -2,6 +2,7 @@ package com.metanet.metabus.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metanet.metabus.chat.dto.ChatDto;
+import com.metanet.metabus.chat.dto.ChatMessage;
 import com.metanet.metabus.chat.dto.RoomDto;
 import com.metanet.metabus.chat.entity.Chat;
 import com.metanet.metabus.chat.entity.Room;
@@ -74,7 +75,7 @@ public class ChatService {
      * @param message 내용
      */
     public Chat createChat(Long roomId, String sender, String message) {
-        Room room = roomRepository.findById(roomId).orElseThrow();  //방 찾기 -> 없는 방일 경우 여기서 예외처리
+        Room room = roomRepository.findById(roomId).orElseThrow();//방 찾기 -> 없는 방일 경우 여기서 예외처리
         return chatRepository.save(ChatDto.createChat(room, sender, message));
     }
 
@@ -93,5 +94,12 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-
+    public void updateRoom(Long id, ChatMessage message){
+        Room room = roomRepository.findById(id).orElseThrow();
+        if(message.getSender().equals("운영자")){
+            roomRepository.save(Room.updateRoom2(room.getId(),room.getName(),room.getMemId()));
+        }else{
+            roomRepository.save(Room.updateRoom(room.getId(),room.getName(),room.getMemId()));
+        }
+    }
 }
