@@ -28,27 +28,27 @@ public class LostBoard extends BaseEntity {
 
     private Integer hit;
 
-//    private Timestamp createDate;
-//
-//    private Timestamp editDate;
-//
-//    private Timestamp deleteDate;
-
     private String completeYN;
 
     private String filename;//파일이름
 
     private String filepath;//파일경로
 
-//    @PrePersist
-//    protected void onCreate() {
-//        if (createDate == null) {
-//            createDate = new Timestamp(System.currentTimeMillis());
-//        }
-//    }
+
+
 
     public LostBoard(String title, String content, String filename, String filepath) {
         super();
+        this.title = title;
+        this.content = content;
+        this.filename = filename;
+        this.filepath = filepath;
+
+    }
+
+    public LostBoard(Integer id,String title, String content, String filename, String filepath) {
+        super();
+        this.id = id;
         this.title = title;
         this.content = content;
         this.filename = filename;

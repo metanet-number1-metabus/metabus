@@ -23,12 +23,12 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public AwsS3 upload(MultipartFile multipartFile, String dirName, String fileName) throws IOException {
+    public AwsS3 upload(File multipartFile, String dirName, String fileName) throws IOException {
 
-        File file = convertMultipartFileToFile(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
+//        File file = convertMultipartFileToFile(multipartFile)
+//                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
 
-        return upload(file, fileName);
+        return upload(multipartFile, fileName);
     }
 
     private AwsS3 upload(File file, String fileName) {

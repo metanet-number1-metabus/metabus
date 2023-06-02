@@ -4,6 +4,7 @@ package com.metanet.metabus.board.controller;
 import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.service.AwsS3Service;
 import com.metanet.metabus.board.service.BoardService;
+import com.metanet.metabus.board.service.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -41,7 +44,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(LostBoardDto board, Model model, MultipartFile file) throws IOException {
+    public String boardWritePro(LostBoardDto board, Model model, MultipartFile[] file) throws IOException {
         model.addAttribute("message", "글 작성이 완료 되었습니다.");
         model.addAttribute("SearchUrl", "/board/list");
         /*식별자 . 랜덤으로 이름 만들어줌*/
@@ -50,9 +53,10 @@ public class BoardController {
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String fileName = uuid + ".png";
 
-
-        awsS3Service.upload(file, "upload", fileName);
-
+        if(file!=null) {
+            File mergedImageFile = ImageUtils.mergeImagesVertically(file);
+            awsS3Service.upload(mergedImageFile, "upload", fileName);
+        }
         boardService.write(board, fileName);
 
         return "redirect:/board/list";
@@ -111,7 +115,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(LostBoardDto board, Model model, MultipartFile file) throws IOException {
+    public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Integer id,MultipartFile[] file) throws IOException {
 
 
         model.addAttribute("message", "글 수정 완료.");
@@ -122,10 +126,11 @@ public class BoardController {
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String fileName = uuid + ".png";
 
-
-        awsS3Service.upload(file, "upload", fileName);
-
-        boardService.update(board, fileName);
+        if(file!=null) {
+            File mergedImageFile = ImageUtils.mergeImagesVertically(file);
+            awsS3Service.upload(mergedImageFile, "upload", fileName);
+        }
+        boardService.update(board, fileName,id);
 
         return "redirect:/board/list";
     }

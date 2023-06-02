@@ -60,14 +60,14 @@ public class BoardService {
     }
 
 
-    public void update(LostBoardDto boardtemp, String fileName) throws IOException {
+    public void update(LostBoardDto boardtemp, String fileName , Integer id) throws IOException {
         /*디비에 파일 넣기*/
         boardtemp.setFilename(fileName);
         /*저장되는 경로*/
         /*저장된파일의이름,저장된파일의경로*/
         boardtemp.setFilepath("/files/" + fileName);
 
-        LostBoard board1 = new LostBoard(boardtemp.getTitle(), boardtemp.getContent(),fileName,"/files/" + fileName);
+        LostBoard board1 = new LostBoard(id,boardtemp.getTitle(), boardtemp.getContent(),fileName,"/files/" + fileName);
         boardRepository.save(board1);
 
     }
