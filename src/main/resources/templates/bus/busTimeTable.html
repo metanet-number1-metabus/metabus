@@ -81,7 +81,7 @@
 <!--                </div>-->
                 <form class="needs-validation">
                     <div class="modal" tabindex="-1" id="myModal">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">승차권 예매</h5>
@@ -179,7 +179,7 @@
                                                     5자리 이상 예약이 불가합니다.
                                                 </div>
                                             </div>
-                                            <div class="col-xl-8 col-md-8">
+                                            <div class="col-xl-8 col-md-8 overflow-scroll" style="height: 400px;">
                                                 <div class="container-fluid" id="seatContainer">
 <!--                                                    <div class="row">-->
 <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">A</div></div>-->
@@ -226,6 +226,10 @@
     </div>
     <!--            본문-->
     <script th:inline="javascript">
+
+        $( function() {
+            $(".open-event").tooltip();
+        } );
 
         var seat_booked_list = [];
         var busDataList;
@@ -364,21 +368,22 @@
                                         // seat_col.attr("class","col-xl-3 col-md-3 col-sm-3 col-xs-3");
                                     }
                                     seat_col.attr("id",step+"-"+step2+"id");
+                                    seat_col.attr("style","justify-content: center;display: flex;");
 
                                     // 각 col안에 svg 아이콘 객체 추가
                                     if (step == 0){
                                         // 라벨, A B C D
                                         if (step2==1){
-                                            seat_col.append("<b>A</b>");
+                                            seat_col.append("<h1 style=\"text-align:center;\">A</h1>");
                                         } else if(step2==2){
-                                            seat_col.append("<b>B</b>");
+                                            seat_col.append("<h1 style=\"text-align:center;\">B</h1>");
                                         } else  if(step2==4){
-                                            seat_col.append("<b>C</b>");
+                                            seat_col.append("<h1 style=\"text-align:center;\">C</h1>");
                                         } else  if(step2==5){
-                                            seat_col.append("<b>D</b>");
+                                            seat_col.append("<h1 style=\"text-align:center;\">D</h1>");
                                         }
 
-                                    }else if (step2 == 3){
+                                    }else if (step2 == 3 && step != 10){
                                         // 복도, 아이콘 X
 
                                     }else {
@@ -400,7 +405,9 @@
                                                 "width": "70%",
                                                 "height": "80%",
                                                 "onclick": "clickFunction(this)",
+                                                "class":"open-event",
                                                 "meta":"none",
+                                                "title":seat_id_cnt+"번 좌석",
                                                 "id":"s-"+seat_id_cnt
                                             }).appendTo(seat_col);
                                             // console.log(seat_col.html());
@@ -472,6 +479,7 @@
                                     arrivalTime: $("#arrival_time").val(),
                                     payment: parseInt((($("#cost").val()).replaceAll(",","")).replaceAll("원","")),
                                     seatNum: seatArrForForm, //int
+                                    busType: $("#bus_grade").val(), //int
                                     passengerType: tempTypeArr, //int // length 3 - [0]성인 [1]청소년 [2]아동
                                     // 필요한 나머지 폼 데이터 추가
                                 };
