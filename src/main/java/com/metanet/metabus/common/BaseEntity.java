@@ -22,4 +22,12 @@ public class BaseEntity {
     private LocalDateTime lastModifiedDate;
 
     private LocalDateTime deletedDate;
+
+    public void delete(){
+        this.deletedDate = LocalDateTime.now();
+    }
+
+    public void undelete(){
+        this.deletedDate = null;
+    }
 }

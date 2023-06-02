@@ -17,7 +17,8 @@
 
     body {
         height: 100vh;
-        background: linear-gradient(to top, #c9c9ff 50%, #9090fa 90%) no-repeat
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('../assets/img/main-2.jpeg');
+        background-size: cover;background-position: center;
     }
 
     .container {
@@ -141,19 +142,19 @@
                     <form class="form-signup" th:action="@{/member/register}" method="post" th:object="${memberRegisterRequest}" novalidate>
                         <div class="form-group py-2">
                             <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="email" th:value="${memberRegisterRequest.email}" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" name="email" class="form-control" placeholder="email" required autofocus> </div>
-                            <span th:text="${valid_email}"></span>
+                            <span th:text="${valid_email}" style="color: red"></span>
                         </div>
                         <div class="form-group py-2">
                             <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:value="${memberRegisterRequest.name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" name="name" class="form-control" placeholder="name" required autofocus> </div>
-                            <span th:text="${valid_name}"></span>
+                            <span th:text="${valid_name}" style="color: red"></span>
                         </div>
                         <div class="form-group py-1 pb-2">
                             <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:value="${memberRegisterRequest.password}" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" name="password" class="form-control" placeholder="password" required autofocus></div>
-                            <span th:text="${valid_password}"></span>
+                            <span th:text="${valid_password}" style="color: red"></span>
                         </div>
                         <div class="form-group py-2">
                             <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="phoneNum" th:value="${memberRegisterRequest.phoneNum}" th:classappend="${#fields.hasErrors('phoneNum')} ? 'is-invalid'" name="phoneNum" class="form-control" placeholder="핸드폰 번호" required autofocus> </div>
-                            <span th:text="${valid_phoneNum}"></span>
+                            <span th:text="${valid_phoneNum}" style="color: red"></span>
                         </div>
                         <button class="btn btn-primary btn-block mt-3" type="submit">Sign up</button>
                     </form>
