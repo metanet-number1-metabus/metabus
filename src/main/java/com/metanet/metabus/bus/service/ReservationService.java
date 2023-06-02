@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +31,9 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
 
-    public void create(MemberDto memberDto, ReservationInfoRequest reservationInfoRequest) {
+    public List<Long> create(MemberDto memberDto, ReservationInfoRequest reservationInfoRequest) {
+
+        List<Long> reservationIdList = new ArrayList<>();
 
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
@@ -61,8 +65,11 @@ public class ReservationService {
             }
 
             Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i]);
-            reservationRepository.save(reservation);
+            Reservation savedReservation = reservationRepository.save(reservation);
+            reservationIdList.add(savedReservation.getId());
         }
+
+        return reservationIdList;
 
     }
 

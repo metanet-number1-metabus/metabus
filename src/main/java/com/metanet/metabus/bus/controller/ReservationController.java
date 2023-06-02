@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,11 +18,9 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/bus/reservation")
-    public String makeReservation(HttpSession session, @RequestBody ReservationInfoRequest reservationInfoRequest) {
+    public List<Long> makeReservation(HttpSession session, @RequestBody ReservationInfoRequest reservationInfoRequest) {
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
-        reservationService.create(memberDto, reservationInfoRequest);
-
-        return "redirect:/";
+        return reservationService.create(memberDto, reservationInfoRequest);
     }
 }
