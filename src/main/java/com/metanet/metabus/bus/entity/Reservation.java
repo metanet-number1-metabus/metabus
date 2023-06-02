@@ -37,4 +37,7 @@ public class Reservation extends BaseEntity {
     private Seat seatId;
 
     private String passengerType;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
 }
