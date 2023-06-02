@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class LostBoardDto {
-    private Integer id;
-    private Integer memberId;
+    private Long id;
+    private Long memberId;
     private String title;
     private String content;
-    private Integer hit;
+    private Long hit;
     private LocalDateTime createDate;
     private LocalDateTime editDate;
     private LocalDateTime deleteDate;
@@ -24,7 +24,7 @@ public class LostBoardDto {
     private String filename;//파일이름
     private String filepath;//파일경로
 
-    public LostBoardDto(Integer id,String title,String content,LocalDateTime createDate){
+    public LostBoardDto(Long id,String title,String content,LocalDateTime createDate){
         super();
         this.id = id;
         this.title = title;

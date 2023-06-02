@@ -90,7 +90,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/view")
-    public String boardView(Model model, Integer id) {
+    public String boardView(Model model, Long id) {
         LostBoardDto boardDto = boardService.boardView(id);
 
         model.addAttribute("board", boardDto);
@@ -98,7 +98,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/delete")
-    public String boardDelete(Integer id, Model model) {
+    public String boardDelete(Long id, Model model) {
         boardService.boardDelete(id);
 
         model.addAttribute("message", "글 삭제 완료.");
@@ -108,14 +108,14 @@ public class BoardController {
     }
 
     @GetMapping("/board/modify/{id}")
-    public String boardModify(@PathVariable("id") Integer id, Model model) {
+    public String boardModify(@PathVariable("id") Long id, Model model) {
         model.addAttribute("board", boardService.boardView(id));
 
         return "/board/boardmodify";
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Integer id,MultipartFile[] file) throws IOException {
+    public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Long id,MultipartFile[] file) throws IOException {
 
 
         model.addAttribute("message", "글 수정 완료.");

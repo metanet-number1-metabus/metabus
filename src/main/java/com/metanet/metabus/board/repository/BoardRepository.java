@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BoardRepository extends JpaRepository<LostBoard,Integer> {
+public interface BoardRepository extends JpaRepository<LostBoard,Long> {
 
     Page<LostBoard> findByTitleContaining(String searchKeyword, Pageable pageable);
 }
