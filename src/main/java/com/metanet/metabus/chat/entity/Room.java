@@ -41,4 +41,25 @@ public class Room {
                 .build();
     }
 
+    public static Room updateRoom(Long id, String name, Long memId) {
+        String[] words = name.split(" "); // 공백을 기준으로 문자열을 분리하여 배열로 반환
+        String firstWord = words[0];
+        return Room.builder()
+                .id(id)
+                .name(firstWord+" "+"!")
+                .memId(memId)
+                .build();
+    }
+
+    public static Room updateRoom2(Long id,String name,Long memId) {
+        String[] words = name.split(" "); // 공백을 기준으로 문자열을 분리하여 배열로 반환
+        String firstWord = words[0];
+        return Room.builder()
+                .id(id)
+                .name(firstWord)
+                .memId(memId)
+                .build();
+    }
+
+
 }

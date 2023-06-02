@@ -12,6 +12,7 @@ public class RoomDto {
     private Long id;
     private String name;
     private Long memId;
+    private Long cnt;
 
     public static RoomDto of(Room room) {
         return RoomDto.builder()
