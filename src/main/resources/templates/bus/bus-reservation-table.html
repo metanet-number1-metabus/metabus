@@ -1,25 +1,298 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
       layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
   <!--            본문-->
-  <div id="layoutSidenav_content">
+  <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
     <main>
       <div class="container-fluid px-4">
         <div class="content">
 
 
 
-            <div class="container-fluid">
+          <div class="container-fluid d-flex justify-content-center">
 
 
-              <div class="row">
+            <div class="row">
 
-                <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 gx-5 gy-4"> <!--티켓 col-->
+              <!--                <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 gx-5 gy-4 d-flex justify-content-center"> &lt;!&ndash;티켓 col&ndash;&gt;-->
 
-                  <div class="container-fluid rounded shadow-lg" style="width:295px">
+              <!--                  <div class="container-fluid rounded shadow-lg" style="width:295px">-->
+              <!--                  &lt;!&ndash;                    티켓&ndash;&gt;-->
+
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-12 bg-warning rounded-top" style="height: 210px">-->
+              <!--                        <div class="row" style="height: 30px"></div>-->
+              <!--                        <div class="row" style="height: 30px">-->
+              <!--                          <div class="col-12 d-flex justify-content-center">-->
+              <!--                            <p class="fw-bold" style="color: black">Bus Pass</p>-->
+              <!--                          </div>-->
+              <!--                        </div>-->
+              <!--                        <div class="row" style="height: 40px"></div>-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-6">-->
+              <!--                            <h1 class="d-flex justify-content-center" style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">간성</h1>-->
+              <!--                            <h2 style="position: relative;left: 30px;"><i class="fas fa-arrow-right"></i> 동서울</h2>-->
+              <!--                          </div>-->
+              <!--                          <div class="col-6 gx-4 gy-2">-->
+              <!--                            <h2 class="d-flex justify-content-center"><i class="fa-solid fa-bus"></i></h2>-->
+              <!--                            <div style="height: 15px"></div>-->
+              <!--                            <p class="d-flex justify-content-center" style="color: black">심야 우등</p>-->
+              <!--                          </div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--&lt;!&ndash;                    1열&ndash;&gt;-->
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-4 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>BusID</p></div>-->
+              <!--                          <div class="col-12 fw-bold">AA2005</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-4 p-3"></div>-->
+              <!--                      <div class="col-4 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>Home</p></div>-->
+              <!--                          <div class="col-12 fw-bold">동서울</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--&lt;!&ndash;                    2열&ndash;&gt;-->
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-4 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>Date</p></div>-->
+              <!--                          <div class="col-12 fw-bold">June 5</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-4 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>Departs</p></div>-->
+              <!--                          <div class="col-12 fw-bold">11:00 AM</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-4 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>Arrivers</p></div>-->
+              <!--                          <div class="col-12 fw-bold">1:05 PM</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--&lt;!&ndash;                    3열&ndash;&gt;-->
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-12"><hr></div>-->
+              <!--                    </div>-->
+              <!--&lt;!&ndash;                    4열&ndash;&gt;-->
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-5 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>PassengerType</p></div>-->
+              <!--                          <div class="col-12 fw-bold">성인</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-3 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>Seat</p></div>-->
+              <!--                          <div class="col-12 fw-bold">A-2</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <div class="col-4 p-3">-->
+              <!--                        <div class="row">-->
+              <!--                          <div class="col-12"><p>Cost</p></div>-->
+              <!--                          <div class="col-12 fw-bold">13000원</div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--&lt;!&ndash;                    5열&ndash;&gt;-->
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-12 d-flex justify-content-center"><img src="../assets/img/testqr.png" style="width: 65px;height: 65px;"></div>-->
+              <!--                    </div>-->
+              <!--&lt;!&ndash;                    6열&ndash;&gt;-->
+              <!--                    <div class="row">-->
+              <!--                      <div class="col-12"><hr></div>-->
+              <!--                    </div>-->
+              <!--                    &lt;!&ndash;                    티켓&ndash;&gt;-->
+              <!--                  </div>-->
+
+              <!--                </div>-->
+              <!--                <div class="col-xl-1 col-lg-1 col-md-1"></div>-->
+              <div class="col-12" style="max-width: 1230px"> <!--테이블 col-->
+                <form class="needs">
+
+
+                  <!--                  테이블-->
+                  <!--                  <div class="table-responsive custom-table-responsive overflow-scroll" style="height: 650px">-->
+                  <div class="row" >
+                    <!--                    분류-->
+                    <nav aria-label="...">
+                      <ul class="pagination">
+                        <li class="page-item active"><a class="page-link" href="#">전체</a></li>
+                        <li class="page-item"><a class="page-link" href="#">결제완료</a></li>
+                        <li class="page-item"><a class="page-link" href="#">결제대기</a></li>
+                        <li class="page-item"><a class="page-link" href="#">만료된 승차권</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                  <div class="row">
+
+                    <div class="table-responsive custom-table-responsive" style="height: 550px">
+
+                      <table class="table custom-table" id="busTable">
+                        <thead>
+                        <tr>
+
+                          <th scope="col">결제 여부</th>
+                          <th scope="col">출발 일자</th>
+                          <th scope="col">출발 시간</th>
+                          <th scope="col">출발/도착지</th>
+                          <th scope="col">비용</th>
+                          <th scope="col">상세보기</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--                        타임리프 for문 start-->
+                        <tr>
+                          <td>
+                            <div class="form-check d-flex justify-content-center">
+                              <input class="form-check-input" type="checkbox" name="paylist" value="타임리프(예매번호)1">
+                            </div>
+                          </td>
+                          <td>05/26</td>
+                          <td>07시06분</td>
+                          <td>간성-동서울</td>
+                          <td>35000원</td>
+                          <td>
+                            <button type="button" class="btn btn-primary" onclick="clk(this)" id="타임리프(예매번호)1">
+                              보기
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <!--                        타임리프 for문 end-->
+                        <!--더미데이터-->
+                        <tr>
+                          <td>
+                            <div class="form-check d-flex justify-content-center">
+                              <input class="form-check-input" type="checkbox" name="paylist" value="타임리프(예매번호)2">
+                            </div>
+                          </td>
+                          <td>05/26</td>
+                          <td>07시06분</td>
+                          <td>간성-동서울</td>
+                          <td>35000원</td>
+                          <td>
+                            <button type="button" class="btn btn-primary" onclick="clk(this)" id="타임리프(예매번호)2">
+                              보기
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <tr>
+                          <td>
+                            <div class="form-check d-flex justify-content-center">
+                              <input class="form-check-input" type="checkbox" disabled name="paylist" value="타임리프(예매번호)3">
+                            </div>
+                          </td>
+                          <td>05/26</td>W
+                          <td>07시06분</td>
+                          <td>간성-동서울</td>
+                          <td>35000원</td>
+                          <td>
+                            <button type="button" class="btn btn-primary" onclick="clk(this)" id="타임리프(예매번호)3">
+                              보기
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <tr>
+                          <td>
+                            <div class="form-check d-flex justify-content-center">
+                              <input class="form-check-input" type="checkbox" disabled name="paylist" value="타임리프(예매번호)4">
+                            </div>
+                          </td>
+                          <td>05/26</td>W
+                          <td>07시06분</td>
+                          <td>간성-동서울</td>
+                          <td>35000원</td>
+                          <td>
+                            <button type="button" class="btn btn-primary" onclick="clk(this)" id="타임리프(예매번호)4">
+                              보기
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <tr>
+                          <td>
+                            <div class="form-check d-flex justify-content-center">
+                              <input class="form-check-input" type="checkbox" disabled name="paylist" value="타임리프(예매번호)5">
+                            </div>
+                          </td>
+                          <td>05/26</td>W
+                          <td>07시06분</td>
+                          <td>간성-동서울</td>
+                          <td>35000원</td>
+                          <td>
+                            <button type="button" class="btn btn-primary" onclick="clk(this)" id="타임리프(예매번호)5">
+                              보기
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="spacer"><td colspan="100"></td></tr>
+                        <!--더미데이터-->
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <button type="submit" class="btn btn-primary mb-3" style="width:100px">결제</button>
+                  </div>
+                  <div class="row">
+                    <!--                    페이지네이션-->
+                    <nav aria-label="...">
+                      <ul class="pagination d-flex justify-content-center">
+                        <li class="page-item disabled">
+                          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item active" aria-current="page">
+                          <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                          <a class="page-link" href="#">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
+
+                  </div>
+                  <!--                  테이블-->
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!--          모달-->
+          <div class="modal" id="myModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <p class="modal-title">preview</p>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
                   <!--                    티켓-->
+                  <div class="container-fluid rounded shadow-lg" style="width:295px">
 
                     <div class="row">
                       <div class="col-12 bg-warning rounded-top" style="height: 210px">
@@ -32,84 +305,84 @@
                         <div class="row" style="height: 40px"></div>
                         <div class="row">
                           <div class="col-6">
-                            <h1 class="d-flex justify-content-center" style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">간성</h1>
-                            <h2 style="position: relative;left: 30px;"><i class="fas fa-arrow-right"></i> 동서울</h2>
+                            <h1 class="d-flex justify-content-center" style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;" id="modalDeparts">간성</h1>
+                            <h2 style="position: relative;left: 30px;" ><i class="fas fa-arrow-right"></i> 동서울</h2>
                           </div>
                           <div class="col-6 gx-4 gy-2">
-                            <h2 class="d-flex justify-content-center"><i class="fa-solid fa-bus"></i></h2>
+                            <h2 class="d-flex justify-content-center" id="modalArrivals"><i class="fa-solid fa-bus"></i></h2>
                             <div style="height: 15px"></div>
-                            <p class="d-flex justify-content-center" style="color: black">심야 우등</p>
+                            <p class="d-flex justify-content-center" style="color: black" id="modalBusType">심야 우등</p>
                           </div>
                         </div>
                       </div>
                     </div>
-<!--                    1열-->
+                    <!--                    1열-->
                     <div class="row">
                       <div class="col-4 p-3">
                         <div class="row">
                           <div class="col-12"><p>BusID</p></div>
-                          <div class="col-12 fw-bold">AA2005</div>
+                          <div class="col-12 fw-bold" id="modalBusId">AA2005</div>
                         </div>
                       </div>
                       <div class="col-4 p-3"></div>
                       <div class="col-4 p-3">
                         <div class="row">
                           <div class="col-12"><p>Home</p></div>
-                          <div class="col-12 fw-bold">동서울</div>
+                          <div class="col-12 fw-bold" id="modalDeparts2">동서울</div>
                         </div>
                       </div>
                     </div>
-<!--                    2열-->
+                    <!--                    2열-->
                     <div class="row">
                       <div class="col-4 p-3">
                         <div class="row">
-                          <div class="col-12"><p>Boards</p></div>
-                          <div class="col-12 fw-bold">10:25 AM</div> <!--탑승시간-->
+                          <div class="col-12"><p>Date</p></div>
+                          <div class="col-12 fw-bold" id="modalBookedDate">June 5</div>
                         </div>
                       </div>
                       <div class="col-4 p-3">
                         <div class="row">
                           <div class="col-12"><p>Departs</p></div>
-                          <div class="col-12 fw-bold">11:00 AM</div>
+                          <div class="col-12 fw-bold" id="modalDepartTime">11:00 AM</div>
                         </div>
                       </div>
                       <div class="col-4 p-3">
                         <div class="row">
                           <div class="col-12"><p>Arrivers</p></div>
-                          <div class="col-12 fw-bold">1:05 PM</div>
+                          <div class="col-12 fw-bold" id="modalArrivalTime">1:05 PM</div>
                         </div>
                       </div>
                     </div>
-<!--                    3열-->
+                    <!--                    3열-->
                     <div class="row">
                       <div class="col-12"><hr></div>
                     </div>
-<!--                    4열-->
+                    <!--                    4열-->
                     <div class="row">
                       <div class="col-5 p-3">
                         <div class="row">
-                          <div class="col-12"><p>PassengerType</p></div>
-                          <div class="col-12 fw-bold">성인</div>
+                          <div class="col-12"><p>PassType</p></div>
+                          <div class="col-12 fw-bold" id="modalPassType">성인</div>
                         </div>
                       </div>
                       <div class="col-3 p-3">
                         <div class="row">
                           <div class="col-12"><p>Seat</p></div>
-                          <div class="col-12 fw-bold">A-2</div>
+                          <div class="col-12 fw-bold" id="modalSeatNum">A-2</div>
                         </div>
                       </div>
                       <div class="col-4 p-3">
                         <div class="row">
                           <div class="col-12"><p>Cost</p></div>
-                          <div class="col-12 fw-bold">13000원</div>
+                          <div class="col-12 fw-bold" id="modalCost">13000원</div>
                         </div>
                       </div>
                     </div>
-<!--                    5열-->
+                    <!--                    5열-->
                     <div class="row">
                       <div class="col-12 d-flex justify-content-center"><img src="../assets/img/testqr.png" style="width: 65px;height: 65px;"></div>
                     </div>
-<!--                    6열-->
+                    <!--                    6열-->
                     <div class="row">
                       <div class="col-12"><hr></div>
                     </div>
@@ -117,35 +390,12 @@
                   </div>
 
                 </div>
-                <div class="col-xl-2 col-lg-1 col-md-1 col-sm-0"></div>
-                <div class="col-xl-6 col-lg-7 col-md-6 col-sm-6"> <!--테이블 col-->
-
-                  <!--                  테이블-->
-                  <div class="table-responsive custom-table-responsive overflow-scroll" style="height: 650px">
-
-                    <table class="table custom-table" id="busTable">
-                      <thead>
-                      <tr>
-
-                        <th scope="col">버스 아이디</th>
-                        <th scope="col">출발시간</th>
-                        <th scope="col">도착시간</th>
-                        <th scope="col">버스등급</th>
-                        <th scope="col">비용</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <!--                    자바스크립트-->
-                      </tbody>
-                    </table>
-                  </div>
-                  <!--                  테이블-->
-
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
                 </div>
-
               </div>
-
             </div>
+          </div>
 
 
 
@@ -157,9 +407,12 @@
   <!--            본문-->
   <script th:inline="javascript">
 
-    var busDataList;
-    $(document).ready(function() {
-      var url = "우리 서비스 rest url";
+    // 모달창
+    function clk(obj){
+
+      console.log(obj.id);
+
+      var url = "우리 서비스 rest url?reservationid="+obj.id;
       console.log(url);
       $.ajax({
         url: url,
@@ -168,40 +421,76 @@
         success: function(data) {
 
           console.log("API 로딩 성공")
-          var tbody = $("#busTable tbody");
-          busDataList = data;
+          reservationDataList = data;
 
-          $.each(data, function(index, bus) {
-            var row = $("<tr>");
-            var row_spacer = $("<tr>");
-            row_spacer.attr("class","spacer");
-            var col_spacer = $("<td>");
-            col_spacer.attr("colSpan","100");
-            col_spacer.appendTo(row_spacer);
-            if (index==0){
-              row.attr("scope","row");
-            }
-            row.on("click", function () {
+          $("#modalDeparts").append("간성1");
+          var tempi = $("<i>").attr("class","fas fa-arrow-right");
+          $("#modalArrivals").append(tempi);
+          $("#modalArrivals").append("동서울2");
+          $("#modalBusType").append("심야우등2");
+          $("#modalBusId").append("AA2005^^");
+          $("#modalDeparts2").append("동서울2");
+          $("#modalBookedDate").append("June 6");
+          $("#modalDepartTime").append("11:00 AM");
+          $("#modalArrivalTime").append("1:05 PM");
+          $("#modalPassType").append("성인");
+          $("#modalSeatNum").append("A-2");
+          $("#modalCost").append("13000원");
 
-              // 리스트항목 클릭시
+          const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+          myModal.show();
 
-            });
-            row.attr("meta",index);
-            $("<td>").text(bus.bus_id).appendTo(row);
-            $("<td>").text(bus.departure_time).appendTo(row);
-            $("<td>").text(bus.arrival_time).appendTo(row);
-            $("<td>").text(bus.bus_grade).appendTo(row);
-            $("<td>").text(bus.cost).appendTo(row);
-            row.appendTo(tbody);
-            row_spacer.appendTo(tbody);
-
-          });
         },
         error: function(xhr, status, error) {
           console.error(error);
         }
       });
-    });
+
+    }
+
+    // 폼함수
+    (function () {
+      'use strict'
+
+      var forms = document.querySelectorAll('.needs')
+
+      Array.prototype.slice.call(forms)
+              .forEach(function (form) {
+
+                form.addEventListener('submit', function (event) {
+
+
+                  var selectedValues = [];
+                  var checkboxes = form.querySelectorAll('input[name="paylist"]:checked');
+                  checkboxes.forEach(function(checkbox) {
+                    selectedValues.push(checkbox.value);
+                  });
+
+                  console.log(selectedValues);
+
+                  if (selectedValues.length==0){
+                    event.preventDefault();
+                    alert("결제할 항목을 1개 이상 선택해주세요!");
+
+                  } else {
+
+                    form.action = "/bus/결제페이지URL"; // /결제페이지로 폼 전송을 원한다면 action 설정
+
+                  }
+
+
+                  // if (!form.checkValidity()) {
+                  //   event.preventDefault()
+                  //   event.stopPropagation()
+                  // }else {
+                  //   form.action = "/bus/timetable"; // /search로 폼 전송을 원한다면 action 설정
+                  // }
+
+
+                }, false)
+              })
+    })()
+
 
 
 
