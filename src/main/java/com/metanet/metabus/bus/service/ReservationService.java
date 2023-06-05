@@ -1,5 +1,6 @@
 package com.metanet.metabus.bus.service;
 
+import com.metanet.metabus.bus.dto.ReservationDTO;
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
 import com.metanet.metabus.bus.entity.Bus;
 import com.metanet.metabus.bus.entity.PaymentStatus;
@@ -12,6 +13,7 @@ import com.metanet.metabus.common.exception.bad_request.BadDateException;
 import com.metanet.metabus.common.exception.bad_request.BadTimeException;
 import com.metanet.metabus.common.exception.conflict.DuplicateSeatException;
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
+import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidSeatCountException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidSeatException;
 import com.metanet.metabus.member.dto.MemberDto;
@@ -88,6 +90,67 @@ public class ReservationService {
 
         return reservationIdList;
 
+    }
+
+    public List<Reservation> readAllReservation(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        return reservationRepository.findByMemberAndDeletedDateIsNull(member);
+    }
+
+    public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        return reservationRepository.findUnpaidReservationsByMember(member);
+    }
+
+    public List<Reservation> readPaidReservation(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        return reservationRepository.findPaidReservationsByMember(member);
+    }
+
+    public List<Reservation> readPastReservation(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        return reservationRepository.findPastReservationsByMember(member, LocalDate.now());
+    }
+
+    public List<Reservation> readByReservationId(Long[] reservationIds) {
+
+        List<Reservation> reservationList = new ArrayList<>();
+
+        for (Long reservationId : reservationIds) {
+            reservationList.add(reservationRepository.findByIdAndDeletedDateIsNull(reservationId));
+        }
+
+        return reservationList;
+
+    }
+
+    public ReservationDTO readReservationDetail(Long reservationId) {
+        Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+        Long seatId = reservation.getSeatId().getId();
+        Seat seat = seatRepository.findById(seatId).orElseThrow(SeatNotFoundException::new);
+        Long busNum = seat.getBus().getBusNum();
+        Long seatNum = seat.getSeatNum();
+
+        return ReservationDTO.builder()
+                .departure(reservation.getDeparture())
+                .destination(reservation.getDestination())
+                .busType(reservation.getBusType())
+                .busNum(busNum)
+                .departureDate(reservation.getDepartureDate())
+                .departureTime(reservation.getDepartureTime())
+                .arrivalTime(reservation.getArrivalTime())
+                .passengerType(reservation.getPassengerType())
+                .seatNum(seatNum)
+                .payment(reservation.getPayment())
+                .build();
     }
 
     private String makeLocalTime(String timeString) {
