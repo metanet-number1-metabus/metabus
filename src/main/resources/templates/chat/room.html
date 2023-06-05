@@ -54,13 +54,25 @@
         <table id="roomTable" style="border-collapse: separate; border-spacing: 10px; border-radius: 10px; white-space: nowrap;margin-left: auto;margin-right: auto">
             <tr th:each="room : ${roomList}" class="room-row">
                 <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; text-align: center;margin-left: auto;margin-right: auto">
+                    <div th:if="${room.getCompleteYN().equals('미완료')}">
+
                     <div th:if="${room.getName().contains('!')}">
-                    <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: red; font-size: large;"></a>
-                    </div>
-                    <div th:if="${!room.getName().contains('!')}">
-                        <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: dodgerblue; font-size: medium;"></a>
+                        <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: red; font-size: large;"></a>
+                        <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
+                           th:href="@{/complete/{roomId}(roomId=${room.getId()})}" class="btn btn-sm btn-outline-secondary" style="margin-left: 5px" >완료</a>
                     </div>
 
+                    <div th:if="${!room.getName().contains('!')}">
+                        <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: dodgerblue; font-size: medium;"></a>
+                        <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
+                           th:href="@{/complete/{roomId}(roomId=${room.getId()})}" class="btn btn-sm btn-outline-secondary" style="margin-left: 5px" >완료</a>
+                    </div>
+
+                    </div>
+
+                    <div th:if="${room.getCompleteYN().equals('완료')}">
+                        <p th:text="${#strings.replace(room.getName(), '!', '') + ' ' + room.getCompleteYN()}"></p>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -105,8 +117,9 @@
             </div>
             <div class="container overflow-hidden">
             <div class="row">
-            <div class="col-1 col-md-0"></div>
-            <div class="col-10 col-md-12">
+            <div class="col-2 col-md-2">
+            </div>
+            <div class="col-9 col-md-10">
             <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
 
                 <input type="text" id="message" class="form-control" style="float: left;flex-basis: 85%;" placeholder="메시지를 입력해주세요">

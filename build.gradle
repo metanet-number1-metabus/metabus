@@ -45,7 +45,8 @@ dependencies {
 	// s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-
+	//스케쥴러
+	implementation 'org.springframework:spring-context:5.3.9'
 
 }
 

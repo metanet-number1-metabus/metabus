@@ -28,7 +28,7 @@ public class ChatService {
 
 
     public List<RoomDto> findAllRoom() {
-        List<Room> rooms = roomRepository.findAll();
+        List<Room> rooms = roomRepository.findAllByDeletedDateIsNull();
         return rooms.stream()
                 .map(RoomDto::of)
                 .collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class ChatService {
      */
     public void createRoom(String name,Long id) {
 
-        roomRepository.save(Room.createRoom(name,id));
+        roomRepository.save(Room.createRoom(name,id,"미완료"));
     }
 
     /////////////////
@@ -97,9 +97,14 @@ public class ChatService {
     public void updateRoom(Long id, ChatMessage message){
         Room room = roomRepository.findById(id).orElseThrow();
         if(message.getSender().equals("운영자")){
-            roomRepository.save(Room.updateRoom2(room.getId(),room.getName(),room.getMemId()));
+            roomRepository.save(Room.updateRoom2(room.getId(),room.getName(),room.getMemId(),room.getCompleteYN()));
         }else{
-            roomRepository.save(Room.updateRoom(room.getId(),room.getName(),room.getMemId()));
+            roomRepository.save(Room.updateRoom(room.getId(),room.getName(),room.getMemId(),room.getCompleteYN()));
         }
+    }
+
+    public void completeRoom(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow();
+        roomRepository.save(Room.completeRoom(room.getId(),room.getName(),room.getMemId(),"완료"));
     }
 }
