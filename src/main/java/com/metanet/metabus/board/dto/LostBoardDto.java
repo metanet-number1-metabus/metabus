@@ -38,13 +38,13 @@ public class LostBoardDto {
                 .memberId(lostBoard.getMemberId())
                 .title(lostBoard.getTitle())
                 .content(lostBoard.getContent())
-                .hit(lostBoard.getHit())
                 .createDate(lostBoard.getCreatedDate())
                 .editDate(lostBoard.getLastModifiedDate())
                 .deleteDate(lostBoard.getDeletedDate())
-                .completeYN(lostBoard.getCompleteYN())
                 .filename(lostBoard.getFilename())
                 .filepath(lostBoard.getFilepath())
                 .build();
     }
+
+
 }

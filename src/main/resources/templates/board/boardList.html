@@ -3,78 +3,116 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/default_layout">
 <th:block layout:fragment="content">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <div id="layoutSidenav_content" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('../assets/img/main-2.jpeg');
-    background-size: cover;background-position: center;">
+    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
 
     <!--main-->
     <main >
         <div class="container-fluid px-4">
-        <div class="container overflow-auto" style="background-color: white;margin-top: 100px; border: 1px solid black;">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10">
-        <div class="layout">
-            <h3 style="text-align: center;margin-top: 30px;margin-bottom: 30px">분실물 게시판</h3>
-            <div class="row">
-                <table class="table" id="article-table">
-                    <thead>
-                    <tr>
-                        <th class="title col-2"><a>게시글 번호</a></th>
-                        <th class="hashtag col-5"><a>제목</a></th>
-                        <th class="created-at"><a>작성일</a></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="board : ${list}">
-                        <td th:text="${board.id}">1</td>
-                        <td>
-                            <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
-                        </td>
-                        <td th:text="${board.createDate}">1</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div th:if="${session.loginMember!=null}">
-            <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
-            <div class="row">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="/board/write" class="btn btn-primary me-md-2" role="button" id="write-article">글쓰기</a>
+        <div class="content">
+        <div class="container-fluid" style="max-width: 1230px">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="layout">
+<!--                                <h3 style="text-align: center;margin-top: 30px;margin-bottom: 30px">분실물 게시판</h3>-->
+
+
+                                <form th:action="@{/board/list}" method="get" class="row g-1 d-flex justify-content-end">
+                                    <div class="col-auto">
+                                        <label for="searchKeyword" class="visually-hidden">Password</label>
+                                        <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="search..">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary mb-3">검색</button>
+                                    </div>
+                                </form>
+
+                                <div class="row">
+                                    <table class="table" id="article-table">
+                                        <thead>
+                                        <tr>
+                                            <th class="title col-2"><a>게시글 번호</a></th>
+                                            <th class="hashtag col-5"><a>제목</a></th>
+                                            <th class="created-at"><a>작성일</a></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="board : ${list}">
+                                            <td th:text="${board.id}">1</td>
+                                            <td>
+                                                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+                                            </td>
+                                            <td th:text="${board.createDate}">1</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <div th:if="${session.loginMember!=null}">
+                                    <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
+
+                                                <a href="/board/write" class="btn btn-primary me-md-2" role="button" id="write-article">글쓰기</a>
+
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <nav id="pagination" aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item"><a class="page-link" onclick="previousPage()">Previous</a></li>
+                                        <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                                            <th:block th:if="${page != nowPage}">
+                                                <a class="page-link" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
+                                            </th:block>
+                                            <th:block th:if="${page == nowPage}">
+                                                <strong class="page-link" id="nowPages" style="color: red;" th:text="${page}"></strong>
+                                            </th:block>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" onclick="nextPage()">Next</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
-            </div>
-            </div>
-            <form th:action="@{/board/list}" method="get">
-                <input type="text" name="searchKeyword">
-                <button type="submit">검색</button>
-            </form>
 
+
+            </div>
         </div>
-
-        <div class="row">
-            <nav id="pagination" aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                        <th:block th:if="${page != nowPage}">
-                            <a class="page-link" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
-                        </th:block>
-                        <th:block th:if="${page == nowPage}">
-                            <strong class="page-link" style="color: red;" th:text="${page}"></strong>
-                        </th:block>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-            </div>
-
-            </div>
-            </div>
         </div>
     </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-</th:block>
+    <script>
+        function previousPage() {
+            var nowPage = document.getElementById(nowPages);
+            goToPage(nowPage-1);
+        }
+
+        function nextPage() {
+            var nowPage = document.getElementById(nowPages);
+            goToPage(nowPage+1);
+        }
+        function goToPage(page) {
+            var urlParams = new URLSearchParams(window.location.search);
+            urlParams.set("page", page);
+            window.location.href = "/board/list?" + urlParams.toString();
+        }
+    </script>
+    </th:block>
 </html>

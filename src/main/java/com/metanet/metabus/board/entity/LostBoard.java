@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,10 +26,6 @@ public class LostBoard extends BaseEntity {
 
     private String content;
 
-    private Long hit;
-
-    private String completeYN;
-
     private String filename;//파일이름
 
     private String filepath;//파일경로
@@ -37,12 +33,13 @@ public class LostBoard extends BaseEntity {
 
 
 
-    public LostBoard(String title, String content, String filename, String filepath) {
+    public LostBoard(String title, String content, String filename, String filepath, LocalDateTime now,Long memberId) {
         super();
         this.title = title;
         this.content = content;
         this.filename = filename;
         this.filepath = filepath;
+        this.memberId = memberId;
 
     }
 
@@ -55,5 +52,15 @@ public class LostBoard extends BaseEntity {
         this.filepath = filepath;
     }
 
+    public LostBoard(Long id,String title, String content, String filename, String filepath,LocalDateTime deletedDate,Long memberId) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.filename = filename;
+        this.filepath = filepath;
+        this.delete();
+        this.memberId= memberId;
+    }
 
 }

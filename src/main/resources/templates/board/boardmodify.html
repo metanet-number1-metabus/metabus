@@ -22,17 +22,34 @@
     height : 300px;
     }
 </style>
+<body style="background-image: url('/assets/img/main-2.jpeg'); background-size: cover; background-repeat: no-repeat; background-position: center; background-attachment: fixed;">
 
-<body>
-<div class="layout">
-  <form th:action="@{/board/update/{id}(id = ${board.id})}" method="post" enctype="multipart/form-data">
-    <input name="title" type="text" th:value="${board.title}">
-    <textarea name="content" th:text ="${board.content}"></textarea>
-    <input type="file" class="inputwrite" name="file" multiple>
-    <div id="preview"></div>
-    <button>수정</button>
-  </form>
+<div class="container" style="width: 800px;background-color: white;margin-top: 100px;margin-left: 500px" >
+  <div class="card">
+    <div class="card-body">
+
+      <form  th:action="@{/board/update/{id}(id = ${board.id})}" name="myForm" onsubmit="return validateForm()" method="post" enctype="multipart/form-data" style="margin-left: 50px;margin-right: 50px">
+        <h5 style="margin-top: 5px">제목</h5>
+        <input type="text" name="title"  placeholder="글 제목을 입력해주세요."/>
+        <h5 style="margin-top: 5px">본문</h5>
+        <textarea name="content" placeholder="본문내용을 입력해주세요."></textarea>
+        <input type="file" class="inputwrite" name="file" multiple>
+        <div id="preview"></div>
+        <button type="submit" style="margin-top: 5px;margin-bottom: 5px; background-color: dodgerblue;color: white;border-color: dodgerblue">수정</button>
+      </form>
+    </div>
+  </div>
 </div>
+
+<!--<div class="layout">-->
+<!--  <form th:action="@{/board/update/{id}(id = ${board.id})}" name="myForm" onsubmit="return validateForm()" method="post" enctype="multipart/form-data">-->
+<!--    <input name="title" type="text" th:value="${board.title}">-->
+<!--    <textarea name="content" th:text ="${board.content}"></textarea>-->
+<!--    <input type="file" class="inputwrite" name="file" multiple>-->
+<!--    <div id="preview"></div>-->
+<!--    <button>수정</button>-->
+<!--  </form>-->
+<!--</div>-->
 <script>
   const fileInput = document.querySelector('.inputwrite');
   const previewContainer = document.querySelector('#preview');
@@ -55,6 +72,16 @@
       };
 
       reader.readAsDataURL(file);
+    }
+  }
+
+  function validateForm() {
+    var title = document.forms["myForm"]["title"].value;
+    var content = document.forms["myForm"]["content"].value;
+
+    if (title == "" || content == "") {
+      alert("제목과 내용을 모두 입력해주세요.");
+      return false;
     }
   }
 </script>

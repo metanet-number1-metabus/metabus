@@ -41,4 +41,12 @@ public class ImageUtils {
 
         return mergedFile;
     }
+
+    public static boolean isImageFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        if (contentType != null && contentType.startsWith("image")) {
+            return true;
+        }
+        return false;
+    }
 }

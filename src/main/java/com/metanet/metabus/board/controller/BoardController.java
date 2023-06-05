@@ -5,6 +5,9 @@ import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.service.AwsS3Service;
 import com.metanet.metabus.board.service.BoardService;
 import com.metanet.metabus.board.service.ImageUtils;
+import com.metanet.metabus.common.exception.unauthorized.invalidSession;
+import com.metanet.metabus.member.controller.SessionConst;
+import com.metanet.metabus.member.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -37,14 +41,28 @@ public class BoardController {
     }
 
 
-    @GetMapping("/board/write") //localhost:8090/board/write
-    public String boardwriteForm() {
+    @GetMapping("/board/write")
+    public String boardwriteForm(HttpSession session) {
+        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+        if(!memberDto.getRole().name().equals("ADMIN")){
+            invalidSession invalidSession = new invalidSession();
+            return "redirect:/board/list";
+        }
 
         return "/board/boardwrite";
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(LostBoardDto board, Model model, MultipartFile[] file) throws IOException {
+    public String boardWritePro(LostBoardDto board, Model model, MultipartFile[] file, HttpSession session) throws IOException {
+        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+        if(!memberDto.getRole().name().equals("ADMIN")){
+            invalidSession invalidSession = new invalidSession();
+            return "redirect:/board/list";
+        }
+
+        if(board.getTitle().equals("")){
+            return "redirect:/board/list";
+        }
         model.addAttribute("message", "글 작성이 완료 되었습니다.");
         model.addAttribute("SearchUrl", "/board/list");
         /*식별자 . 랜덤으로 이름 만들어줌*/
@@ -53,20 +71,29 @@ public class BoardController {
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String fileName = uuid + ".png";
 
-        if(file!=null) {
-            File mergedImageFile = ImageUtils.mergeImagesVertically(file);
-            awsS3Service.upload(mergedImageFile, "upload", fileName);
+
+
+        if (file != null && file.length > 0) {
+            for (MultipartFile uploadedFile : file) {
+                if (ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
+                    File mergedImageFile = ImageUtils.mergeImagesVertically(new MultipartFile[]{uploadedFile});
+                    awsS3Service.upload(mergedImageFile, "upload", fileName);
+                }
+            }
         }
-        boardService.write(board, fileName);
+
+        boardService.write(board, fileName,memberDto.getId());
 
         return "redirect:/board/list";
     }
 
 
     @GetMapping("/board/list")
-    public String boardList(Model model,
+    public String boardList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             String searchKeyword) {
+
+
 
         Page<LostBoardDto> list = null;
 
@@ -77,13 +104,16 @@ public class BoardController {
         }
 
         int nowPage = list.getPageable().getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 4, 1);
-        int endPage = Math.min(nowPage + 5, list.getTotalPages());
+        int endPage = Math.min(nowPage + 4, list.getTotalPages());
+        int startPage = Math.max(endPage-4, 1);
+
+
 
         model.addAttribute("list", list);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("memberDto", memberDto);
 
         return "/board/boardlist";
 
@@ -98,7 +128,12 @@ public class BoardController {
     }
 
     @GetMapping("/board/delete")
-    public String boardDelete(Long id, Model model) {
+    public String boardDelete(Long id, Model model,HttpSession session) {
+        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+        if(!memberDto.getRole().name().equals("ADMIN")){
+            invalidSession invalidSession = new invalidSession();
+            return "redirect:/board/list";
+        }
         boardService.boardDelete(id);
 
         model.addAttribute("message", "글 삭제 완료.");
@@ -108,15 +143,27 @@ public class BoardController {
     }
 
     @GetMapping("/board/modify/{id}")
-    public String boardModify(@PathVariable("id") Long id, Model model) {
+    public String boardModify(@PathVariable("id") Long id, Model model,HttpSession session) {
+        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+        if(!memberDto.getRole().name().equals("ADMIN")){
+            invalidSession invalidSession = new invalidSession();
+            return "redirect:/board/list";
+        }
         model.addAttribute("board", boardService.boardView(id));
 
         return "/board/boardmodify";
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Long id,MultipartFile[] file) throws IOException {
-
+    public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Long id,MultipartFile[] file,HttpSession session) throws IOException {
+        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+        if(!memberDto.getRole().name().equals("ADMIN")){
+            invalidSession invalidSession = new invalidSession();
+            return "redirect:/board/list";
+        }
+        if(board.getTitle().equals("")){
+            return "redirect:/board/list";
+        }
 
         model.addAttribute("message", "글 수정 완료.");
         model.addAttribute("SearchUrl", "/board/list");
@@ -126,9 +173,13 @@ public class BoardController {
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String fileName = uuid + ".png";
 
-        if(file!=null) {
-            File mergedImageFile = ImageUtils.mergeImagesVertically(file);
-            awsS3Service.upload(mergedImageFile, "upload", fileName);
+        if (file != null && file.length > 0) {
+            for (MultipartFile uploadedFile : file) {
+                if (ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
+                    File mergedImageFile = ImageUtils.mergeImagesVertically(new MultipartFile[]{uploadedFile});
+                    awsS3Service.upload(mergedImageFile, "upload", fileName);
+                }
+            }
         }
         boardService.update(board, fileName,id);
 
