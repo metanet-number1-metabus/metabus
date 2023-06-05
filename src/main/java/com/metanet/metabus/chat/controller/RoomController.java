@@ -24,7 +24,12 @@ public class RoomController {
      * 채팅방 참여하기
      *
      * @param roomId 채팅방 id
+     *
+     *
+     *
      */
+
+
     @GetMapping("/{roomId}")
     public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,@PathVariable(required = false) Long roomId, Model model) {
         if(memberDto==null){
@@ -50,6 +55,11 @@ public class RoomController {
         return "chat/room";
     }
 
+    @GetMapping("/complete/{roomId}")
+    public String complete(@PathVariable(required = false) Long roomId){
+        chatService.completeRoom(roomId);
+        return "redirect:/-1";
+    }
 
     /**
      * 채팅방 등록
