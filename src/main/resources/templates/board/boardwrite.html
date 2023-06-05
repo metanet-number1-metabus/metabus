@@ -4,22 +4,36 @@
       layout:decorate="layout/default_layout">
 
 <th:block layout:fragment="content">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <div id="layoutSidenav_content" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('../assets/img/main-2.jpeg');
-    background-size: cover;background-position: center;">
+
+
+
+    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+
         <main>
-            <div class="container-fluid px-4">
+            <div class="container-fluid px-4" style="margin-top: 100px">
                 <div class="container overflow-auto">
                     <div class="row">
-<div class="layout" STYLE="margin-top: 100px">
-    <form action="/board/writepro" method="post" enctype="multipart/form-data">
-        <input name="title" type="text" PLACEHOLDER="제목을 입력하세요">
-        <textarea name="content" PLACEHOLDER="내용을 입력하세요"></textarea>
-        <input type="file" class="inputwrite" name="file" multiple>
-        <div id="preview"></div>
-        <button type="submit">작성</button>
-    </form>
-</div>
+                        <div class="col-2"></div>
+                        <div class="col-8">
+
+                            <div class="container" >
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <form action="/board/writepro" name="myForm" onsubmit="return validateForm()" method="post" enctype="multipart/form-data" style="margin-left: 50px;margin-right: 50px">
+                                            <h5 style="margin-top: 5px">제목</h5>
+                                                <input type="text" name="title"  placeholder="글 제목을 입력해주세요."/>
+                                                <h5 style="margin-top: 5px">본문</h5>
+                                                <textarea name="content" placeholder="본문내용을 입력해주세요."></textarea>
+                                            <input type="file" class="inputwrite" name="file" multiple>
+                                            <div id="preview"></div>
+                                            <button type="submit" style="margin-top: 5px;margin-bottom: 5px; background-color: dodgerblue;color: white;border-color: dodgerblue">작성</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-2"></div>
                 </div>
                 </div>
             </div>
@@ -47,6 +61,16 @@
             };
 
             reader.readAsDataURL(file);
+        }
+    }
+
+    function validateForm() {
+        var title = document.forms["myForm"]["title"].value;
+        var content = document.forms["myForm"]["content"].value;
+
+        if (title == "" || content == "") {
+            alert("제목과 내용을 모두 입력해주세요.");
+            return false;
         }
     }
 </script>

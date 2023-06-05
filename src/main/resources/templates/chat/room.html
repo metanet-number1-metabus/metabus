@@ -248,32 +248,36 @@
                     // 폼 데이터를 직렬화하여 AJAX 요청의 데이터로 사용합니다.
                     var name = $("#nameId");
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/chat/room',
-                        data: name,
-                        success: function(response) {
-                            // AJAX 요청이 성공하면 실행할 코드를 작성합니다.
-                            console.log('Success:', response);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/chat/room',
+                            data: name,
+                            success: function(response) {
+                                // AJAX 요청이 성공하면 실행할 코드를 작성합니다.
+                                console.log('Success:', response);
 
-                                var redirectUrl = '/'+response;
+                                if(response==-1){
+                                    alert("제목을 입력하세요");
+                                }
+
+                                var redirectUrl = '/'+-1;
                                 // 리디렉션할 페이지의 URL로 변경해야 합니다.
                                 // 페이지 리디렉션을 수행합니다.
                                 window.location.href = redirectUrl;
 
 
-                        },
-                        error: function(xhr, status, error) {
-                            // AJAX 요청이 실패하면 실행할 코드를 작성합니다.
-                            console.log('Error:', error);
-                            alert("제목이 너무 깁니다");
-                            var redirectUrl = '/'+-1;
-                            // 리디렉션할 페이지의 URL로 변경해야 합니다.
-                            // 페이지 리디렉션을 수행합니다.
-                            window.location.href = redirectUrl;
+                            },
+                            error: function(xhr, status, error) {
+                                // AJAX 요청이 실패하면 실행할 코드를 작성합니다.
+                                console.log('Error:', error);
+                                alert("제목이 너무 깁니다");
+                                var redirectUrl = '/'+-1;
+                                // 리디렉션할 페이지의 URL로 변경해야 합니다.
+                                // 페이지 리디렉션을 수행합니다.
+                                window.location.href = redirectUrl;
 
-                        }
-                    });
+                            }
+                        });
 
             });
         });

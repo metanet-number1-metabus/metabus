@@ -9,5 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepository extends JpaRepository<LostBoard,Long> {
 
-    Page<LostBoard> findByTitleContaining(String searchKeyword, Pageable pageable);
+    Page<LostBoard> findByDeletedDateIsNull(Pageable pageable);
+
+    Page<LostBoard> findByTitleContainingAndDeletedDateIsNull(String searchKeyword, Pageable pageable);
+
 }
