@@ -5,7 +5,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Snippet - GoSNippets</title>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v6.4.0/css/all.css' rel='stylesheet'>
     <style>@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
     * {
@@ -17,7 +17,8 @@
 
     body {
         height: 100vh;
-        background: linear-gradient(to top, #c9c9ff 50%, #9090fa 90%) no-repeat
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('/assets/img/main-2.jpeg');
+        background-size: cover;background-position: center;
     }
 
     .container {
@@ -51,7 +52,7 @@
     }
 
     .panel {
-        min-height: 380px;
+        /*min-height: 380px;*/
         box-shadow: 20px 20px 80px rgb(218, 218, 218);
         border-radius: 12px
     }
@@ -140,24 +141,38 @@
                 <div class="panel-body p-3">
 <!--                    주요 내용(꼭있어야함)  -->
                     <form class="form-signup" th:action="@{/member/edit/info}" method="post" th:object="${memberEditInfoRequest}" novalidate>
-                        <div class="form-group py-2">
-                            <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="email" th:field="${original.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
-                            <span th:text="${valid_email}" style="color: red"></span>
-                        </div>
-                        <div class="form-group py-2">
-                            <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${original.name}" name="name" class="form-control" placeholder="name" required autofocus> </div>
-                            <span th:text="${valid_name}" style="color: red"></span>
-                        </div>
-                        <div class="form-group py-2">
-                            <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="phoneNum" th:field="${original.phoneNum}" name="phoneNum" class="form-control" placeholder="핸드폰 번호" required autofocus> </div>
-                            <span th:text="${valid_phoneNum}" style="color: red"></span>
-                        </div>
-                        <button class="btn btn-primary btn-block mt-3" type="submit">수정</button>
+                        <th:block th:if="${original == null}">
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:value="${memberEditInfoRequest.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
+                                <span th:text="${valid_email}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:value="${memberEditInfoRequest.name}" name="name" class="form-control" placeholder="name" required autofocus> </div>
+                                <span th:text="${valid_name}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="fa fa-phone p-2"></span> <input type="text" id="phoneNum" th:field="${memberEditInfoRequest.phoneNum}" th:classappend="${#fields.hasErrors('phoneNum')} ? 'is-invalid'" name="phoneNum" class="form-control" placeholder="010-0000-0000" required autofocus> </div>
+                                <span th:text="${valid_phoneNum}" style="color: red"></span>
+                            </div>
+                            <button class="btn btn-primary btn-block mt-3" type="submit">수정</button>
+                        </th:block>
+                        <th:block th:unless="${original == null}">
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${original.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
+                                <span th:text="${valid_email}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${original.name}" name="name" class="form-control" placeholder="name" required autofocus> </div>
+                                <span th:text="${valid_name}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="fa fa-phone p-2"></span> <input type="text" id="phoneNum" th:field="${original.phoneNum}" th:classappend="${#fields.hasErrors('phoneNum')} ? 'is-invalid'" name="phoneNum" class="form-control" placeholder="010-0000-0000" required autofocus> </div>
+                                <span th:text="${valid_phoneNum}" style="color: red"></span>
+                            </div>
+                            <button class="btn btn-primary btn-block mt-3" type="submit">수정</button>
+                        </th:block>
                     </form>
 <!--                    여기까지 -->
-                </div>
-                <div class="mx-3 my-2 py-2 bordert">
-                    <div class="text-center py-3"> <a href="https://www.google.com" target="_blank" class="px-2"> <img src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt=""> </a> </div>
                 </div>
             </div>
         </div>
