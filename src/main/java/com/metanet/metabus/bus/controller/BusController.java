@@ -32,7 +32,7 @@ public class BusController {
         model.addAttribute("departureDate", departureDate);
         model.addAttribute("roundTrip", roundTrip);
 
-        return "bus/busTimeTable";
+        return "bus/bus-time-table";
     }
 
     @GetMapping("/bus/reservation")
