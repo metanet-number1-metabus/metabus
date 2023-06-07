@@ -58,14 +58,10 @@
 
                     <div th:if="${room.getName().contains('!')}">
                         <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: red; font-size: large;"></a>
-                        <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
-                           th:href="@{/complete/{roomId}(roomId=${room.getId()})}" class="btn btn-sm btn-outline-secondary" style="margin-left: 5px" >완료</a>
                     </div>
 
                     <div th:if="${!room.getName().contains('!')}">
                         <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: dodgerblue; font-size: medium;"></a>
-                        <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
-                           th:href="@{/complete/{roomId}(roomId=${room.getId()})}" class="btn btn-sm btn-outline-secondary" style="margin-left: 5px" >완료</a>
                     </div>
 
                     </div>
@@ -105,8 +101,10 @@
                <div class="col-6">
 <div th:if="${chatList}">
     <div class="chat-container" style="border-color: skyblue;margin-left: 0">
-        <div style="height: 60px; font-size: larger; display: flex; align-items: center; justify-content: center;">
-            <h1>Chatting</h1>
+        <div style="height: 60px; font-size: larger; display: flex;align-items: center;">
+            <h1 style="margin: 0; text-align: center; flex: 1;">Chatting</h1>
+            <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
+               th:href="@{/complete/{roomId}(roomId=${roomId})}" class="btn btn-sm btn-outline-secondary" style="margin-right: 5px" >완료 하기</a>
         </div>
         <div class="chat-bubbles" id="chatting" style="overflow-y: auto;">
         </div>
@@ -117,9 +115,9 @@
             </div>
             <div class="container overflow-hidden">
             <div class="row">
-            <div class="col-2 col-md-2">
+            <div class="col-1 col-md-1">
             </div>
-            <div class="col-9 col-md-10">
+            <div class="col-12 col-md-12">
             <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
 
                 <input type="text" id="message" class="form-control" style="float: left;flex-basis: 85%;" placeholder="메시지를 입력해주세요">
@@ -128,7 +126,7 @@
 
             </div>
             </div>
-            <div class="col-1 col-md-0"></div>
+            <div class="col-1 col-md-1"></div>
             <div>
             </div>
         </form>
