@@ -9,16 +9,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByMemberAndDeletedDateIsNull(Member member);
+    List<Reservation> findByMemberAndDeletedDateIsNullOrderByDepartureDateDesc(Member member);
 
     @Query("SELECT r FROM Reservation r WHERE r.member = :member AND r.deletedDate IS NULL AND r.paymentStatus = 'UNPAID'")
-    List<Reservation> findUnpaidReservationsByMember(Member member);
+    List<Reservation> findUnpaidReservationsByMemberOrderByDepartureDateDesc(Member member);
 
     @Query("SELECT r FROM Reservation r WHERE r.member = :member AND r.deletedDate IS NULL AND r.paymentStatus = 'PAID'")
-    List<Reservation> findPaidReservationsByMember(Member member);
+    List<Reservation> findPaidReservationsByMemberOrderByDepartureDateDesc(Member member);
 
     @Query("SELECT r FROM Reservation r WHERE r.member = :member AND r.deletedDate IS NULL AND r.departureDate < :today")
-    List<Reservation> findPastReservationsByMember(Member member, LocalDate today);
+    List<Reservation> findPastReservationsByMemberOrderByDepartureDateDesc(Member member, LocalDate today);
 
     Reservation findByIdAndDeletedDateIsNull(Long reservationId);
 }

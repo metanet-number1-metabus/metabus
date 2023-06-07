@@ -96,28 +96,28 @@ public class ReservationService {
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNull(member);
+        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDesc(member);
     }
 
     public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        return reservationRepository.findUnpaidReservationsByMember(member);
+        return reservationRepository.findUnpaidReservationsByMemberOrderByDepartureDateDesc(member);
     }
 
     public List<Reservation> readPaidReservation(MemberDto memberDto) {
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        return reservationRepository.findPaidReservationsByMember(member);
+        return reservationRepository.findPaidReservationsByMemberOrderByDepartureDateDesc(member);
     }
 
     public List<Reservation> readPastReservation(MemberDto memberDto) {
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        return reservationRepository.findPastReservationsByMember(member, LocalDate.now());
+        return reservationRepository.findPastReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
     }
 
     public List<Reservation> readByReservationId(Long[] reservationIds) {
