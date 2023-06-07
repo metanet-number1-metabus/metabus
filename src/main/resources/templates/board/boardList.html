@@ -19,7 +19,6 @@
                         <div class="col-1"></div>
                         <div class="col-10">
                             <div class="layout">
-<!--                                <h3 style="text-align: center;margin-top: 30px;margin-bottom: 30px">분실물 게시판</h3>-->
 
 
                                 <form th:action="@{/board/list}" method="get" class="row g-1 d-flex justify-content-end">
@@ -73,8 +72,9 @@
                                         <li class="page-item"><a class="page-link" onclick="previousPage()">Previous</a></li>
                                         <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
                                             <th:block th:if="${page != nowPage}">
-                                                <a class="page-link" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
+                                                <a class="page-link" th:if="${page > 0}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
                                             </th:block>
+
                                             <th:block th:if="${page == nowPage}">
                                                 <strong class="page-link" id="nowPages" style="color: red;" th:text="${page}"></strong>
                                             </th:block>
