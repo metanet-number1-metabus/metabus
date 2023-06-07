@@ -1,5 +1,6 @@
 package com.metanet.metabus.bus.controller;
 
+import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.dto.MemberDto;
@@ -56,9 +57,11 @@ public class BusController {
     @PostMapping("/bus/payment")
     public String getPaymentList(@RequestParam("data") Long[] reservationIds, Model model) {
 
-        List<Reservation> reservationList = reservationService.readByReservationId(reservationIds);
+        List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
+        Long paymentSum = reservationService.getPaymentSum(reservationIds);
 
         model.addAttribute("reservationList", reservationList);
+        model.addAttribute("paymentSum", paymentSum);
 
         return "bus/bus-payment";
     }

@@ -10,125 +10,166 @@
                 <div class="content">
 
 
-
                     <div class="container-fluid">
 
 
                         <div class="row">
 
-                            <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 gx-5 gy-4 d-flex justify-content-center"> <!--티켓 col-->
+                            <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 gx-5 gy-4 d-flex justify-content-center">
+                                <!--티켓 col-->
 
                                 <div class="card text-bg-light mb-3" style="height: 650px;width: 350px">
                                     <div class="card-header">승차권</div>
                                     <div class="card-body overflow-scroll">
 
                                         <div class="row">
+                                            <tbody>
 
-<!--                                            타임리프 for문 start-->
+                                            <!--                                            타임리프 for문 start-->
+                                            <th:block th:each="reservation, iteration : ${reservationList}">
 
-                                            <div class="col-12">
+                                                <div class="col-12">
 
-                                                <div class="container-fluid rounded shadow-lg" style="width:295px">
-                                                    <!--                    티켓-->
+                                                    <div class="container-fluid rounded shadow-lg" style="width:295px">
+                                                        <!--                    티켓-->
 
-                                                    <div class="row">
-                                                        <div class="col-12 bg-warning rounded-top" style="height: 210px">
-                                                            <div class="row" style="height: 30px"></div>
-                                                            <div class="row" style="height: 30px">
-                                                                <div class="col-12 d-flex justify-content-center">
-                                                                    <p class="fw-bold" style="color: black">Bus Pass</p>
+                                                        <div class="row">
+                                                            <div class="col-12 bg-warning rounded-top"
+                                                                 style="height: 210px">
+                                                                <div class="row" style="height: 30px"></div>
+                                                                <div class="row" style="height: 30px">
+                                                                    <div class="col-12 d-flex justify-content-center">
+                                                                        <p class="fw-bold" style="color: black">Bus
+                                                                            Pass</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="height: 40px"></div>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <h1 class="d-flex justify-content-center"
+                                                                            style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
+                                                                            <span th:text="${reservation.departure}"></span>
+                                                                        </h1>
+                                                                        <h2 style="position: relative;left: 30px;"><i
+                                                                                class="fas fa-arrow-right"></i><span
+                                                                                th:text="${reservation.destination}"></span>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div class="col-6 gx-4 gy-2">
+                                                                        <h2 class="d-flex justify-content-center"><i
+                                                                                class="fa-solid fa-bus"></i></h2>
+                                                                        <div style="height: 15px"></div>
+                                                                        <p class="d-flex justify-content-center"
+                                                                           style="color: black"><span
+                                                                                th:text="${reservation.busType}"></span>
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row" style="height: 40px"></div>
-                                                            <div class="row">
-                                                                <div class="col-6">
-                                                                    <h1 class="d-flex justify-content-center" style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">간성</h1>
-                                                                    <h2 style="position: relative;left: 30px;"><i class="fas fa-arrow-right"></i> 동서울</h2>
+                                                        </div>
+                                                        <!--                    1열-->
+                                                        <div class="row">
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>BusID</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.busNum}"></span>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-6 gx-4 gy-2">
-                                                                    <h2 class="d-flex justify-content-center"><i class="fa-solid fa-bus"></i></h2>
-                                                                    <div style="height: 15px"></div>
-                                                                    <p class="d-flex justify-content-center" style="color: black">심야 우등</p>
+                                                            </div>
+                                                            <div class="col-4 p-3"></div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Home</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.departure}"></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!--                    2열-->
+                                                        <div class="row">
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Date</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.departureDate}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Departs</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.departureTime}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Arrivals</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.arrivalTime}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    3열-->
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <hr>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    4열-->
+                                                        <div class="row">
+                                                            <div class="col-5 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>PassType</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.passengerType}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Seat</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.seatNum}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Cost</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.payment}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    5열-->
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center"><img
+                                                                    src="../assets/img/testqr.png"
+                                                                    style="width: 65px;height: 65px;"></div>
+                                                        </div>
+                                                        <!--                    6열-->
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-12 text-center">
+                                                                <hr>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    티켓-->
                                                     </div>
-                                                    <!--                    1열-->
-                                                    <div class="row">
-                                                        <div class="col-4 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>BusID</p></div>
-                                                                <div class="col-12 fw-bold">AA2005</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4 p-3"></div>
-                                                        <div class="col-4 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>Home</p></div>
-                                                                <div class="col-12 fw-bold">동서울</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--                    2열-->
-                                                    <div class="row">
-                                                        <div class="col-4 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>Date</p></div>
-                                                                <div class="col-12 fw-bold">June 5</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>Departs</p></div>
-                                                                <div class="col-12 fw-bold">11:00 AM</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>Arrivers</p></div>
-                                                                <div class="col-12 fw-bold">1:05 PM</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--                    3열-->
-                                                    <div class="row">
-                                                        <div class="col-12"><hr></div>
-                                                    </div>
-                                                    <!--                    4열-->
-                                                    <div class="row">
-                                                        <div class="col-5 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>PassType</p></div>
-                                                                <div class="col-12 fw-bold">성인</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-3 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>Seat</p></div>
-                                                                <div class="col-12 fw-bold">A-2</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4 p-3">
-                                                            <div class="row">
-                                                                <div class="col-12"><p>Cost</p></div>
-                                                                <div class="col-12 fw-bold">13000원</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--                    5열-->
-                                                    <div class="row">
-                                                        <div class="col-12 d-flex justify-content-center"><img src="../assets/img/testqr.png" style="width: 65px;height: 65px;"></div>
-                                                    </div>
-                                                    <!--                    6열-->
-                                                    <div class="row">
-                                                        <div class="col-12"><hr></div>
-                                                    </div>
-                                                    <!--                    티켓-->
                                                 </div>
-                                            </div>
-                                            <div class="col-12" style="height: 30px"><hr></div>
 
-<!--                                            타임리프 for문 end-->
+                                                <div class="col-12" style="height: 30px">
+                                                    <hr>
+                                                </div>
+                                            </th:block>
+
+                                            <!--                                            타임리프 for문 end-->
+                                            </tbody>
 
                                         </div>
                                     </div>
@@ -145,103 +186,167 @@
                                     <div class="card-body">
                                         <form class="needs-validation">
                                             <div class="container-fluid">
-                                                <div class="row">
-                                                    <div class="col-md-6 col-12">
-<!--                                                        타임리프 start-->
-                                                        <p class="card-text">출발지</p>
-                                                        <input class="form-control h5" id="departs" value="간성" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">목적지</p>
-                                                        <input class="form-control h5" id="arrivers" value="동서울" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">버스 종류</p>
-                                                        <input class="form-control h5" id="busType" value="심야 우등" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">버스 ID</p>
-                                                        <input class="form-control h5" id="busId" value="AA2005" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">출발일</p>
-                                                        <input class="form-control h5" id="busDate" value="June 5" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">예약 좌석</p>
-                                                        <input class="form-control h5" id="seat" value="1, 2, 3" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">예약 일자</p>
-                                                        <input class="form-control h5" id="bookedDate" value="06/01" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <p class="card-text">총 결제 금액</p>
-                                                        <input class="form-control h5" id="totalCost" value="30000원" readonly>
-                                                    </div>
-<!--                                                    타임리프 end-->
-                                                    <div class="col-12" style="height: 10px">
-                                                    </div>
-                                                    <div class="col-12" style="height: 210px">
-                                                        <div class="card text-bg-light mb-3" style="width: 100%;height: 100%">
-                                                            <div class="card-header">결제 약관</div>
-                                                            <div class="card-body overflow-scroll">
-                                                                <h5 class="card-title">제 1 장 총 칙</h5>
-                                                                <br>
-                                                                <h5 class="card-title">제 1 조 (목적)</h5>
-                                                                <p class="card-text">이 약관은 {COMPANY_NAME}(이하 "사이트"라 합니다)에서 제공하는 인터넷서비스(이하 "서비스"라 합니다)의 이용 조건 및 절차에 관한 기본적인 사항을 규정함을 목적으로 합니다.</p>
-                                                                <br>
-                                                                <h5 class="card-title">제 2 조 (약관의 효력 및 변경)</h5>
-                                                                <p class="card-text">① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다.<br>
-                                                                    ② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</p>
-                                                                <br>
-                                                                <h5 class="card-title">제 3 조 (용어의 정의)</h5>
-                                                                <p class="card-text">이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br>
-                                                                    ① 회원 : 사이트와 서비스 이용계약을 체결하거나 이용자 아이디(ID)를 부여받은 개인 또는 단체를 말합니다.<br>
-                                                                    ② 신청자 : 회원가입을 신청하는 개인 또는 단체를 말합니다.<br>
-                                                                    ③ 아이디(ID) : 회원의 식별과 서비스 이용을 위하여 회원이 정하고 사이트가 승인하는 문자와 숫자의 조합을 말합니다.<br>
-                                                                    ④ 비밀번호 : 회원이 부여 받은 아이디(ID)와 일치된 회원임을 확인하고, 회원 자신의 비밀을 보호하기 위하여 회원이 정한 문자와 숫자의 조합을 말합니다.<br>
-                                                                    ⑤ 해지 : 사이트 또는 회원이 서비스 이용계약을 취소하는 것을 말합니다.</p>
-                                                                <br>
-                                                                <h5 class="card-title">제 2 장 서비스 이용계약</h5>
-                                                                <br>
-                                                                <h5 class="card-title">제 4 조 (이용계약의 성립)</h5>
-                                                                <p class="card-text">① 이용약관 하단의 동의 버튼을 누르면 이 약관에 동의하는 것으로 간주됩니다.<br>
-                                                                    ② 이용계약은 서비스 이용희망자의 이용약관 동의 후 이용 신청에 대하여 사이트가 승낙함으로써 성립합니다.</p>
-                                                                <br>
-                                                                <h5 class="card-title">제 5 조 (이용신청)</h5>
-                                                                <p class="card-text">① 신청자가 본 서비스를 이용하기 위해서는 사이트 소정의 가입신청 양식에서 요구하는 이용자 정보를 기록하여 제출해야 합니다.<br>
-                                                                    ② 가입신청 양식에 기재하는 모든 이용자 정보는 모두 실제 데이터인 것으로 간주됩니다. 실명이나 실제 정보를 입력하지 않은 사용자는 법적인 보호를 받을 수 없으며, 서비스의 제한을 받을 수 있습니다.</p>
-                                                                <br>
-                                                                <h5 class="card-title">제 6 조 (이용신청의 승낙)</h5>
-                                                                <p class="card-text">① 사이트는 신청자에 대하여 제2항, 제3항의 경우를 예외로 하여 서비스 이용신청을 승낙합니다.<br>
-                                                                    ② 사이트는 다음에 해당하는 경우에 그 신청에 대한 승낙 제한사유가 해소될 때까지 승낙을 유보할 수 있습니다.<br>
-                                                                    가. 서비스 관련 설비에 여유가 없는 경우<br>
-                                                                    나. 기술상 지장이 있는 경우<br>
-                                                                    다. 기타 사이트가 필요하다고 인정되는 경우<br>
-                                                                    ③ 사이트는 신청자가 다음에 해당하는 경우에는 승낙을 거부할 수 있습니다.<br>
-                                                                    가. 다른 개인(사이트)의 명의를 사용하여 신청한 경우<br>
-                                                                    나. 이용자 정보를 허위로 기재하여 신청한 경우<br>
-                                                                    다. 사회의 안녕질서 또는 미풍양속을 저해할 목적으로 신청한 경우<br>
-                                                                    라. 기타 사이트 소정의 이용신청요건을 충족하지 못하는 경우</p>
-                                                                <br>
+                                                <tbody>
+                                                <th:block th:each="reservation : ${reservationList}">
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <!--                                                        타임리프 start-->
+                                                            <p class="card-text">출발지</p>
+                                                            <input class="form-control h5" id="departs"
+                                                                   th:value="${reservation.departure}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">목적지</p>
+                                                            <input class="form-control h5" id="arrivers"
+                                                                   th:value="${reservation.destination}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">버스 종류</p>
+                                                            <input class="form-control h5" id="busType"
+                                                                   th:value="${reservation.busType}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">버스 ID</p>
+                                                            <input class="form-control h5" id="busId"
+                                                                   th:value="${reservation.busNum}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">출발일</p>
+                                                            <input class="form-control h5" id="busDate"
+                                                                   th:value="${reservation.departureDate}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">예약 좌석</p>
+                                                            <input class="form-control h5" id="seat"
+                                                                   th:value="${reservation.seatNum}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">예약 일자</p>
+                                                            <input class="form-control h5" id="bookedDate"
+                                                                   th:value="${reservation.createdDate}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">총 결제 금액</p>
+                                                            <input class="form-control h5" id="totalCost"
+                                                                   th:value="${reservation.payment}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-12 text-center">
+                                                                <hr>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12" style="height: 10px"></div>
-                                                    <div class="col-12">
-                                                        <input type="checkbox" class="form-check-input" required id="checkField">
-                                                        <label class="form-check-label" for="checkField">결제 정보와 약관에 대하여 확인했습니다.</label>
-                                                        <div class="invalid-feedback">
-                                                            결제 정보와 약관 확인 여부에 체크해주세요!
+                                                </th:block>
+                                                </tbody>
+                                                <!--                                                    타임리프 end-->
+                                                <div class="col-12" style="height: 10px">
+                                                </div>
+                                                <div class="col-12" style="height: 210px">
+                                                    <div class="card text-bg-light mb-3"
+                                                         style="width: 100%;height: 100%">
+                                                        <div class="card-header">결제 약관</div>
+                                                        <div class="card-body overflow-scroll">
+                                                            <h5 class="card-title">제 1 장 총 칙</h5>
+                                                            <br>
+                                                            <h5 class="card-title">제 1 조 (목적)</h5>
+                                                            <p class="card-text">이 약관은 {COMPANY_NAME}(이하 "사이트"라
+                                                                합니다)에서 제공하는 인터넷서비스(이하 "서비스"라 합니다)의 이용 조건 및 절차에
+                                                                관한
+                                                                기본적인 사항을 규정함을 목적으로 합니다.</p>
+                                                            <br>
+                                                            <h5 class="card-title">제 2 조 (약관의 효력 및 변경)</h5>
+                                                            <p class="card-text">① 이 약관은 서비스 화면이나 기타의 방법으로
+                                                                이용고객에게
+                                                                공지함으로써 효력을 발생합니다.<br>
+                                                                ② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로
+                                                                공지
+                                                                또는 통지함으로써 효력을 발생합니다.</p>
+                                                            <br>
+                                                            <h5 class="card-title">제 3 조 (용어의 정의)</h5>
+                                                            <p class="card-text">이 약관에서 사용하는 용어의 정의는 다음과
+                                                                같습니다.<br>
+                                                                ① 회원 : 사이트와 서비스 이용계약을 체결하거나 이용자 아이디(ID)를 부여받은 개인
+                                                                또는
+                                                                단체를 말합니다.<br>
+                                                                ② 신청자 : 회원가입을 신청하는 개인 또는 단체를 말합니다.<br>
+                                                                ③ 아이디(ID) : 회원의 식별과 서비스 이용을 위하여 회원이 정하고 사이트가
+                                                                승인하는
+                                                                문자와 숫자의 조합을 말합니다.<br>
+                                                                ④ 비밀번호 : 회원이 부여 받은 아이디(ID)와 일치된 회원임을 확인하고, 회원
+                                                                자신의
+                                                                비밀을 보호하기 위하여 회원이 정한 문자와 숫자의 조합을 말합니다.<br>
+                                                                ⑤ 해지 : 사이트 또는 회원이 서비스 이용계약을 취소하는 것을 말합니다.</p>
+                                                            <br>
+                                                            <h5 class="card-title">제 2 장 서비스 이용계약</h5>
+                                                            <br>
+                                                            <h5 class="card-title">제 4 조 (이용계약의 성립)</h5>
+                                                            <p class="card-text">① 이용약관 하단의 동의 버튼을 누르면 이 약관에
+                                                                동의하는
+                                                                것으로 간주됩니다.<br>
+                                                                ② 이용계약은 서비스 이용희망자의 이용약관 동의 후 이용 신청에 대하여 사이트가
+                                                                승낙함으로써
+                                                                성립합니다.</p>
+                                                            <br>
+                                                            <h5 class="card-title">제 5 조 (이용신청)</h5>
+                                                            <p class="card-text">① 신청자가 본 서비스를 이용하기 위해서는 사이트 소정의
+                                                                가입신청 양식에서 요구하는 이용자 정보를 기록하여 제출해야 합니다.<br>
+                                                                ② 가입신청 양식에 기재하는 모든 이용자 정보는 모두 실제 데이터인 것으로 간주됩니다.
+                                                                실명이나 실제 정보를 입력하지 않은 사용자는 법적인 보호를 받을 수 없으며, 서비스의
+                                                                제한을
+                                                                받을 수 있습니다.</p>
+                                                            <br>
+                                                            <h5 class="card-title">제 6 조 (이용신청의 승낙)</h5>
+                                                            <p class="card-text">① 사이트는 신청자에 대하여 제2항, 제3항의 경우를
+                                                                예외로
+                                                                하여 서비스 이용신청을 승낙합니다.<br>
+                                                                ② 사이트는 다음에 해당하는 경우에 그 신청에 대한 승낙 제한사유가 해소될 때까지
+                                                                승낙을
+                                                                유보할 수 있습니다.<br>
+                                                                가. 서비스 관련 설비에 여유가 없는 경우<br>
+                                                                나. 기술상 지장이 있는 경우<br>
+                                                                다. 기타 사이트가 필요하다고 인정되는 경우<br>
+                                                                ③ 사이트는 신청자가 다음에 해당하는 경우에는 승낙을 거부할 수 있습니다.<br>
+                                                                가. 다른 개인(사이트)의 명의를 사용하여 신청한 경우<br>
+                                                                나. 이용자 정보를 허위로 기재하여 신청한 경우<br>
+                                                                다. 사회의 안녕질서 또는 미풍양속을 저해할 목적으로 신청한 경우<br>
+                                                                라. 기타 사이트 소정의 이용신청요건을 충족하지 못하는 경우</p>
+                                                            <br>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 d-flex justify-content-end">
-                                                        <button type="submit" class="btn btn-primary">결제</button>
-                                                    </div>
-
-
                                                 </div>
+                                                <div class="col-12" style="height: 10px"></div>
+                                                <div class="col-12">
+                                                    <input type="checkbox" class="form-check-input" required
+                                                           id="checkField">
+                                                    <label class="form-check-label" for="checkField">결제 정보와 약관에
+                                                        대하여
+                                                        확인했습니다.</label>
+                                                    <div class="invalid-feedback">
+                                                        결제 정보와 약관 확인 여부에 체크해주세요!
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <p class="card-text me-2">총 결제 금액</p>
+                                                    <span th:text="${paymentSum}"></span>
+                                                    <span>원</span>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <button id="iamportPayment" type="submit" class="btn btn-primary">
+                                                        결제
+                                                    </button>
+                                                </div>
+
+
                                             </div>
                                         </form>
                                     </div>
@@ -254,10 +359,9 @@
 
                     </div>
 
-<!--                    모달창 html-->
+                    <!--                    모달창 html-->
 
-<!--                    모달창 html-->
-
+                    <!--                    모달창 html-->
 
 
                 </div>
@@ -266,6 +370,12 @@
 
     </div>
     <!--            본문-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
     <script th:inline="javascript">
 
         // 폼 함수
@@ -280,8 +390,15 @@
                         if (!form.checkValidity()) {
                             event.preventDefault()
                             event.stopPropagation()
-                        }else {
+                        } else {
+                            event.preventDefault()
+
                             //성공시 모달창 열기 / 결제 api 호출 코드
+                            $(document).ready(function () {
+                                $("#iamportPayment").click(function () {
+                                    payment();
+                                });
+                            })
 
                         }
 
@@ -290,7 +407,25 @@
                 })
         })()
 
-
+        function payment(data) {
+            IMP.init('imp73665317');
+            IMP.request_pay({
+                pg: 'html5_inicis.INIBillTst',
+                pay_method: 'card',
+                name: '메타버스',
+                amount: [[${paymentSum}]],
+                buyer_email: 'iamport@siot.do',
+                buyer_name: '구매자이름',
+                buyer_tel: '010-1234-5678',
+                m_redirect_url: 'http://localhost:8081/'
+            }, function (rsp) {
+                if (rsp.success) {
+                    alert("완료 -> imp_uid: " + rsp.imp_uid + " / merchant_uid(orderKey): " + rsp.merchant_uid);
+                } else {
+                    alert("실패: 코드(" + rsp.error_code + ") / 메시지(" + rsp.error_msg + ")");
+                }
+            })
+        }
 
 
     </script>

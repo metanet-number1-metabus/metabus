@@ -1,6 +1,6 @@
 package com.metanet.metabus.bus.service;
 
-import com.metanet.metabus.bus.dto.ReservationDTO;
+import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
 import com.metanet.metabus.bus.entity.Bus;
 import com.metanet.metabus.bus.entity.PaymentStatus;
@@ -120,26 +120,29 @@ public class ReservationService {
         return reservationRepository.findPastReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
     }
 
-    public List<Reservation> readByReservationId(Long[] reservationIds) {
+    public List<ReservationDto> readByReservationId(Long[] reservationIds) {
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationDto> reservationList = new ArrayList<>();
 
         for (Long reservationId : reservationIds) {
-            reservationList.add(reservationRepository.findByIdAndDeletedDateIsNull(reservationId));
+            ReservationDto reservationDTO = readReservationDetail(reservationId);
+            reservationList.add(reservationDTO);
         }
 
         return reservationList;
 
     }
 
-    public ReservationDTO readReservationDetail(Long reservationId) {
+    public ReservationDto readReservationDetail(Long reservationId) {
         Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
         Long seatId = reservation.getSeatId().getId();
         Seat seat = seatRepository.findById(seatId).orElseThrow(SeatNotFoundException::new);
         Long busNum = seat.getBus().getBusNum();
         Long seatNum = seat.getSeatNum();
 
-        return ReservationDTO.builder()
+        LocalDate createdDate = reservation.getCreatedDate().toLocalDate();
+
+        return ReservationDto.builder()
                 .departure(reservation.getDeparture())
                 .destination(reservation.getDestination())
                 .busType(reservation.getBusType())
@@ -149,8 +152,21 @@ public class ReservationService {
                 .arrivalTime(reservation.getArrivalTime())
                 .passengerType(reservation.getPassengerType())
                 .seatNum(seatNum)
+                .createdDate(createdDate)
                 .payment(reservation.getPayment())
                 .build();
+    }
+
+    public Long getPaymentSum(Long[] reservationIds) {
+
+        Long paymentSum = 0L;
+
+        for (Long reservationId : reservationIds) {
+            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+            paymentSum += reservation.getPayment();
+        }
+
+        return paymentSum;
     }
 
     private String makeLocalTime(String timeString) {
@@ -189,7 +205,7 @@ public class ReservationService {
     }
 
     private LocalDate verifyLocalDate(LocalDate date) {
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate = LocalDate.now().minusDays(1);
         LocalDate endDate = LocalDate.now().plusDays(60);
 
         if (date.isAfter(startDate) && date.isBefore(endDate)) {

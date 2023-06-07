@@ -1,6 +1,6 @@
 package com.metanet.metabus.bus.controller;
 
-import com.metanet.metabus.bus.dto.ReservationDTO;
+import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.bus.service.SeatService;
@@ -33,7 +33,7 @@ public class BusRestController {
     }
 
     @GetMapping("/read/detail/{reservationId}")
-    public ReservationDTO readReservationDetail(@PathVariable Long reservationId) {
+    public ReservationDto readReservationDetail(@PathVariable Long reservationId) {
         return reservationService.readReservationDetail(reservationId);
     }
 }

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Builder
-public class ReservationDTO {
+public class ReservationDto {
     private String departure;
     private String destination;
     private String busType;
@@ -21,5 +21,6 @@ public class ReservationDTO {
     private String arrivalTime;
     private String passengerType;
     private Long seatNum;
+    private LocalDate createdDate;
     private Long payment;
 }
