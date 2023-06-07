@@ -6,6 +6,7 @@ import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Member;
+import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,7 +61,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberDto editInfo(MemberEditInfoRequest memberEditInfoRequest, MemberDto memberDto){ //이미 비밀번호 확인하고 들어가서 체크x
+    public MemberDto editInfo(MemberEditInfoRequest memberEditInfoRequest, MemberDto memberDto) { //이미 비밀번호 확인하고 들어가서 체크x
         String encoded = passwordEncoder.encode(memberDto.getPassword());
 
         Member member = Member.builder()
@@ -85,7 +86,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberDto editPassword(MemberPasswordRequest memberEditPasswordRequest, MemberDto memberDto){ //이미 비밀번호 확인하고 들어가서 체크x
+    public MemberDto editPassword(MemberPasswordRequest memberEditPasswordRequest, MemberDto memberDto) { //이미 비밀번호 확인하고 들어가서 체크x
 
         String encoded = passwordEncoder.encode(memberEditPasswordRequest.getPassword());
 
@@ -111,7 +112,33 @@ public class MemberService {
     }
 
     @Transactional
-    public void checkPwd(MemberLoginRequest memberLoginRequest, MemberDto memberDto){
+    public MemberDto editInfoOAuth(MemberOAuthRequest memberOAuthRequest, MemberDto memberDto) { //이미 비밀번호 확인하고 들어가서 체크x
+
+        String encoded = passwordEncoder.encode(memberOAuthRequest.getPassword());
+
+        Member member = Member.builder()
+                .id(memberDto.getId())
+                .email(memberDto.getEmail())
+                .password(encoded)
+                .name(memberDto.getName())
+                .role(Role.USER)
+                .phoneNum(memberDto.getPhoneNum())
+                .build();
+
+        memberRepository.save(member);
+
+        return MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .role(member.getRole())
+                .phoneNum(member.getPhoneNum())
+                .build();
+    }
+
+    @Transactional
+    public void checkPwd(MemberLoginRequest memberLoginRequest, MemberDto memberDto) {
         Member member = memberRepository.findByEmail(memberDto.getEmail()).orElseThrow(MemberNotFoundException::new);
 
         //비밀번호 불일치
@@ -120,7 +147,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(MemberDto memberDto){
+    public void delete(MemberDto memberDto) {
         Member member = memberRepository.findByEmail(memberDto.getEmail()).orElseThrow(MemberNotFoundException::new);
 
         member.delete();

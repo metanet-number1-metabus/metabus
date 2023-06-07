@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="headerFragment">
     <!--    header1-->
@@ -16,48 +16,34 @@
 <!--            </div>-->
         </form>
         <!-- Navbar-->
+        <th:block th:if="${memberDto == null}">
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-<!--                    <li><a class="dropdown-item" th:href="@{/member/register}" sec:authorize="!isAuthenticated()">회원 가입</a></li>-->
-<!--                    <li><a class="dropdown-item" th:href="@{/member/login}" sec:authorize="!isAuthenticated()">로그인</a></li>-->
-<!--                    <li><hr class="dropdown-divider" /></li>-->
-<!--                    <li><a class="dropdown-item" href="#!">Logout</a></li>-->
-
-<!--                    <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">-->
-<!--                        <span class="text-white mr-2 mx-2" sec:authentication="name">사용자</span>-->
-<!--                        <span class="text-white mr-2 mx-2" sec:authentication="principal.authorities">권한</span>-->
-<!--                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">logout</button>-->
-<!--                    </form>-->
-                    <th:block th:if="${memberDto == null}">
-                        <div class="header_columns">
-                            <div class="header_columns_column">
-                                <a th:href="@{/member/register}">회원가입</a>
-                            </div>
-                            <div class="header_columns_column">
-                                <a th:href="@{/member/login}">로그인</a>
-                            </div>
-                        </div>
-                    </th:block>
-                    <th:block th:unless="${memberDto == null}">
-                        <div class="header_columns">
-                            <div class="header_columns_column">
-                                <a th:href="@{/member/mypage}">마이페이지</a>
-                            </div>
-                            <div class="header_columns_column">
-                                <span th:text="${memberDto.name}"></span>
-                            </div>
-                            <div class="header_columns_column">
-                                <form th:action="@{/member/logout}" method="post">
-                                    <button type="submit">로그아웃</button>
-                                </form>
-                            </div>
-                        </div>
-                    </th:block>
+                    <li><a class="dropdown-item" th:href="@{/member/login}">로그인</a></li>
+                    <li><a class="dropdown-item" th:href="@{/member/register}">회원가입</a></li>
                 </ul>
             </li>
         </ul>
+        </th:block>
+        <th:block th:unless="${memberDto == null}">
+            <div class="header_columns_column">
+                <span th:text="${memberDto.name}" style="font-weight: bold;"></span><span>님 환영합니다.</span>
+            </div>
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item d-flex justify-content-center" th:href="@{/member/mypage}">마이페이지</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><form class="dropdown-item d-flex justify-content-center" th:action="@{/member/logout}" method="post">
+                        <button class="btn btn-link" style="--bs-btn-padding-y: 0px; --bs-btn-padding-x: 0px; --bs-btn-font-size: 16px; text-decoration-line: none; color: red" type="submit">로그아웃</button>
+                    </form></li>
+                </ul>
+            </li>
+        </ul>
+        </th:block>
     </nav>
     <!--    header1-->
 </th:block>

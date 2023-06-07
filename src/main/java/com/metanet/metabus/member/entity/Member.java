@@ -1,7 +1,6 @@
 package com.metanet.metabus.member.entity;
 
 import com.metanet.metabus.common.BaseEntity;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Table
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -39,7 +37,7 @@ public class Member extends BaseEntity{
     private String phoneNum;
 
     @Builder
-    public Member(Long id, String name, String password, String email, String mileage, Role role, String phoneNum) {
+    public Member(Long id, String name, String password, String email, Long mileage, Role role, String phoneNum) {
         this.id = id;
         this.name = name;
         this.password = password;

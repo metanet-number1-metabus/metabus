@@ -10,7 +10,7 @@
 <button type="button" onclick = "location.href = 'http://localhost:8081/member/check/info'" class="btn btn-primary">회원 정보 수정</button>
 <button type="button" onclick = "location.href = 'http://localhost:8081/member/check/pwd'" class="btn btn-success">비밀번호 변경</button>
 <form class="form-signup" th:action="@{/member/delete}" method="post" novalidate>
-    <button class="btn btn-danger" type="submit">회원 탈퇴</button>
+    <button class="btn btn-danger" onclick="if(!confirm('정말 탈퇴하시겠습니까?')){return false;}" type="submit">회원 탈퇴</button>
 </form>
 
 <!--<button type="button" onclick = "location.href = 'http://localhost:8081/member/delete'" class="btn btn-danger">회원 탈퇴</button>-->

@@ -47,6 +47,7 @@ public class MemberController {
         }
     }
 
+
     /**
      * 로그인
      */
@@ -74,15 +75,13 @@ public class MemberController {
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
             return "redirect:/";
-            //return "redirect:" + httpServletRequest.getHeader("Referer"); //이전페이지로 redirct
-
         }
     }
 
     /**
      * 로그아웃
      */
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession(false);
         if (httpSession != null) {
@@ -91,49 +90,6 @@ public class MemberController {
         return "redirect:/";
     }
 
-//    @GetMapping("/check/{url}")
-//    public String checkPwd(@PathVariable("url") String url, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model) {
-//        if (memberDto == null) {
-//            return "redirect:/member/login";
-//        }
-//        model.addAttribute("url", url);
-//        model.addAttribute("memberLoginRequest", new MemberLoginRequest());
-//        model.addAttribute("original", memberDto);
-//
-//        return "log/check_password";
-//    }
-
-//    @PostMapping("/check/{url}")
-//    public String checkPwd(@PathVariable("url") String url, @Valid MemberLoginRequest memberLoginRequest, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("memberLoginRequest", memberLoginRequest);
-//            Map<String, String> validatorResult = memberService.validateHandling(bindingResult);
-//
-//            for (String key : validatorResult.keySet()) {
-//                model.addAttribute(key, validatorResult.get(key));
-//            }
-//            return "/log/edit_info";
-//        }
-//
-//        HttpSession httpSession = httpServletRequest.getSession(false);
-//
-//        MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-//
-//        if(url.equals("info")){
-//            memberService.checkPwd(memberLoginRequest, memberDto);
-//
-//            return "/log/check_password";
-//
-//        } else if (url.equals("pwd")) {
-//            memberService.checkPwd(memberLoginRequest, memberDto);
-//
-//            return "/log/check_password";
-//        }
-//
-//        System.out.println("수정완료");
-//        return "/error/404";
-//    }
-
     /**
      * 비밀번호 체크
      */
@@ -141,6 +97,10 @@ public class MemberController {
     public String checkPwd(@PathVariable("url") String url, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model) {
         if (memberDto == null) {
             return "redirect:/member/login";
+        }
+
+        if (memberDto.getRole().equals(Role.GUEST)) {
+            return "redirect:/member/edit/oauth";
         }
 
         if (url.equals("info")) {
@@ -215,21 +175,58 @@ public class MemberController {
         }
 
         if (url.equals("info")) {
+            if (memberDto.getRole().equals(Role.GUEST)) {
+                return "redirect:/member/edit/oauth";
+            }
             model.addAttribute("memberEditInfoRequest", new MemberEditInfoRequest());
             model.addAttribute("original", memberDto);
 
             return "/log/edit_info";
 
         } else if (url.equals("pwd")) {
+            if (memberDto.getRole().equals(Role.GUEST)) {
+                return "redirect:/member/edit/oauth";
+            }
             model.addAttribute("memberEditPasswordRequest", new MemberPasswordRequest());
             model.addAttribute("original", memberDto);
 
             return "/log/edit_password";
 
+        } else if (url.equals("oauth")) {
+            model.addAttribute("memberOAuthRequest", new MemberOAuthRequest());
+            model.addAttribute("original", memberDto);
+
+            return "/log/edit_oauth";
+
         } else {
             return "/error/404";
         }
 
+
+    }
+
+    @PostMapping("/edit/oauth")
+    public String oauthRegister(@Valid MemberOAuthRequest memberOAuthRequest, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("memberOAuthRequest", memberOAuthRequest);
+
+            Map<String, String> validatorResult = memberService.validateHandling(bindingResult);
+
+            for (String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            }
+            return "/log/edit_oauth";
+        } else {
+            HttpSession httpSession = httpServletRequest.getSession(false);
+
+            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+            MemberDto loginMember = memberService.editInfoOAuth(memberOAuthRequest, memberDto);
+
+            httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+
+            System.out.println("수정완료");
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/edit/info")
