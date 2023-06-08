@@ -56,85 +56,6 @@ dependencies {
 
 }
 
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-jacoco {
-    toolVersion = "0.8.7" // Jacoco 버전 설정 (필요에 따라 변경 가능)
-}
-
-test {
-    finalizedBy jacocoTestReport // 테스트 실행 후 Jacoco 보고서 생성
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true // XML 형식으로 커버리지 보고서 생성
-        html.enabled true // HTML 형식으로 커버리지 보고서 생성
-        html.destination file("${buildDir}/jacocoHtml") // HTML 보고서 생성 경로
-    }
-}
-
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.11'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'jacoco'
-}
-
-group = 'com.metabus'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    //thymeleaf
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-
-    // <webSocket>
-    implementation 'org.webjars:webjars-locator-core'
-    implementation 'org.webjars:sockjs-client:1.0.2'
-    implementation 'org.webjars:stomp-websocket:2.3.3'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    // </weSocket>
-
-    // s3
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
-    //스케쥴러
-    implementation 'org.springframework:spring-context:5.3.9'
-
-    // quartz scheduler
-    implementation 'org.springframework.boot:spring-boot-starter-quartz'
-    implementation 'org.quartz-scheduler:quartz'
-    implementation 'org.springframework:spring-context-support'
-
-}
-
 jacoco {
     toolVersion = '0.8.8'
 }
@@ -175,4 +96,3 @@ tasks.named('test') {
 //		html.destination file("${buildDir}/jacocoHtml") // HTML 보고서 생성 경로
 //	}
 //}
-
