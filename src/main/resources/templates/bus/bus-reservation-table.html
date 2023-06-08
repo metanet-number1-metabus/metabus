@@ -127,16 +127,27 @@
                                         <!--                    분류-->
                                         <nav aria-label="...">
                                             <ul class="pagination">
-                                                <li class="page-item active"><a class="page-link" href="#">전체</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">결제완료</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">결제대기</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">만료된 승차권</a></li>
+                                                <li class="page-item" th:classappend="${checkButton == '전체' ? 'active' : ''}">
+                                                    <a class="page-link" href="/bus/reservation?specialValue=전체">전체</a>
+                                                </li>
+
+                                                <li class="page-item" th:classappend="${checkButton == '결제대기' ? 'active' : ''}">
+                                                    <a class="page-link" href="/bus/reservation?specialValue=결제대기">결제대기</a>
+                                                </li>
+
+                                                <li class="page-item" th:classappend="${checkButton == '결제완료' ? 'active' : ''}">
+                                                    <a class="page-link" href="/bus/reservation?specialValue=결제완료">결제완료</a>
+                                                </li>
+
+                                                <li class="page-item" th:classappend="${checkButton == '만료된 승차권' ? 'active' : ''}">
+                                                    <a class="page-link" href="/bus/reservation?specialValue=만료된 승차권">만료된 승차권</a>
+                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
                                     <div class="row">
 
-                                        <div class="table-responsive custom-table-responsive" style="height: 550px">
+                                        <form class="table-responsive custom-table-responsive" style="height: 550px">
 
                                             <table class="table custom-table" id="busTable">
                                                 <thead>
@@ -152,8 +163,9 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <!--                        타임리프 for문 start-->
-                                                <th:block th:each="reservation, iteration : ${allReservationList}">
+
+
+                                                    <th:block th:each="reservation, iteration : ${ReservationList}">
                                                     <tr>
                                                         <td>
                                                             <div class="form-check d-flex justify-content-center">
@@ -176,6 +188,11 @@
                                                         <td colspan="100"></td>
                                                     </tr>
                                                 </th:block>
+
+
+
+
+
                                                 <!--                        타임리프 for문 end-->
                                                 <!--                                                &lt;!&ndash;더미데이터&ndash;&gt;-->
                                                 <!--                                                <tr>-->
@@ -546,10 +563,9 @@
 
 
     </script>
+
 </th:block>
 
 </html>
-<style>
-</style>
 
 
