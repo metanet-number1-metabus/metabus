@@ -51,23 +51,43 @@ dependencies {
 
 }
 
+jacoco {
+	toolVersion = '0.8.8'
+}
+jacocoTestReport {
+	dependsOn test
+	reports {
+		html.enabled true
+		xml.enabled true
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(
+					dir: it,
+					includes: [
+							'com/metanet/metabus/**/controller/*',
+							'com/metanet/metabus/**/service/*',
+					],
+					excludes: [
+							'com/metanet/metabus/common/*'
+					])
+		}))
+	}
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
 }
-
-jacoco {
-	toolVersion = "0.8.7" // Jacoco 버전 설정 (필요에 따라 변경 가능)
-}
-
-test {
-	finalizedBy jacocoTestReport // 테스트 실행 후 Jacoco 보고서 생성
-}
-
-jacocoTestReport {
-	reports {
-		xml.enabled true // XML 형식으로 커버리지 보고서 생성
-		html.enabled true // HTML 형식으로 커버리지 보고서 생성
-		html.destination file("${buildDir}/jacocoHtml") // HTML 보고서 생성 경로
-	}
-}
+//
+//test {
+//	finalizedBy jacocoTestReport // 테스트 실행 후 Jacoco 보고서 생성
+//}
+//
+//jacocoTestReport {
+//	reports {
+//		xml.enabled true // XML 형식으로 커버리지 보고서 생성
+//		html.enabled true // HTML 형식으로 커버리지 보고서 생성
+//		html.destination file("${buildDir}/jacocoHtml") // HTML 보고서 생성 경로
+//	}
+//}
