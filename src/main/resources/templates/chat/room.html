@@ -11,8 +11,7 @@
 
 <!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<div id="layoutSidenav_content" style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95)), url('../assets/img/main-2.jpeg');
-    background-size: cover;background-position: center;">
+<div id="layoutSidenav_content" >
     <main>
         <div class="container-fluid px-4">
 <!--<main style="margin-top: 100px; margin-left: 300px;display: flex; flex-direction: row;">-->
@@ -20,12 +19,12 @@
 
             <div class="row" style="height: 100px;"></div>
             <div class="row">
-            <div class="col-2"></div>
-<div class="col-2 overflow-hidden" style=" border: 1px solid skyblue;background-color: white ;padding: 10px; border-radius: 5px;height: 565px;">
+<div class="col-2 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
+        border-radius: 5px;height: 700px;">
 
-    <div class="text-center" style="background-color: white">
-        <h3 style="color: dodgerblue">채팅 방 목록</h3>
-    </div>
+<!--    <div class="text-center" style="background-color: white">-->
+<!--        <h3 style="color: black">채팅 방 목록</h3>-->
+<!--    </div>-->
 
     <!-- 방 만들기 모달 창 -->
     <div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel" aria-hidden="true">
@@ -39,7 +38,7 @@
                                     <span class="input-group-text">방 제목</span>
                                 </div>
                                 <input name="name" id="nameId" class="form-control" style="border-radius: 0;" placeholder="제목을 입력하세요">
-                                <input type="submit" value="방 만들기" class="btn btn-primary" style="background-color: skyblue;border-color: skyblue;">
+                                <input type="submit" value="방 만들기" class="btn btn-primary" >
                             </div>
                         </div>
                     </form>
@@ -78,7 +77,7 @@
     <div th:if="${session.loginMember.getRole().name().equals('USER')}">
         <div style="overflow-x: auto;margin-left: auto;margin-right: auto">
     <div class="text-center" style="margin-left: 100px">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal" style="background-color: skyblue;border-color: skyblue;height: auto">방 만들기</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal" style="height: auto">방 만들기</button>
     </div>
         </div>
     </div>
@@ -98,11 +97,11 @@
 
 <!-- 채팅방 -->
 <!-- 채팅방 chatList에 값이 들어가 있을때만 보이게 if문으로 덮음 -->
-               <div class="col-6">
+               <div class="col-9">
 <div th:if="${chatList}">
-    <div class="chat-container" style="border-color: skyblue;margin-left: 0">
+    <div class="chat-container" style="margin-left: 0">
         <div style="height: 60px; font-size: larger; display: flex;align-items: center;">
-            <h1 style="margin: 0; text-align: center; flex: 1;">Chatting</h1>
+            <h1 style=" text-align: center; flex: 1;margin-top: 10px;">Chatting</h1>
             <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
                th:href="@{/complete/{roomId}(roomId=${roomId})}" class="btn btn-sm btn-outline-secondary" style="margin-right: 5px" >완료 하기</a>
         </div>
@@ -122,11 +121,11 @@
 
                 <input type="text" id="message" class="form-control" style="float: left;flex-basis: 85%;" placeholder="메시지를 입력해주세요">
 
-                <button id="send" class="btn btn-default" type="submit" style="height: 40px;color: dodgerblue;border-color: dodgerblue;flex-basis: 15%;">보내기</button>
+                <button id="send" class="btn btn-primary" type="submit" style="height: 40px;flex-basis: 15%;">보내기</button>
 
             </div>
             </div>
-            <div class="col-1 col-md-1"></div>
+
             <div>
             </div>
         </form>
@@ -199,20 +198,20 @@
             for (chat in chatList) {
                 if(chatList[chat].sender=="운영자"){
                     $("#chatting").append(
-                        "<div style='max-width: 150px; word-wrap: break-word;''>"+
-                        "<div class='sender' style=\"color: black;font-size: small;\">" + chatList[chat].sender + "</div>" +
+                        "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;'>"+
+                        "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
                         "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
-                        "<div class='message' style=\"color: skyblue; font-size: medium;\">" + chatList[chat].message + "</div>" +
+                        "<div class='message' style=\"color: skyblue; font-size: x-large;\">" + chatList[chat].message + "</div>" +
                         "<div class='triangle'></div>" +
                         "</div>"
 
                     );
                 }else{
                     $("#chatting").append(
-                        "<div style='margin-left: 70%;max-width: 150px; word-wrap: break-word;'>"+
-                        "<div class='sender' style=\"color: black;font-size: small;\">" + chatList[chat].sender + "</div>" +
+                        "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>"+
+                        "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
                         "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
-                        "<div class='message' style=\"color: white; font-size: medium;\">" + chatList[chat].message + "</div>" +
+                        "<div class='message' style=\"color: white; font-size: x-large;\">" + chatList[chat].message + "</div>" +
                         "<div class='triangle'></div>" +
                         "</div>"
 
@@ -227,10 +226,10 @@
     function showChat(chatMessage) {
         if(chatMessage.sender=="운영자"){
             $("#chatting").append(
-                "<div style='max-width: 150px; word-wrap: break-word;''>"+
-                "<div class='sender' style=\"color: black;font-size: small;\">" + chatMessage.sender + "</div>" +
+                "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;''>"+
+                "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
                 "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
-                "<div class='message' style=\"color: skyblue;font-size: medium;\">" + chatMessage.message + "</div>" +
+                "<div class='message' style=\"color: skyblue;font-size: x-large;\">" + chatMessage.message + "</div>" +
                 "<div class='triangle'></div>" +
                 "</div>"+
                 "</div>"
@@ -238,10 +237,10 @@
             scrollToBottom();
         }else{
             $("#chatting").append(
-                "<div style='margin-left: 70%;max-width: 150px; word-wrap: break-word;'>"+
-                "<div class='sender' style=\"color: black;font-size: small;\">" + chatMessage.sender + "</div>" +
+                "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>"+
+                "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
                 "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
-                "<div class='message' style=\"color: white;font-size: medium;\">" + chatMessage.message + "</div>" +
+                "<div class='message' style=\"color: white;font-size: x-large;\">" + chatMessage.message + "</div>" +
                 "<div class='triangle'></div>" +
                 "</div>"+
                 "</div>"
@@ -317,7 +316,7 @@
 <script>
     $(document).ready(function () {
         // Number of items per page
-        var perPage = 7;
+        var perPage = 10;
 
         // Hide all rows initially
         $(".room-row").hide();
@@ -384,9 +383,10 @@
     }
 
     .chat-container {
-        max-width: 940px;
-        padding: 2em 3em;
-        margin: 0 auto 20px;
+        /*max-width: 940px;*/
+        /*padding: 2em 3em;*/
+        /*margin: 0 auto 20px;*/
+        height: 700px;
         background-color: white;
         border: 1px solid #e5e5e5;
         border-radius: 5px;
@@ -397,7 +397,9 @@
         flex-direction: column;
         align-items: flex-start;
         overflow-y: scroll;
-        max-height: 400px;
+        max-height: 575px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .chat-bubble {

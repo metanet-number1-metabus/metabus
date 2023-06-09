@@ -265,7 +265,7 @@
                         // <tr className="spacer">
                         //     <td colSpan="100"></td>
                         // </tr>
-                        var row = $("<tr>");
+                        var row = $("<tr th:if=''>");
                         var row_spacer = $("<tr>");
                         row_spacer.attr("class", "spacer");
                         var col_spacer = $("<td>");
@@ -274,11 +274,19 @@
                         if (index == 0) {
                             row.attr("scope", "row");
                         }
+
+
+
+
                         row.on("click", function () {
+
                             //
                             var temp = busDataList[$(this).attr("meta")];
                             // console.log(temp);
                             //모달창 열기
+
+
+
 
                             // 모달 숨겨질 때 이벤트 처리
                             var modalobj = document.getElementById('myModal');
@@ -296,8 +304,10 @@
                             // alert(temp.bus_id);
                             // bus_id 값 설정
                             $("#bus_id").val(temp.bus_id);
-                            // departure_time 값 설정
+                            // // departure_time 값 설정
+
                             $("#departure_time").val(temp.departure_time);
+
                             // arrival_time 값 설정
                             $("#arrival_time").val(temp.arrival_time);
                             // bus_grade 값 설정
@@ -314,7 +324,49 @@
                             const currentYear = currentDate.getFullYear();
                             const data = [[${departureDate}]];
                             const formattedData = currentYear + (data.toString()).replaceAll("\/", "");
-                            console.log(formattedData);
+                            // console.log(formattedData);
+
+                            // departure_time 값 설정
+                            var currentDateTime = new Date();
+
+                            var departureDateTime = temp.departure_time; // "~시 ~분" 형식의 출발 시간
+                            var year = currentYear; // 년도 정보
+
+                            var dates = data.split("/");
+
+                            if(dates[0][0] === "0"){
+                                dates[0] = dates[0].replaceAll("0","");
+                            }
+
+                            if(dates[1][0] === "0"){
+                                dates[1] = dates[1].replaceAll("0","");
+                            }
+
+                            var month = dates[0]-1; // 월 정보 (0부터 시작하는 인덱스)
+                            var day = dates[1]; // 일 정보
+                            var timeRegex = /(\d+)[시:\s](\d+)[분:\s]/;
+                            var match = timeRegex.exec(departureDateTime);
+
+                            if (match) {
+                                var hours = parseInt(match[1]);
+                                var minutes = parseInt(match[2]);
+                                // Date 객체 생성
+                                var departureDate = new Date(year, month, day, hours, minutes);
+                            } else {
+                                console.log("시간과 분을 추출할 수 없습니다.");
+                            }
+
+
+                            if (currentDateTime > departureDate) {
+                                myModal.hide();
+                                alert("예약불가 시간입니다");
+                            }
+
+
+
+
+
+
                             var url = '/read/' + encodeURIComponent(temp.bus_id) + '/' + encodeURIComponent(formattedData);
                             $.ajax({
                                 url: url,
@@ -435,10 +487,10 @@
                                 seatCtn.append(seat_row);
                             }//for (step = 0; step <= 10 ; step++) {
 
-                            // 좌석 로직
 
 
                         });
+
                         row.attr("meta", index);
                         $("<td>").text(bus.bus_id).appendTo(row);
                         $("<td>").text(bus.departure_time).appendTo(row);
@@ -461,10 +513,13 @@
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.querySelectorAll('.needs-validation')
 
+
             // Loop over them and prevent submission
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
                     form.addEventListener('submit', function (event) {
+
+
                         var formFlag = true;
                         if (!form.checkValidity()) {
                             event.preventDefault()
