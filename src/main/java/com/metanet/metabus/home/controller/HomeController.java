@@ -14,6 +14,6 @@ public class HomeController {
     @GetMapping("")
     public String index(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model) {
         model.addAttribute("memberDto", memberDto);
-        return "/main/index";
+        return "main/index";
     }
 }
