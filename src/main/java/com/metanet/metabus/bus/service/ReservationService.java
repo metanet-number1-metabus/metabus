@@ -52,7 +52,6 @@ public class ReservationService {
         LocalDate departureDate = verifyLocalDate(makeLocalDate(reservationInfoRequest.getDepartureDate()));
         Bus bus = createBusByBusNumAndDepartureDate(busNum, departureDate);
 
-        Long payment = reservationInfoRequest.getPayment();
         Long[] seatNum = reservationInfoRequest.getSeatNum();
 
         int seatCount = verifySeatCount(seatNum.length);
@@ -68,6 +67,7 @@ public class ReservationService {
             if (seatNum[i] < 1 || seatNum[i] > maxSeatNum) {
                 throw new InvalidSeatException();
             } else {
+                Long payment = reservationInfoRequest.getPayment();
                 Seat seat = saveSeatBySeatNumAndBus(seatNum[i], bus);
 
                 switch (passengerType[i]) {
@@ -167,6 +167,48 @@ public class ReservationService {
         }
 
         return paymentSum;
+    }
+
+    public String getStrReservationIds(Long[] reservationIds) {
+        StringBuilder strReservationIds = new StringBuilder();
+
+        for (int i = 0; i < reservationIds.length; i++) {
+            strReservationIds.append(reservationIds[i]);
+
+            if (i != reservationIds.length - 1) {
+                strReservationIds.append(", ");
+            }
+        }
+
+        return strReservationIds.toString();
+    }
+
+    public String[] getMemberInfo(Long[] reservationIds) {
+
+        String[] memberInfo = new String[3];
+
+        Long reservationId = reservationIds[0];
+
+        Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+        Member member = reservation.getMember();
+
+        memberInfo[0] = member.getEmail();
+        memberInfo[1] = member.getName();
+        memberInfo[2] = member.getPhoneNum();
+
+        return memberInfo;
+    }
+
+    public void completePayment(String reservationIds) {
+
+        String[] strReservationIds = reservationIds.split(",");
+
+        for (String strReservationId : strReservationIds) {
+            long reservationId = Long.parseLong(strReservationId);
+            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+            reservation.updatePaymentStatus();
+            reservationRepository.save(reservation);
+        }
     }
 
     private String makeLocalTime(String timeString) {
