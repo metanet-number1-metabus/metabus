@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Snippet - GoSNippets</title>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v6.4.0/css/all.css' rel='stylesheet'>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif
+    }
+
+    body {
+        height: 100vh;
+        /*background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95));*/
+        background-color: white;
+        background-size: auto;
+        /*background-size: cover;*/
+        background-position: center;
+    }
+
+    .container {
+        margin: 10px auto
+    }
+
+    .panel-heading {
+        text-align: center;
+        margin-bottom: 10px
+    }
+
+    #forgot {
+        min-width: 100px;
+        margin-left: auto;
+        text-decoration: none
+    }
+
+    a:hover {
+        text-decoration: none
+    }
+
+    .form-inline label {
+        padding-left: 10px;
+        margin: 0;
+        cursor: pointer
+    }
+
+    .btn.btn-primary {
+        margin-top: 20px;
+        border-radius: 15px
+    }
+
+    .panel {
+        /*min-height: 380px;*/
+        box-shadow: 20px 20px 80px rgb(218, 218, 218);
+        border-radius: 12px
+    }
+
+    .input-field {
+        border-radius: 5px;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        color: #4343ff
+    }
+
+    input[type='text'],
+    input[type='password'] {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        width: 100%
+    }
+
+    .fa-eye-slash.btn {
+        border: none;
+        outline: none;
+        box-shadow: none
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        /*border-radius: 50%;*/
+        position: relative
+    }
+
+    a[target='_blank'] {
+        position: relative;
+        transition: all 0.1s ease-in-out
+    }
+
+    .bordert {
+        border-top: 1px solid #aaa;
+        position: relative
+    }
+
+    .bordert:after {
+        content: "or connect with";
+        position: absolute;
+        top: -13px;
+        left: 33%;
+        background-color: #fff;
+        padding: 0px 8px
+    }
+
+    @media(max-width: 360px) {
+        #forgot {
+            margin-left: 0;
+            padding-top: 10px
+        }
+
+        body {
+            height: 100%
+        }
+
+        .container {
+            margin: 30px 0
+        }
+
+        .bordert:after {
+            left: 25%
+        }
+    }</style>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+    <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
+</head>
+<body oncontextmenu='return false' class='snippet-body'>
+<div style="height: 100px; margin-top: 100px" class="d-flex justify-content-center"><img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/logoImage.png" style="height: 100px; width: 300px"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-3 col-sm-2"></div>
+        <div class="col-lg-4 col-md-6 col-sm-8" style="margin: 0px; padding: 0px">
+            <div class="panel border bg-white">
+                <div class="panel-heading">
+                    <h3 class="pt-3 font-weight-bold">비밀번호 설정</h3>
+                </div>
+                <div class="panel-body p-3">
+<!--                    주요 내용(꼭있어야함)  -->
+                    <form class="form-signup" th:action="@{/member/edit/oauth}" method="post" th:object="${memberOAuthRequest}" novalidate>
+
+                        <th:block th:if="${original == null}">
+
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${memberOAuthRequest.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
+                                <span th:text="${valid_email}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${memberOAuthRequest.name}" th:readonly="readonly" name="name" class="form-control" placeholder="name" required autofocus> </div>
+                                <span th:text="${valid_name}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-1 pb-2">
+                                <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:field="${memberOAuthRequest.password}" name="password" class="form-control" placeholder="password" required autofocus></div>
+                                <span th:text="${valid_password}" style="color: red"></span>
+                            </div>
+                            <button class="btn btn-primary btn-block mt-3" type="submit">저장</button>
+                        </th:block>
+                        <th:block th:unless="${original == null}">
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${original.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
+                                <span th:text="${valid_email}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${original.name}" th:readonly="readonly" name="name" class="form-control" placeholder="name" required autofocus> </div>
+                                <span th:text="${valid_name}" style="color: red"></span>
+                            </div>
+                            <div class="form-group py-1 pb-2">
+                                <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:field="${original.password}" name="password" class="form-control" placeholder="password" required autofocus></div>
+                                <span th:text="${valid_password}" style="color: red"></span>
+                            </div>
+                            <button class="btn btn-primary btn-block mt-3" type="submit">저장</button>
+                        </th:block>
+                    </form>
+<!--                    여기까지 -->
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-3 col-sm-2"></div>
+    </div>
+</div>
+<script type='text/javascript'>
+    var alertShown = localStorage.getItem('alertShown');
+
+    if (!alertShown) {
+        alert("비밀번호를 먼저 설정해 주세요.");
+        localStorage.setItem('alertShown', true);
+    }
+</script>
+
+</body>
+</html>

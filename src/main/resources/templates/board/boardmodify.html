@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- 위에 xmlns 하면 타임리프 문법을 쓸수 있다.-->
+<head>
+  <meta charset="UTF-8">
+  <title>게시물 작성폼</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+
+<style>
+    .layout{
+    width : 500px;
+    margin: 0 auto;
+    margin-top :40px;
+    }
+
+    .layout  input, textarea {
+    width : 100%;
+    margin-top :10px;
+    box-sizing : border-box;
+    }
+
+    textarea{
+    height : 300px;
+    }
+</style>
+<body>
+
+
+
+
+    <div class="container-fluid px-4" style="margin-top: 100px">
+      <div class="container overflow-auto">
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-8">
+  <div class="card">
+    <div class="card-body">
+      <form  th:action="@{/board/update/{id}(id = ${board.id})}" name="myForm" onsubmit="return validateForm()" method="post" enctype="multipart/form-data" style="margin-left: 50px;margin-right: 50px">
+        <h5 style="margin-top: 5px">제목</h5>
+        <input type="text" name="title"  placeholder="글 제목을 입력해주세요." th:value="${board.title}"/>
+        <h5 style="margin-top: 10px;margin-bottom: 0">본문</h5>
+        <textarea name="content" placeholder="본문내용을 입력해주세요."></textarea>
+        <input type="file" class="inputwrite" name="file" multiple>
+        <div id="preview"></div>
+        <button type="submit" style="margin-top: 5px;margin-bottom: 5px; background-color: dodgerblue;color: white;border-color: dodgerblue">수정</button>
+      </form>
+    </div>
+  </div>
+          </div>
+          <div class="col-2"></div>
+</div>
+      </div>
+    </div>
+
+<script>
+  const fileInput = document.querySelector('.inputwrite');
+  const previewContainer = document.querySelector('#preview');
+
+  fileInput.addEventListener('change', handleFiles);
+
+  function handleFiles(event) {
+    const files = event.target.files;
+    previewContainer.innerHTML = ''; // 기존에 표시된 이미지 초기화
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('preview-image');
+        previewContainer.appendChild(img);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function validateForm() {
+    var title = document.forms["myForm"]["title"].value;
+    var content = document.forms["myForm"]["content"].value;
+
+    if (title == "" || content == "") {
+      alert("제목과 내용을 모두 입력해주세요.");
+      return false;
+    }
+  }
+</script>
+</body>
+</html>

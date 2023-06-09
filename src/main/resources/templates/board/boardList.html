@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+
+    <div id="layoutSidenav_content" style="background-color: white">
+
+    <!--main-->
+    <main >
+        <div class="container-fluid px-4">
+        <div class="content">
+        <div class="container-fluid" style="max-width: 1230px">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="layout">
+
+
+                                <form th:action="@{/board/list}" method="get" class="row g-1 d-flex justify-content-end">
+                                    <div class="col-auto">
+                                        <label for="searchKeyword" class="visually-hidden">Password</label>
+                                        <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="search..">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary mb-3">검색</button>
+                                    </div>
+                                </form>
+
+                                <div class="row">
+                                    <table class="table" id="article-table">
+                                        <thead>
+                                        <tr>
+                                            <th class="title col-2"><a>게시글 번호</a></th>
+                                            <th class="hashtag col-5"><a>제목</a></th>
+                                            <th class="created-at"><a>작성일</a></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="board : ${list}">
+                                            <td th:text="${board.id}">1</td>
+                                            <td>
+                                                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+                                            </td>
+                                            <td th:text="${board.createDate}">1</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <div th:if="${session.loginMember!=null}">
+                                    <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
+
+                                                <a href="/board/write" class="btn btn-primary me-md-2" role="button" id="write-article">글쓰기</a>
+
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <nav id="pagination" aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item"><a class="page-link" onclick="previousPage()">Previous</a></li>
+                                        <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                                            <th:block th:if="${page != nowPage}">
+                                                <a class="page-link" th:if="${page > 0}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
+                                            </th:block>
+
+                                            <th:block th:if="${page == nowPage}">
+                                                <strong class="page-link" id="nowPages" style="color: red;" th:text="${page}"></strong>
+                                            </th:block>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" onclick="nextPage()">Next</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+            </div>
+        </div>
+        </div>
+    </main>
+    </div>
+
+    </th:block>
+</html>
+
+<script>
+    function previousPage() {
+        var nowPage = document.getElementById(nowPages);
+        goToPage(nowPage-1);
+    }
+
+    function nextPage() {
+        var nowPage = document.getElementById(nowPages);
+        goToPage(nowPage+1);
+    }
+    function goToPage(page) {
+        var urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        window.location.href = "/board/list?" + urlParams.toString();
+    }
+</script>

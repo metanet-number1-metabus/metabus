@@ -1,31 +1,53 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="headerFragment">
     <!--    header1-->
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">메타버스</a>
+        <a class="navbar-brand ps-3" href="/">
+            <b>
+                <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/logoImage.png" style="width: 120px; height: 40px;margin-bottom: 4px">
+            </b>
+        </a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
+<!--            <div class="input-group">-->
+<!--                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />-->
+<!--                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>-->
+<!--            </div>-->
         </form>
         <!-- Navbar-->
+        <th:block th:if="${memberDto == null}">
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" th:href="@{/member/login}">로그인</a></li>
+                    <li><a class="dropdown-item" th:href="@{/member/register}">회원가입</a></li>
                 </ul>
             </li>
         </ul>
+        </th:block>
+        <th:block th:unless="${memberDto == null}">
+            <div class="header_columns_column">
+                <span th:text="${memberDto.name}" style="font-weight: bold;"></span><span>님 환영합니다.</span>
+            </div>
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item d-flex justify-content-center" th:href="@{/member/mypage}">마이페이지</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><form class="dropdown-item d-flex justify-content-center" th:action="@{/member/logout}" method="post">
+                        <button class="btn btn-link" style="--bs-btn-padding-y: 0px; --bs-btn-padding-x: 0px; --bs-btn-font-size: 16px; text-decoration-line: none; color: red" type="submit">로그아웃</button>
+                    </form></li>
+                </ul>
+            </li>
+        </ul>
+        </th:block>
     </nav>
     <!--    header1-->
 </th:block>

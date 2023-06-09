@@ -3,65 +3,82 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/default_layout">
 <th:block layout:fragment="content">
+
     <!--            본문-->
-    <div id="layoutSidenav_content">
+    <div id="layoutSidenav_content" style="background-color: white">
         <main>
             <div class="container-fluid px-4">
                 <!-- <h1 class="mt-4">Dashboard</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ol> -->
-                <div class="row" style="height: 20px;"></div>
+<!--                <div class="row" style="height: 20px;"></div>-->
                 <div class="row">
-                    <header id="cshead" class="bg-image-full" style="background-image: url('../assets/img/main.jpg');
-                                top: 0;
-                                left: 0;
-                                height: 300px;
-                                background-size: cover;
-                                background-position: center;
-                                z-index: -1;
-                            ">
-                        <div class="text-center my-5">
-                            <img class="img-fluid rounded-circle mb-4" src="../assets/img/logo.png" alt="..." style="height: 130px;">
-                            <h1 class="text-white fs-3 fw-bolder">Meta BUS</h1>
-                            <p class="text-white-50 mb-0">since 2023</p>
+                    <div class="col-2"></div>
+                    <div class="col-8" style="height: 500px">
+                    <header id="cshead">
+                        <div class="text-center my-5 d-flex flex-column justify-content-center align-items-center">
+                            <img class="" src="https://metabustest.s3.ap-northeast-2.amazonaws.com/testLogo.png" alt="..." style="height: 300px">
+                            <img src="assets/img/busAni.gif" style="height: 120px; width: 77%;">
                         </div>
                     </header>
                 </div>
-                <div class="row" style="height: 50px;"></div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row" ></div>
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-xl-3 col-sm-1 col-md-2"></div>
+                    <div class="col-xl-6 col-sm-10 col-md-8">
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-chart-bar me-1"></i>
-                                승차권 조회
-                            </div>
-                            <div class="card-body">
+<!--                            <div class="card-header">-->
+<!--                                <i class="fas fa-chart-bar me-1"></i>-->
+<!--                                승차권 조회-->
+<!--                            </div>-->
+                            <div class="card-body" >
 
                                 <!-- date picker -->
 
-                                <form action="/">
+
+                                <form class="needs-validation" novalidate>
                                     <div class="mb-3 mt-3">
-                                        <label for="departureHome" class="form-label">출발지:</label>
-                                        <input type="text" class="form-control" id="departureHome" placeholder="출발지 선택" name="departureHome">
-                                        <!-- <select class="form-select" id="departureHome" name="departureHome">
+                                        <label for="departurehome" class="form-label">출발지:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="departurehome" readonly placeholder="출발지 선택 (클릭)" name="departurehome">
+                                        <div class="valid-feedback">
+                                        </div>
+                                        <!-- <select class="form-select" id="departurehome" name="departurehome">
                                           <option value="남부터미널">남부터미널</option>
                                           <option value="고속터미널">고속터미널</option>
                                           <option value="센트럴시티">센트럴시티</option>
                                           <option value="광명">광명</option>
                                       </select> -->
                                     </div>
+                                    <div class="mb-3 mt-3">
+                                        <label for="destinationhome" class="form-label">목적지:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="destinationhome" name="destinationhome" placeholder="..." required>
+                                        <div class="invalid-feedback">
+                                            출발지와 목적지를 정해주세요.
+                                        </div>
+                                        <div class="valid-feedback">
+                                            선택하신 출발지 -> 목적지를 확인해주세요.
+                                        </div>
+                                    </div>
                                     <div class="mb-3">
-                                        <label for="departureDate" class="form-label">출발일:</label>
-                                        <input type="text" class="form-control" id="departureDate" placeholder="날짜 선택" name="departureDate">
+                                        <label for="departuredate" class="form-label">출발일:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="departuredate" required readonly placeholder="날짜 선택 (클릭)" name="departuredate">
+                                        <div class="invalid-feedback">
+                                            출발날짜를 선택 해주세요. (년도 무시)
+                                        </div>
+                                        <div class="valid-feedback">
+                                            선택하신 출발날짜를 '월/일' 확인해주세요.
+                                        </div>
                                     </div>
                                     <div class="form-check mb-3 d-flex justify-content-end">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" name="remember"> Remember me
+                                            <input class="form-check-input" type="checkbox" name="roundtrip"> 왕복
                                         </label>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-primary">조회</button>
                                     </div>
                                 </form>
 
@@ -70,62 +87,63 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                공지사항
-                            </div>
-                            <div class="card-body">
-                                <table id="datatable" class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>작성자</th>
-                                        <th>제목</th>
-                                        <th>작성일자</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>관리자</td>
-                                        <td>(공지) 남부터미널 유지보수 작업</td>
-                                        <td>23.05.11</td>
-                                    </tr>
-                                    <tr>
-                                        <td>관리자</td>
-                                        <td>(공지) 5월 마일리지 사용에 관한 안내</td>
-                                        <td>23.05.10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>관리자</td>
-                                        <td>설날 터미널별 행사</td>
-                                        <td>23.05.10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>관리자</td>
-                                        <td>분실물 게시판 정리 일정</td>
-                                        <td>23.05.10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>관리자</td>
-                                        <td>온라인 예약 가이드</td>
-                                        <td>23.05.10</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="col-xl-6">-->
+<!--                        <div class="card mb-4">-->
+<!--                            <div class="card-header">-->
+<!--                                <i class="fas fa-table me-1"></i>-->
+<!--                                공지사항-->
+<!--                            </div>-->
+<!--                            <div class="card-body">-->
+<!--                                <table id="datatable" class="table">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th>작성자</th>-->
+<!--                                        <th>제목</th>-->
+<!--                                        <th>작성일자</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tbody>-->
+<!--                                    <tr>-->
+<!--                                        <td>관리자</td>-->
+<!--                                        <td>(공지) 남부터미널 유지보수 작업</td>-->
+<!--                                        <td>23.05.11</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>관리자</td>-->
+<!--                                        <td>(공지) 5월 마일리지 사용에 관한 안내</td>-->
+<!--                                        <td>23.05.10</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>관리자</td>-->
+<!--                                        <td>설날 터미널별 행사</td>-->
+<!--                                        <td>23.05.10</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>관리자</td>-->
+<!--                                        <td>분실물 게시판 정리 일정</td>-->
+<!--                                        <td>23.05.10</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>관리자</td>-->
+<!--                                        <td>온라인 예약 가이드</td>-->
+<!--                                        <td>23.05.10</td>-->
+<!--                                    </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="col-xl-3 col-sm-1 col-md-2"></div>
                 </div>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        DataTable Example
-                    </div>
-                </div>
+                <!--                <div class="card mb-4">-->
+<!--                    <div class="card-header">-->
+<!--                        <i class="fas fa-table me-1"></i>-->
+<!--                        DataTable Example-->
+<!--                    </div>-->
+<!--                </div>-->
                 <!-- 모달창 -->
                 <div class="modal" id="myModal">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">리스트 선택</h5>
@@ -134,19 +152,14 @@
                             <div class="modal-body">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-xl-6">
+                                        <div class="col-xl-6 overflow-scroll" style="height: 300px;">
                                             <ul id="list" class="list-group">
                                                 <!-- 리스트 요소들은 JavaScript 코드로 동적으로 생성됩니다. -->
                                             </ul>
                                         </div>
-                                        <div class="col-xl-6">
+                                        <div class="col-xl-6 overflow-scroll" style="height: 300px;">
                                             <ul id="list2" class="list-group">
                                                 <!-- 리스트 요소들은 JavaScript 코드로 동적으로 생성됩니다. -->
-                                                <li class="list-group-item">Item 1</li>
-                                                <li class="list-group-item">Item 2</li>
-                                                <li class="list-group-item">Item 3</li>
-                                                <li class="list-group-item">Item 4</li>
-                                                <li class="list-group-item">Item 5</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -165,34 +178,71 @@
     </div>
     <!--            본문-->
     <script th:inline="javascript">
-        // 긁어옴
-        $('#departureDate').datepicker({
-            uiLibrary: 'bootstrap5'
-            ,format: 'mm/dd'
+        $(function() {
+            const currentDate = new Date();
+            // const currentYear = currentDate.getFullYear();
+            $('#departuredate').datepicker({
+                dateFormat: 'mm/dd'
+                ,changeYear: false
+                ,dayNamesMin: ['일','월','화','수','목','금','토']
+                ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+                ,changeMonth: true //option값  월 선택 가능
+                ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+                ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+                ,yearSuffix: "년"
+                ,minDate: 0
+                ,maxDate: 60
+            });
+
+            $('#datepicker').datepicker('setDate', 'today');
         });
 
 
-        const selector = document.getElementById('departureHome');
-        const list = [1, 2, 3, 5, 6, 8, 7];
+        const selector = document.getElementById('departurehome');
+        const selector2 = document.getElementById('destinationhome');
 
         // 모달창 열기
         selector.addEventListener('click', function() {
-            populateList();
+            getDepListAjax();
             const myModal = new bootstrap.Modal(document.getElementById('myModal'));
             myModal.show();
         });
 
         // 리스트 동적으로 생성
-        function populateList() {
+        function populateList(dep_data) {
             const listElement = document.getElementById('list');
             listElement.innerHTML = '';
 
-            for (let i = 0; i < list.length; i++) {
+            console.log(dep_data.length);
+
+            for (let i = 0; i < dep_data.length; i++) {
                 const listItem = document.createElement('li');
                 listItem.className = 'list-group-item';
-                listItem.innerText = list[i];
+                listItem.innerText = dep_data[i];
                 listItem.addEventListener('click', function() {
-                    updateSelectorValue(list[i]);
+                    updateSelectorValue(dep_data[i]);
+                    $(".list-group-item").removeClass("active");
+                    $(this).addClass("active");
+
+                    //옆에 리스트 활성화
+                    getDesListAjax(dep_data[i]);
+                });
+
+                listElement.appendChild(listItem);
+            }
+        }
+        function populateList2(dep_data) {
+            const listElement = document.getElementById('list2');
+            listElement.innerHTML = '';
+
+            console.log(dep_data.length);
+
+            for (let i = 0; i < dep_data.length; i++) {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.innerText = dep_data[i];
+                listItem.addEventListener('click', function() {
+                    updateSelectorValue2(dep_data[i]);
                     $(".list-group-item").removeClass("active");
                     $(this).addClass("active");
                 });
@@ -206,6 +256,10 @@
             selector.value = value;
         }
 
+        function updateSelectorValue2(value) {
+            selector2.value = value;
+        }
+
         // 확인 버튼 클릭 시 모달창 닫기 및 selector 업데이트
         function updateSelector() {
             const myModal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
@@ -213,7 +267,68 @@
             // 선택된 리스트 요소의 값 표시
             console.log(selector.value);
         }
-        // 긁어옴
+
+
+        //openAPI
+        var busDataList;
+        function getDepListAjax() {
+            var url = "http://43.201.165.100:8888/metabusapi/get_departure_list";
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log("API 로딩 성공")
+                    //데이터 리스팅
+                    populateList(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        function getDesListAjax(clickedItem) {
+            var url = "http://43.201.165.100:8888/metabusapi/get_destination_list";
+            var departure = clickedItem; //우리는 서버 사이드에서 디코딩 해줘서 그냥 한글로 써서 보내면 댐
+            var apiUrl = url + "?departure=" + departure;
+            console.log(apiUrl);
+            $.ajax({
+                url: apiUrl,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log("API 로딩 성공")
+                    //데이터 리스팅
+                    populateList2(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        // 폼 함수
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }else {
+                            form.action = "/bus/timetable"; // /search로 폼 전송을 원한다면 action 설정
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
     </script>
 </th:block>
 

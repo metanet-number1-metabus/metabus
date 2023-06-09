@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+    <!--            본문-->
+    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+
+        <main>
+            <div class="container-fluid px-4">
+                <!-- <h1 class="mt-4">Dashboard</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol> -->
+                <div class="content">
+
+                    <div class="container">
+                        <h2 class="mb-5">[[${departureHome}]] --> [[${destinationHome}]] #버스 시간표</h2>
+
+                        <div class="table-responsive custom-table-responsive">
+
+                            <table class="table custom-table" id="busTable">
+                                <thead>
+                                <tr>
+
+                                    <th scope="col">버스 아이디</th>
+                                    <th scope="col">출발시간</th>
+                                    <th scope="col">도착시간</th>
+                                    <th scope="col">버스등급</th>
+                                    <th scope="col">비용</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--                                <tr scope="row">-->
+                                <!--                                    <td>-->
+                                <!--                                        1392-->
+                                <!--                                    </td>-->
+                                <!--                                    <td><a href="#">James Yates</a></td>-->
+                                <!--                                    <td>-->
+                                <!--                                        Web Designer-->
+                                <!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
+                                <!--                                    </td>-->
+                                <!--                                    <td>+63 983 0962 971</td>-->
+                                <!--                                    <td>NY University</td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr class="spacer"><td colspan="100"></td></tr>-->
+                                <!--                                <tr>-->
+
+                                <!--                                    <td>4616</td>-->
+                                <!--                                    <td><a href="#">Matthew Wasil</a></td>-->
+                                <!--                                    <td>-->
+                                <!--                                        Graphic Designer-->
+                                <!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
+                                <!--                                    </td>-->
+                                <!--                                    <td>+02 020 3994 929</td>-->
+                                <!--                                    <td>London College</td>-->
+                                <!--                                </tr>-->
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!--                <div class="row">-->
+                <!--                    <div class="col-xl-6 col-md-12">-->
+                <!--                        <table id="busTable" class="table table-striped" style="width:100%">-->
+                <!--                            <thead>-->
+                <!--                            <tr>-->
+                <!--                                <th scope="col">버스 아이디</th>-->
+                <!--                                <th scope="col">출발시간</th>-->
+                <!--                                <th scope="col">도착시간</th>-->
+                <!--                                <th scope="col">버스등급</th>-->
+                <!--                                <th scope="col">비용</th>-->
+                <!--                            </tr>-->
+                <!--                            </thead>-->
+                <!--                            <tbody></tbody>-->
+                <!--                        </table>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <form class="needs-validation">
+                    <div class="modal" tabindex="-1" id="myModal">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">승차권 예매</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <h5>버스 정보</h5>
+                                            </div>
+                                            <div class="col-8">
+                                                <h5>좌석 선택</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-4 col-md-4">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="bus_id" class="form-label">버스 번호</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" name="bus_id" readonly
+                                                               class="form-control-plaintext" id="bus_id" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="departure_time" class="form-label">출발 시간</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" name="departure_time" readonly
+                                                               class="form-control-plaintext" id="departure_time"
+                                                               value="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="arrival_time" class="form-label">도착 시간</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" name="arrival_time" readonly
+                                                               class="form-control-plaintext" id="arrival_time"
+                                                               value="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="bus_grade" class="form-label">버스 등급</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" name="bus_grade" readonly
+                                                               class="form-control-plaintext" id="bus_grade" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="cost" class="form-label">요금</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" name="cost" readonly
+                                                               class="form-control-plaintext" id="cost" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <label for="adults" class="form-label">성인</label>
+                                                        <select class="form-select form-select-sm" name="adults"
+                                                                id="adults">
+                                                            <option selected value="0">0</option>
+                                                            <option value="1">1명</option>
+                                                            <option value="2">2명</option>
+                                                            <option value="3">3명</option>
+                                                            <option value="4">4명</option>
+                                                            <option value="5">5명</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <label for="teenagers" class="form-label">청소년</label>
+                                                        <select class="form-select form-select-sm" name="teenagers"
+                                                                id="teenagers">
+                                                            <option selected value="0">0</option>
+                                                            <option value="1">1명</option>
+                                                            <option value="2">2명</option>
+                                                            <option value="3">3명</option>
+                                                            <option value="4">4명</option>
+                                                            <option value="5">5명</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <label for="kids" class="form-label">아동</label>
+                                                        <select class="form-select form-select-sm" name="kids"
+                                                                id="kids">
+                                                            <option selected value="0">0</option>
+                                                            <option value="1">1명</option>
+                                                            <option value="2">2명</option>
+                                                            <option value="3">3명</option>
+                                                            <option value="4">4명</option>
+                                                            <option value="5">5명</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <label for="person" class="form-label" hidden="hidden">person</label>
+                                                <input type="text" name="person" class="form-cosntrol-plaintext"
+                                                       hidden="hidden" pattern="[1-5]" required id="person" value="">
+                                                <div class="invalid-feedback">
+                                                    5자리 이상 예약이 불가합니다.
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-md-8 overflow-scroll" style="height: 400px;">
+                                                <div class="container-fluid" id="seatContainer">
+                                                    <!--                                                    <div class="row">-->
+                                                    <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">A</div></div>-->
+                                                    <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">B</div></div>-->
+                                                    <!--                                                        <div class="col-xl-3"></div>-->
+                                                    <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">C</div></div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <div class="row">-->
+                                                    <!--                                                        <div class="col-xl-3">-->
+                                                    <!--                                                            <div class="seat1">-->
+                                                    <!--                                                                <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                    <!--                                                                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                    <!--                                                                </svg>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                        <div class="col-xl-3"><svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                    <!--                                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                    <!--                                                        </svg></div>-->
+                                                    <!--                                                        <div class="col-xl-3"></div>-->
+                                                    <!--                                                        <div class="col-xl-3"><svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                    <!--                                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                    <!--                                                        </svg></div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                    <!--                                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                    <!--                                                    </svg>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">예매 취소
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">예매</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- 모달창 -->
+            </div>
+        </main>
+
+    </div>
+    <!--            본문-->
+    <script th:inline="javascript">
+
+        $(function () {
+            $(".open-event").tooltip();
+        });
+
+        var seat_booked_list = [];
+        var busDataList;
+        $(document).ready(function () {
+            var url = "http://43.201.165.100:8888/metabusapi/get_bus_list";
+            var departure = [[${departureHome}]]; //우리는 서버 사이드에서 디코딩 해줘서 그냥 한글로 써서 보내면 댐
+            var destination = [[${destinationHome}]];
+            var apiUrl = url + "?departure=" + departure + "&destination=" + destination;
+            console.log(apiUrl);
+            $.ajax({
+                url: apiUrl,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log("API 로딩 성공")
+                    var tbody = $("#busTable tbody");
+                    busDataList = data;
+                    $.each(data, function (index, bus) {
+                        // 테이블에 데이터 추가
+                        // <tr className="spacer">
+                        //     <td colSpan="100"></td>
+                        // </tr>
+                        var row = $("<tr th:if=''>");
+                        var row_spacer = $("<tr>");
+                        row_spacer.attr("class", "spacer");
+                        var col_spacer = $("<td>");
+                        col_spacer.attr("colSpan", "100");
+                        col_spacer.appendTo(row_spacer);
+                        if (index == 0) {
+                            row.attr("scope", "row");
+                        }
+
+
+
+
+                        row.on("click", function () {
+
+                            //
+                            var temp = busDataList[$(this).attr("meta")];
+                            // console.log(temp);
+                            //모달창 열기
+
+
+
+
+                            // 모달 숨겨질 때 이벤트 처리
+                            var modalobj = document.getElementById('myModal');
+                            modalobj.addEventListener('hidden.bs.modal', function () {
+                                // 모달이 닫힐 때 실행할 코드 작성
+                                console.log('모달이 닫혔습니다.');
+                                // 여기에 원하는 동작을 추가하세요
+                                personCnt = 0;
+                                seatArrForForm = [];
+
+                            });
+
+                            var myModal = new bootstrap.Modal(modalobj);
+                            myModal.show();
+                            // alert(temp.bus_id);
+                            // bus_id 값 설정
+                            $("#bus_id").val(temp.bus_id);
+                            // // departure_time 값 설정
+
+                            $("#departure_time").val(temp.departure_time);
+
+                            // arrival_time 값 설정
+                            $("#arrival_time").val(temp.arrival_time);
+                            // bus_grade 값 설정
+                            $("#bus_grade").val(temp.bus_grade);
+                            // cost 값 설정
+                            $("#cost").val(temp.cost);
+
+                            // 좌석 로직
+
+                            // 예약된 좌석 리스트 <<-- ajax return
+
+                            // ajax를 사용해 자리 조회
+                            const currentDate = new Date();
+                            const currentYear = currentDate.getFullYear();
+                            const data = [[${departureDate}]];
+                            const formattedData = currentYear + (data.toString()).replaceAll("\/", "");
+                            // console.log(formattedData);
+
+                            // departure_time 값 설정
+                            var currentDateTime = new Date();
+
+                            var departureDateTime = temp.departure_time; // "~시 ~분" 형식의 출발 시간
+                            var year = currentYear; // 년도 정보
+
+                            var dates = data.split("/");
+
+                            if(dates[0][0] === "0"){
+                                dates[0] = dates[0].replaceAll("0","");
+                            }
+
+                            if(dates[1][0] === "0"){
+                                dates[1] = dates[1].replaceAll("0","");
+                            }
+
+                            var month = dates[0]-1; // 월 정보 (0부터 시작하는 인덱스)
+                            var day = dates[1]; // 일 정보
+                            var timeRegex = /(\d+)[시:\s](\d+)[분:\s]/;
+                            var match = timeRegex.exec(departureDateTime);
+
+                            if (match) {
+                                var hours = parseInt(match[1]);
+                                var minutes = parseInt(match[2]);
+                                // Date 객체 생성
+                                var departureDate = new Date(year, month, day, hours, minutes);
+                            } else {
+                                console.log("시간과 분을 추출할 수 없습니다.");
+                            }
+
+
+                            if (currentDateTime > departureDate) {
+                                myModal.hide();
+                                alert("예약불가 시간입니다");
+                            }
+
+
+
+
+
+
+                            var url = '/read/' + encodeURIComponent(temp.bus_id) + '/' + encodeURIComponent(formattedData);
+                            $.ajax({
+                                url: url,
+                                method: 'GET',
+                                dataType: 'json',
+                                success: function (response) {
+                                    seat_booked_list = response;
+                                    // Do something with the data stored in `arr`
+                                },
+                                error: function (xhr, status, error) {
+                                    // Handle error
+                                    console.log(error);
+                                    console.log("아작스 애러");
+                                },
+                                async: false
+                            });
+
+                            // test
+                            // var seatCtn2 = $("#seatContainer");
+                            //
+                            // var seat_row_t = $("<div>");
+                            // seat_row_t.attr("class","row");
+                            //
+                            // var seat_col_t = $("<div>");
+                            // seat_col_t.attr("class","col-xl-2");
+                            // seat_col_t.append(icon_empty);
+                            //
+                            // seat_row_t.append(seat_col_t);
+                            // seat_row_t.append(seat_col_t);
+                            // seat_row_t.append(seat_col_t);
+                            // seat_row_t.append(seat_col_t);
+
+                            // seatCtn.append(seat_row_t);
+
+                            // DOM 객체
+                            $("#seatContainer").empty();
+                            var seatCtn = $("#seatContainer");
+                            // 전역변수
+                            var seat_id_cnt = 1; // 좌석 DOM 객체 ID, 복도열은 count NO!
+                            var col_length = 0; // col 생성 for 문 반복값
+
+                            // 우등인지 일반인지 check // col_length 초기화
+                            if (temp.bus_grade == "일반" || temp.bus_grade == "심야일반") {
+                                // 40석
+                                col_length = 5;
+                            } else {
+                                // 30석
+                                col_length = 4;
+                            }
+                            // console.log("일반 우등 좌석 변수: "+col_length);
+
+                            for (step = 0; step <= 10; step++) {
+                                // console.log(step +"번째 행");
+                                var seat_row = $("<div>");
+                                seat_row.attr("class", "row");
+                                for (step2 = 1; step2 <= col_length; step2++) {
+                                    // column 추가
+                                    var seat_col = $("<div>");
+                                    if (col_length == 5) {
+                                        seat_col.attr("class", "col-2");
+                                        // seat_col.attr("class","col-xl-2 col-md-2 col-sm-2 col-xs-2");
+                                    } else {
+                                        seat_col.attr("class", "col-3");
+                                        // seat_col.attr("class","col-xl-3 col-md-3 col-sm-3 col-xs-3");
+                                    }
+                                    seat_col.attr("id", step + "-" + step2 + "id");
+                                    seat_col.attr("style", "justify-content: center;display: flex;");
+
+                                    // 각 col안에 svg 아이콘 객체 추가
+                                    if (step == 0) {
+                                        // 라벨, A B C D
+                                        if (step2 == 1) {
+                                            seat_col.append("<h1 style=\"text-align:center;\">A</h1>");
+                                        } else if (step2 == 2) {
+                                            seat_col.append("<h1 style=\"text-align:center;\">B</h1>");
+                                        } else if (step2 == 4) {
+                                            seat_col.append("<h1 style=\"text-align:center;\">C</h1>");
+                                        } else if (step2 == 5) {
+                                            seat_col.append("<h1 style=\"text-align:center;\">D</h1>");
+                                        }
+
+                                    } else if (step2 == 3 && step != 10) {
+                                        // 복도, 아이콘 X
+
+                                    } else {
+                                        // 좌석 생성
+                                        // console.log("들어왔다!")
+                                        // console.log(seat_booked_list.includes(seat_id_cnt))
+                                        if (seat_booked_list.includes(seat_id_cnt)) {
+                                            //자리 존재 icon_fill
+                                            $("<img>").attr({
+                                                "src": "../assets/img/file-excel-fill.svg",
+                                                "width": "70%",
+                                                "height": "80%",
+                                                "meta": "booked"
+                                            }).appendTo(seat_col);
+                                            seat_id_cnt++;
+                                        } else {
+                                            $("<img>").attr({
+                                                "src": "../assets/img/file.svg",
+                                                "width": "70%",
+                                                "height": "80%",
+                                                "onclick": "clickFunction(this)",
+                                                "class": "open-event",
+                                                "meta": "none",
+                                                "title": seat_id_cnt + "번 좌석",
+                                                "id": "s-" + seat_id_cnt
+                                            }).appendTo(seat_col);
+                                            // console.log(seat_col.html());
+                                            // console.log("s-"+seat_id_cnt+" 자리 아이디");
+                                            seat_id_cnt++;
+                                        }
+
+                                    }
+                                    seat_row.append(seat_col);
+                                    // console.log(seat_row.html());
+                                }//for (step2 = 1; step2 <= col_length ; step2++) {
+                                seatCtn.append(seat_row);
+                            }//for (step = 0; step <= 10 ; step++) {
+
+
+
+                        });
+
+                        row.attr("meta", index);
+                        $("<td>").text(bus.bus_id).appendTo(row);
+                        $("<td>").text(bus.departure_time).appendTo(row);
+                        $("<td>").text(bus.arrival_time).appendTo(row);
+                        $("<td>").text(bus.bus_grade).appendTo(row);
+                        $("<td>").text(bus.cost).appendTo(row);
+                        row.appendTo(tbody);
+                        row_spacer.appendTo(tbody);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+        // 폼 함수
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+
+
+                        var formFlag = true;
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        } else {
+                            event.preventDefault()
+                            // form.action = "/test"; // /insert 폼 전송을 원한다면 action 설정
+                            // validation 통과
+                            // 폼 데이터 가져오기
+                            var tempSumPersonType = parseInt($("#adults").val()) + parseInt($("#teenagers").val()) + parseInt($("#kids").val());
+                            if (tempSumPersonType != personCnt) {
+                                alert("승객 종류를 선택하신 좌석 수에 맞게 선택해주세요!");
+                                formFlag = false;
+                            } else {
+                                var tempTypeArr = [];
+                                tempTypeArr.push(parseInt($("#adults").val()));
+                                tempTypeArr.push(parseInt($("#teenagers").val()));
+                                tempTypeArr.push(parseInt($("#kids").val()));
+                                var formData = {
+                                    busNum: parseInt($("#bus_id").val()),
+                                    departureDate: [[${departureDate}]], //el
+                                    departure: [[${departureHome}]], //el
+                                    destination: [[${destinationHome}]], //el
+                                    departureTime: $("#departure_time").val(),
+                                    arrivalTime: $("#arrival_time").val(),
+                                    payment: parseInt((($("#cost").val()).replaceAll(",", "")).replaceAll("원", "")),
+                                    seatNum: seatArrForForm, //int
+                                    busType: $("#bus_grade").val(), //int
+                                    passengerType: tempTypeArr, //int // length 3 - [0]성인 [1]청소년 [2]아동
+                                    // 필요한 나머지 폼 데이터 추가
+                                };
+
+                                console.log(formData);
+
+                                // AJAX 요청
+                                $.ajax({
+                                    url: "/bus/reservation",
+                                    type: "POST",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(formData),
+                                    dataType: "json",
+                                    success: function (response) {
+                                        // 성공적으로 응답을 받았을 때 실행할 코드
+                                        console.log("요청이 성공적으로 완료되었습니다.");
+                                        console.log("응답 데이터:", response);
+                                        // 배열 데이터
+                                        let dataArray = response;
+
+                                        // form 엘리먼트 생성
+                                        let form = document.createElement('form');
+                                        form.setAttribute('method', 'post');
+                                        form.setAttribute('action', '/bus/payment'); // 이동할 페이지의 URL
+                                        // 배열 데이터를 숨겨진 input 요소로 추가
+                                        for (let i = 0; i < dataArray.length; i++) {
+                                            let input = document.createElement('input');
+                                            input.setAttribute('type', 'hidden');
+                                            input.setAttribute('name', 'data');
+                                            input.setAttribute('value', dataArray[i]);
+                                            form.appendChild(input);
+                                        }
+                                        // form을 body에 추가하고 전송
+                                        document.body.appendChild(form);
+                                        form.submit();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // 요청이 실패하거나 에러가 발생했을 때 실행할 코드
+                                        console.log("요청이 실패했습니다.");
+                                        console.log("에러:", error);
+                                    }
+                                });
+                            }
+                            // validation 통과
+
+                        }
+
+                        if (formFlag) {
+
+                            form.classList.add('was-validated')
+
+                        }
+                    }, false)
+                })
+        })()
+
+
+        var personCnt = 0; //계속적으로 선택된 좌석 수. limit 5
+        var seatArrForForm = [];
+
+        function clickFunction(obj) {
+            var metaValue = obj.getAttribute("meta");
+            // console.log("meta 속성 값:", metaValue);
+
+            var metaData;
+            var srcData;
+            if (metaValue == "none") {
+                //빈자리 클릭시
+                personCnt++;
+                if (personCnt > 5) {
+                    //5 초과
+                    personCnt--;
+                    alert("1인당 좌석 예매는 최대 5좌석 입니다!");
+                } else {
+                    var idValue = obj.getAttribute("id");
+                    var numberValue = parseInt(idValue.replace("s-", ""));
+                    seatArrForForm.push(numberValue);
+                    $("#person").val(personCnt);
+                    metaData = "check";
+                    srcData = "../assets/img/file-check-fill.svg";
+                }
+
+            } else {
+                var idValue = obj.getAttribute("id");
+                var numberValue = parseInt(idValue.replace("s-", ""));
+                var index = seatArrForForm.indexOf(numberValue);
+                if (index > -1) {
+                    seatArrForForm.splice(index, 1);
+                }
+                personCnt--;
+                $("#person").val(personCnt);
+                // 체크했던 항목 다시 체크시
+                metaData = "none";
+                srcData = "../assets/img/file.svg";
+
+            }
+
+            console.log(seatArrForForm);
+
+
+            // svg 태그의 meta 속성값 변경
+            $(obj).attr("meta", metaData);
+
+            // svg 태그의 class 속성 변경
+            $(obj).attr("src", srcData);
+
+        }
+
+
+    </script>
+</th:block>
+
+</html>
+
+
