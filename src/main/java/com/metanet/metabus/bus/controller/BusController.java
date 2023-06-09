@@ -48,25 +48,22 @@ public class BusController {
         List<Reservation> paidReservationList = reservationService.readPaidReservation(memberDto);
         List<Reservation> pastReservationList = reservationService.readPastReservation(memberDto);
 
-        if(specialValue==null){
+        if (specialValue == null) {
             model.addAttribute("ReservationList", allReservationList);
-            model.addAttribute("checkButton","전체");
-        }else if(specialValue.equals("전체")){
+            model.addAttribute("checkButton", "전체");
+        } else if (specialValue.equals("전체")) {
             model.addAttribute("ReservationList", allReservationList);
-            model.addAttribute("checkButton","전체");
-        }else if(specialValue.equals("결제대기")){
+            model.addAttribute("checkButton", "전체");
+        } else if (specialValue.equals("결제대기")) {
             model.addAttribute("ReservationList", unpaidReservationList);
-            model.addAttribute("checkButton","결제대기");
-        }else if(specialValue.equals("결제완료")){
+            model.addAttribute("checkButton", "결제대기");
+        } else if (specialValue.equals("결제완료")) {
             model.addAttribute("ReservationList", paidReservationList);
-            model.addAttribute("checkButton","결제완료");
+            model.addAttribute("checkButton", "결제완료");
         } else if (specialValue.equals("만료된 승차권")) {
             model.addAttribute("ReservationList", pastReservationList);
-            model.addAttribute("checkButton","만료된 승차권");
+            model.addAttribute("checkButton", "만료된 승차권");
         }
-
-
-
 
         return "bus/bus-reservation-table";
     }
@@ -76,9 +73,20 @@ public class BusController {
 
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
+        String strReservationIds = reservationService.getStrReservationIds(reservationIds);
+
+        String[] memberInfo = reservationService.getMemberInfo(reservationIds);
+        String memberEmail = memberInfo[0];
+        String memberName = memberInfo[1];
+        String memberPhoneNum = memberInfo[2];
 
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
+        model.addAttribute("strReservationIds", strReservationIds);
+
+        model.addAttribute("memberEmail", memberEmail);
+        model.addAttribute("memberName", memberName);
+        model.addAttribute("memberPhoneNum", memberPhoneNum);
 
         return "bus/bus-payment";
     }

@@ -36,4 +36,10 @@ public class BusRestController {
     public ReservationDto readReservationDetail(@PathVariable Long reservationId) {
         return reservationService.readReservationDetail(reservationId);
     }
+
+    @PostMapping("/bus/payment/{merchantUid}")
+    public void completePayment(@PathVariable String merchantUid) {
+        reservationService.completePayment(merchantUid);
+    }
+
 }

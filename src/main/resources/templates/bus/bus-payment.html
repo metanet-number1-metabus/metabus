@@ -412,15 +412,28 @@
             IMP.request_pay({
                 pg: 'html5_inicis.INIBillTst',
                 pay_method: 'card',
+                merchant_uid: [[${strReservationIds}]], // 상점에서 관리하는 주문 번호를 전달
                 name: '메타버스',
                 amount: [[${paymentSum}]],
-                buyer_email: 'iamport@siot.do',
-                buyer_name: '구매자이름',
-                buyer_tel: '010-1234-5678',
+                buyer_email: [[${memberEmail}]],
+                buyer_name: [[${memberName}]],
+                buyer_tel: [[${memberPhoneNum}]],
                 m_redirect_url: 'http://localhost:8081/'
             }, function (rsp) {
                 if (rsp.success) {
-                    alert("완료 -> imp_uid: " + rsp.imp_uid + " / merchant_uid(orderKey): " + rsp.merchant_uid);
+                    // Ajax 호출
+                    $.ajax({
+                        url: '/bus/payment/' + rsp.merchant_uid,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        success: function (response) {
+                            // alert("완료 -> merchant_uid: " + rsp.merchant_uid);
+                            window.location.href = 'http://localhost:8081/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
+                        },
+                        error: function (xhr, status, error) {
+                            alert("실패: " + status + " / " + error);
+                        }
+                    });
                 } else {
                     alert("실패: 코드(" + rsp.error_code + ") / 메시지(" + rsp.error_msg + ")");
                 }
