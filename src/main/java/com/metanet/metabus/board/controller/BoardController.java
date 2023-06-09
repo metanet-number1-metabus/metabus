@@ -52,7 +52,7 @@ public class BoardController {
             return "redirect:/board/list";
         }
 
-        return "/board/boardwrite";
+        return "board/boardwrite";
     }
 
     @PostMapping("/board/writepro")
@@ -130,7 +130,7 @@ public class BoardController {
 
 
 
-        return "/board/boardlist";
+        return "board/boardlist";
 
     }
 
@@ -139,7 +139,7 @@ public class BoardController {
         LostBoardDto boardDto = boardService.boardView(id);
 
         model.addAttribute("board", boardDto);
-        return "/board/boardview";
+        return "board/boardview";
     }
 
     @GetMapping("/board/delete")
@@ -157,7 +157,7 @@ public class BoardController {
         model.addAttribute("message", "글 삭제 완료.");
         model.addAttribute("SearchUrl", "/board/list");
 
-        return "/board/Message";
+        return "board/Message";
     }
 
     @GetMapping("/board/modify/{id}")
@@ -172,7 +172,7 @@ public class BoardController {
         }
         model.addAttribute("board", boardService.boardView(id));
 
-        return "/board/boardmodify";
+        return "board/boardmodify";
     }
 
     @PostMapping("/board/update/{id}")
