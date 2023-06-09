@@ -20,6 +20,6 @@ public class MemberEditInfoRequest {
     private String name;
 
     @NotBlank(message = "핸드폰 번호를 입력해주세요.")
-    @Pattern(regexp = "/^01([0|1|6|7|8|9])-\\d{3,4}-\\d{4}$/", message = "올바른 형식의 핸드폰 번호여야 합니다.")
+    @Pattern(regexp = "01[0|1|6|7|8|9]-\\d{3,4}-\\d{4}", message = "올바른 형식의 핸드폰 번호여야 합니다.")
     private String phoneNum;
 }
