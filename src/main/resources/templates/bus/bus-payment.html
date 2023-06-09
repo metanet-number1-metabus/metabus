@@ -418,7 +418,7 @@
                 buyer_email: [[${memberEmail}]],
                 buyer_name: [[${memberName}]],
                 buyer_tel: [[${memberPhoneNum}]],
-                m_redirect_url: 'http://localhost:8081/'
+                m_redirect_url: 'http://www.metabus.site/'
             }, function (rsp) {
                 if (rsp.success) {
                     // Ajax 호출
@@ -428,7 +428,7 @@
                         contentType: 'application/json',
                         success: function (response) {
                             // alert("완료 -> merchant_uid: " + rsp.merchant_uid);
-                            window.location.href = 'http://localhost:8081/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
+                            window.location.href = 'http://www.metabus.site/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
                         },
                         error: function (xhr, status, error) {
                             alert("실패: " + status + " / " + error);
