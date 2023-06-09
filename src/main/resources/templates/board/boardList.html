@@ -3,7 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/default_layout">
 <th:block layout:fragment="content">
-    <div id="layoutSidenav_content">
+
+    <div id="layoutSidenav_content" style="background-color: white">
 
     <!--main-->
     <main >
@@ -98,21 +99,23 @@
         </div>
     </main>
     </div>
-    <script>
-        function previousPage() {
-            var nowPage = document.getElementById(nowPages);
-            goToPage(nowPage-1);
-        }
 
-        function nextPage() {
-            var nowPage = document.getElementById(nowPages);
-            goToPage(nowPage+1);
-        }
-        function goToPage(page) {
-            var urlParams = new URLSearchParams(window.location.search);
-            urlParams.set("page", page);
-            window.location.href = "/board/list?" + urlParams.toString();
-        }
-    </script>
     </th:block>
 </html>
+
+<script>
+    function previousPage() {
+        var nowPage = document.getElementById(nowPages);
+        goToPage(nowPage-1);
+    }
+
+    function nextPage() {
+        var nowPage = document.getElementById(nowPages);
+        goToPage(nowPage+1);
+    }
+    function goToPage(page) {
+        var urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        window.location.href = "/board/list?" + urlParams.toString();
+    }
+</script>
