@@ -2,6 +2,7 @@ package com.metanet.metabus.bus.repository;
 
 import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Reservation findByIdAndDeletedDateIsNull(Long reservationId);
 
     List<Reservation> findByCreatedDateBeforeAndPaymentStatusAndDeletedDateIsNull(LocalDateTime threshold, PaymentStatus paymentStatus);
+
+    Reservation findBySeatId(Seat seat);
 }
