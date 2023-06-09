@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequestMapping("")
 public class HomeController {
-    @GetMapping("/")
+    @GetMapping("")
     public String index(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model) {
         model.addAttribute("memberDto", memberDto);
         return "/main/index";
