@@ -27,7 +27,7 @@ public class MemberController {
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("memberRegisterRequest", new MemberRegisterRequest());
-        return "/log/register";
+        return "log/register";
     }
 
     @PostMapping("/register")
@@ -40,7 +40,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/log/register";
+            return "log/register";
         } else {
             memberService.register(memberRegisterRequest);
             return "redirect:/";
@@ -67,7 +67,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/log/login";
+            return "log/login";
         } else {
             MemberDto loginMember = memberService.login(memberLoginRequest);
 
@@ -153,7 +153,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/log/check_password_pwd";
+            return "log/check_password_pwd";
         } else {
             HttpSession httpSession = httpServletRequest.getSession(false);
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
@@ -181,7 +181,7 @@ public class MemberController {
             model.addAttribute("memberEditInfoRequest", new MemberEditInfoRequest());
             model.addAttribute("original", memberDto);
 
-            return "/log/edit_info";
+            return "log/edit_info";
 
         } else if (url.equals("pwd")) {
             if (memberDto.getRole().equals(Role.GUEST)) {
@@ -190,16 +190,16 @@ public class MemberController {
             model.addAttribute("memberEditPasswordRequest", new MemberPasswordRequest());
             model.addAttribute("original", memberDto);
 
-            return "/log/edit_password";
+            return "log/edit_password";
 
         } else if (url.equals("oauth")) {
             model.addAttribute("memberOAuthRequest", new MemberOAuthRequest());
             model.addAttribute("original", memberDto);
 
-            return "/log/edit_oauth";
+            return "log/edit_oauth";
 
         } else {
-            return "/error/404";
+            return "error/404";
         }
 
 
@@ -215,7 +215,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/log/edit_oauth";
+            return "log/edit_oauth";
         } else {
             HttpSession httpSession = httpServletRequest.getSession(false);
 
@@ -238,7 +238,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/log/edit_info";
+            return "log/edit_info";
         } else {
             HttpSession httpSession = httpServletRequest.getSession(false);
 
@@ -263,7 +263,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/log/edit_password";
+            return "log/edit_password";
         } else {
             HttpSession httpSession = httpServletRequest.getSession(false);
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
@@ -307,7 +307,7 @@ public class MemberController {
         }
 
         model.addAttribute("member", memberDto);
-        return "/mypage/mypage";
+        return "mypage/mypage";
     }
 
     /**
@@ -324,6 +324,6 @@ public class MemberController {
         }
 
         model.addAttribute("member", memberDto);
-        return "/mypage/admin";
+        return "mypage/admin";
     }
 }

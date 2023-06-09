@@ -130,7 +130,7 @@ public class BoardController {
 
 
 
-        return "board/boardlist";
+        return "board/boardList";
 
     }
 
