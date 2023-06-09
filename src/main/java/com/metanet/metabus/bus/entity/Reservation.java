@@ -42,4 +42,8 @@ public class Reservation extends BaseEntity {
     private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
 
     private String busType;
+
+    public void updatePaymentStatus() {
+        this.paymentStatus = PaymentStatus.PAID;
+    }
 }
