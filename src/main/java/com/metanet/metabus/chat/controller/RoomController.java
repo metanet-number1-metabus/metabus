@@ -51,7 +51,7 @@ public class RoomController {
             roomList = chatService.findUserRoom(memberDto.getId());
         }
         model.addAttribute("roomList", roomList);
-        model.addAttribute("roomForm", new RoomForm());
+//        model.addAttribute("roomForm", new RoomForm());
         return "chat/room";
     }
 
@@ -82,12 +82,5 @@ public class RoomController {
     }
 
 
-    /**
-     * 방만들기 폼
-     */
-    @GetMapping("/roomForm")
-    public String roomForm() {
-        return "chat/roomForm";
-    }
 
 }
