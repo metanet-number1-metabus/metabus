@@ -3,6 +3,7 @@ package com.metanet.metabus.member.controller;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.service.MemberService;
+import com.metanet.metabus.member.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -20,7 +23,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-
+    private final MyPageService mypageService;
     /**
      * 회원 가입
      */
@@ -305,8 +308,16 @@ public class MemberController {
         if (memberDto == null) {
             return "redirect:/member/login";
         }
+        Long tickets = mypageService.selectTickets(memberDto.getId());
+        Timestamp dates = mypageService.selectDates(memberDto.getId());
+        String grade = mypageService.selectGrade(memberDto.getId());
+        Long mileage = mypageService.selectMileage(memberDto.getId());
 
+        model.addAttribute("tickets",tickets);
         model.addAttribute("member", memberDto);
+        model.addAttribute("dates",dates);
+        model.addAttribute("grade",grade);
+        model.addAttribute("mileage",mileage);
         return "mypage/mypage";
     }
 
