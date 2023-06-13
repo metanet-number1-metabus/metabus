@@ -21,7 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-stomp")
-                .setAllowedOrigins("http://metabus.site") // 배포 서버 접근권한 허용
+                .setAllowedOrigins("http://metabus.site", "https://metabus.site")
                 .withSockJS();
     }
 }
