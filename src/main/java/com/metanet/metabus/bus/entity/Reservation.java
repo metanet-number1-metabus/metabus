@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -43,7 +44,11 @@ public class Reservation extends BaseEntity {
 
     private String busType;
 
-    public void updatePaymentStatus() {
+    @Nullable
+    private String merchantUid;
+
+    public void updatePaymentStatus(String merchantUid) {
         this.paymentStatus = PaymentStatus.PAID;
+        this.merchantUid = merchantUid;
     }
 }
