@@ -272,7 +272,7 @@
         //openAPI
         var busDataList;
         function getDepListAjax() {
-            var url = "http://43.201.165.100:8888/metabusapi/get_departure_list";
+            var url = "https://43.201.165.100:8443/metabusapi/get_departure_list";
             console.log(url);
             $.ajax({
                 url: url,
@@ -289,7 +289,7 @@
             });
         }
         function getDesListAjax(clickedItem) {
-            var url = "http://43.201.165.100:8888/metabusapi/get_destination_list";
+            var url = "https://43.201.165.100:8443/metabusapi/get_destination_list";
             var departure = clickedItem; //우리는 서버 사이드에서 디코딩 해줘서 그냥 한글로 써서 보내면 댐
             var apiUrl = url + "?departure=" + departure;
             console.log(apiUrl);
