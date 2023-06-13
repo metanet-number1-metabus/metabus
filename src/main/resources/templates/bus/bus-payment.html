@@ -234,7 +234,7 @@
                                                                    readonly>
                                                         </div>
                                                         <div class="col-md-6 col-12">
-                                                            <p class="card-text">총 결제 금액</p>
+                                                            <p class="card-text">결제 금액</p>
                                                             <input class="form-control h5" id="totalCost"
                                                                    th:value="${reservation.payment}"
                                                                    readonly>
@@ -407,12 +407,28 @@
                 })
         })()
 
+        // 주문번호 만들기
+        function createOrderNum() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+
+            let orderNum = year + month + day + '_';
+            for (let i = 0; i < 10; i++) {
+                orderNum += Math.floor(Math.random() * 8);
+            }
+            return orderNum;
+        }
+
         function payment(data) {
+            const strReservationIds = [[${strReservationIds}]];
+
             IMP.init('imp73665317');
             IMP.request_pay({
                 pg: 'html5_inicis.INIBillTst',
                 pay_method: 'card',
-                merchant_uid: [[${strReservationIds}]], // 상점에서 관리하는 주문 번호를 전달
+                merchant_uid: createOrderNum(),
                 name: '메타버스',
                 amount: [[${paymentSum}]],
                 buyer_email: [[${memberEmail}]],
@@ -421,13 +437,15 @@
                 m_redirect_url: 'http://www.metabus.site/'
             }, function (rsp) {
                 if (rsp.success) {
-                    // Ajax 호출
                     $.ajax({
-                        url: '/bus/payment/' + rsp.merchant_uid,
+                        url: '/bus/payment/complete/',
                         method: 'POST',
+                        data: JSON.stringify({
+                            "merchantUid": rsp.merchant_uid,
+                            "reservationIds": strReservationIds
+                        }),
                         contentType: 'application/json',
                         success: function (response) {
-                            // alert("완료 -> merchant_uid: " + rsp.merchant_uid);
                             window.location.href = 'http://www.metabus.site/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
                         },
                         error: function (xhr, status, error) {
