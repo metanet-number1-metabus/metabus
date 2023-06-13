@@ -20,8 +20,8 @@
 
             <div class="row" style="height: 100px;"></div>
             <div class="row">
-<div class="col-2 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
-        border-radius: 5px;height: 700px;">
+<div class="col-4 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
+        border-radius: 5px;height: 700px;max-width: 250px">
 
 <!--    <div class="text-center" style="background-color: white">-->
 <!--        <h3 style="color: black">채팅 방 목록</h3>-->
@@ -76,10 +76,16 @@
     </div>
 
     <div th:if="${session.loginMember.getRole().name().equals('USER')}">
-        <div style="overflow-x: auto;margin-left: auto;margin-right: auto">
-    <div class="text-center" style="margin-left: 100px">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal" style="height: auto">방 만들기</button>
+        <div style="margin-left: auto;margin-right: auto">
+            <div class="row">
+                <div class="col-lg-5 col-md-2"></div>
+                <div class="col-lg-7 col-md-8">
+    <div class="text-center" >
+        <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal">방 만들기</button>
     </div>
+                </div>
+                    <div class="col-lg-0 col-md-2"></div>
+            </div>
         </div>
     </div>
     <div style="overflow-x: auto;margin-left: auto;margin-right: auto;margin-top: 5px;margin-left: 5px">
@@ -98,7 +104,7 @@
 
 <!-- 채팅방 -->
 <!-- 채팅방 chatList에 값이 들어가 있을때만 보이게 if문으로 덮음 -->
-               <div class="col-9">
+               <div class="col-8" style="">
 <div th:if="${chatList}">
     <div class="chat-container" style="margin-left: 0">
         <div style="height: 60px; font-size: larger; display: flex;align-items: center;">
@@ -120,9 +126,9 @@
             <div class="col-12 col-md-12">
             <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
 
-                <input type="text" id="message" class="form-control" style="float: left;flex-basis: 85%;margin-left: 3%" placeholder="메시지를 입력해주세요">
+                <input type="text" id="message" class="form-control" style="float: left;flex-basis: 85%;" placeholder="메시지를 입력해주세요">
 
-                <button id="send" class="btn btn-primary" type="submit" style="height: 40px;flex-basis: 15%;margin-right: 3%">보내기</button>
+                <button id="send" class="btn btn-primary" type="submit" style="height: 40px;flex-basis: 15%;">보내기</button>
 
             </div>
             </div>
@@ -135,7 +141,6 @@
                </div>
 <!--</div>-->
 <!--</main>-->
-                <div class="col-2"></div>
         </div>
         </div>
     </main>
@@ -186,11 +191,19 @@
 
     //html 에서 입력값, roomId 를 받아서 Controller 로 전달
     function sendChat() {
-        stompClient.send("/send/"+roomId, {},
-            JSON.stringify({
-                'sender': $("#sender").val(),
-                'message' : $("#message").val()
-            }));
+
+        if($("#message").val()!=""){
+            stompClient.send("/send/"+roomId, {},
+                JSON.stringify({
+                    'sender': $("#sender").val(),
+                    'message' : $("#message").val()
+                }));
+        }else{
+            alert("메세지를 입력해주세요")
+        }
+
+        var messageInput = document.getElementById('message');
+        messageInput.value = '';
     }
 
     //저장된 채팅 불러오기
@@ -374,7 +387,6 @@
         });
     });
 </script>
-
 </th:block>
 </html>
 <style>
@@ -425,6 +437,7 @@
         border-width: 0 10px 10px 10px;
         border-color: transparent transparent #f1f1f1 transparent;
     }
+
 
 
 </style>
