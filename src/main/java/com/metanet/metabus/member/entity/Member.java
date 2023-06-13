@@ -36,6 +36,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String phoneNum;
 
+    @Column(nullable = false)
+    private String grade;
+
     @Builder
     public Member(Long id, String name, String password, String email, Long mileage, Role role, String phoneNum) {
         this.id = id;
