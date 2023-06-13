@@ -2,7 +2,10 @@ package com.metanet.metabus.bus.scheduler;
 
 import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.ReservationRepository;
+import com.metanet.metabus.bus.repository.SeatRepository;
+import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -16,10 +19,12 @@ import java.util.List;
 public class MyJob implements Job {
 
     private final ReservationRepository reservationRepository;
+    private final SeatRepository seatRepository;
 
     @Autowired
-    public MyJob(ReservationRepository reservationRepository) {
+    public MyJob(ReservationRepository reservationRepository, SeatRepository seatRepository) {
         this.reservationRepository = reservationRepository;
+        this.seatRepository = seatRepository;
     }
 
     @Override
@@ -28,6 +33,9 @@ public class MyJob implements Job {
         List<Reservation> expiredEntities = reservationRepository.findByCreatedDateBeforeAndPaymentStatusAndDeletedDateIsNull(threshold, PaymentStatus.UNPAID);
 
         for (Reservation reservation : expiredEntities) {
+            Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);
+            seat.delete();
+            seatRepository.save(seat);
             reservation.delete();
             reservationRepository.save(reservation);
         }

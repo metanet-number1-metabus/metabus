@@ -103,14 +103,14 @@ public class ReservationService {
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        return reservationRepository.findUnpaidReservationsByMemberOrderByDepartureDateDesc(member);
+        return reservationRepository.findUnpaidReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
     }
 
     public List<Reservation> readPaidReservation(MemberDto memberDto) {
         Long memberId = memberDto.getId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
-        return reservationRepository.findPaidReservationsByMemberOrderByDepartureDateDesc(member);
+        return reservationRepository.findPaidReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
     }
 
     public List<Reservation> readPastReservation(MemberDto memberDto) {
@@ -199,16 +199,37 @@ public class ReservationService {
         return memberInfo;
     }
 
-    public void completePayment(String reservationIds) {
+    public void completePayment(String merchantUid, String reservationIds) {
 
         String[] strReservationIds = reservationIds.split(",");
 
         for (String strReservationId : strReservationIds) {
             long reservationId = Long.parseLong(strReservationId);
             Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
-            reservation.updatePaymentStatus();
+            reservation.updatePaymentStatus(merchantUid);
             reservationRepository.save(reservation);
         }
+    }
+
+    public void paymentCancel(String reservationIds) {
+
+        String[] strReservationIds = reservationIds.split(",");
+
+        for (String strReservationId : strReservationIds) {
+            long reservationId = Long.parseLong(strReservationId);
+            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+            Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);
+            seat.delete();
+            seatRepository.save(seat);
+            reservation.delete();
+            reservationRepository.save(reservation);
+        }
+    }
+
+    public String getMerchantUid(Long[] reservationIds) {
+
+        Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationIds[0]);
+        return reservation.getMerchantUid();
     }
 
     private String makeLocalTime(String timeString) {
@@ -285,7 +306,7 @@ public class ReservationService {
 
     private Seat saveSeatBySeatNumAndBus(Long seatNum, Bus bus) {
         Seat seat;
-        Optional<Seat> seatBySeatNumAndBus = seatRepository.findBySeatNumAndBus(seatNum, bus);
+        Optional<Seat> seatBySeatNumAndBus = seatRepository.findBySeatNumAndBusAndDeletedDateIsNull(seatNum, bus);
 
         if (seatBySeatNumAndBus.isPresent()) {
 

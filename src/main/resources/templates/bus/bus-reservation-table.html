@@ -127,20 +127,27 @@
                                         <!--                    분류-->
                                         <nav aria-label="...">
                                             <ul class="pagination">
-                                                <li class="page-item" th:classappend="${checkButton == '전체' ? 'active' : ''}">
+                                                <li class="page-item"
+                                                    th:classappend="${checkButton == '전체' ? 'active' : ''}">
                                                     <a class="page-link" href="/bus/reservation?specialValue=전체">전체</a>
                                                 </li>
 
-                                                <li class="page-item" th:classappend="${checkButton == '결제대기' ? 'active' : ''}">
-                                                    <a class="page-link" href="/bus/reservation?specialValue=결제대기">결제대기</a>
+                                                <li class="page-item"
+                                                    th:classappend="${checkButton == '결제대기' ? 'active' : ''}">
+                                                    <a class="page-link"
+                                                       href="/bus/reservation?specialValue=결제대기">결제대기</a>
                                                 </li>
 
-                                                <li class="page-item" th:classappend="${checkButton == '결제완료' ? 'active' : ''}">
-                                                    <a class="page-link" href="/bus/reservation?specialValue=결제완료">결제완료</a>
+                                                <li class="page-item"
+                                                    th:classappend="${checkButton == '결제완료' ? 'active' : ''}">
+                                                    <a class="page-link"
+                                                       href="/bus/reservation?specialValue=결제완료">결제완료</a>
                                                 </li>
 
-                                                <li class="page-item" th:classappend="${checkButton == '만료된 승차권' ? 'active' : ''}">
-                                                    <a class="page-link" href="/bus/reservation?specialValue=만료된 승차권">만료된 승차권</a>
+                                                <li class="page-item"
+                                                    th:classappend="${checkButton == '만료된 승차권' ? 'active' : ''}">
+                                                    <a class="page-link" href="/bus/reservation?specialValue=만료된 승차권">만료된
+                                                        승차권</a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -165,7 +172,7 @@
                                                 <tbody>
 
 
-                                                    <th:block th:each="reservation, iteration : ${ReservationList}">
+                                                <th:block th:each="reservation, iteration : ${ReservationList}">
                                                     <tr>
                                                         <td>
                                                             <div class="form-check d-flex justify-content-center">
@@ -188,9 +195,6 @@
                                                         <td colspan="100"></td>
                                                     </tr>
                                                 </th:block>
-
-
-
 
 
                                                 <!--                        타임리프 for문 end-->
@@ -292,175 +296,177 @@
 
                                                 </tbody>
                                             </table>
-                                        </div>
-
                                     </div>
-                                    <div class="row" style="height: 30px"></div>
-                                    <div class="row">
-                                        <button type="submit" class="btn btn-primary mb-3" style="width:100px">결제
-                                        </button>
-                                    </div>
-                                    <!--                                    <div class="row">-->
-                                    <!--                                        &lt;!&ndash;                    페이지네이션&ndash;&gt;-->
-                                    <!--                                        <nav aria-label="...">-->
-                                    <!--                                            <ul class="pagination d-flex justify-content-center">-->
-                                    <!--                                                <li class="page-item disabled">-->
-                                    <!--                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-                                    <!--                                                </li>-->
-                                    <!--                                                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-                                    <!--                                                <li class="page-item active" aria-current="page">-->
-                                    <!--                                                    <a class="page-link" href="#">2</a>-->
-                                    <!--                                                </li>-->
-                                    <!--                                                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-                                    <!--                                                <li class="page-item">-->
-                                    <!--                                                    <a class="page-link" href="#">Next</a>-->
-                                    <!--                                                </li>-->
-                                    <!--                                            </ul>-->
-                                    <!--                                        </nav>-->
-
-                                    <!--                                    </div>-->
-                                    <!--                  테이블-->
-                                </form>
 
                             </div>
+                            <div class="row" style="height: 30px"></div>
+                            <div class="row">
+                                <button type="submit" class="btn btn-primary mb-3" style="width:100px" id="pay">결제
+                                </button>
+                                <button type="submit" class="btn btn-primary mb-3" style="width:100px" id="cancel">취소
+                                </button>
+                            </div>
+                            <!--                                    <div class="row">-->
+                            <!--                                        &lt;!&ndash;                    페이지네이션&ndash;&gt;-->
+                            <!--                                        <nav aria-label="...">-->
+                            <!--                                            <ul class="pagination d-flex justify-content-center">-->
+                            <!--                                                <li class="page-item disabled">-->
+                            <!--                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+                            <!--                                                </li>-->
+                            <!--                                                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                            <!--                                                <li class="page-item active" aria-current="page">-->
+                            <!--                                                    <a class="page-link" href="#">2</a>-->
+                            <!--                                                </li>-->
+                            <!--                                                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                            <!--                                                <li class="page-item">-->
+                            <!--                                                    <a class="page-link" href="#">Next</a>-->
+                            <!--                                                </li>-->
+                            <!--                                            </ul>-->
+                            <!--                                        </nav>-->
+
+                            <!--                                    </div>-->
+                            <!--                  테이블-->
+                            </form>
 
                         </div>
 
                     </div>
-
-                    <!--          모달-->
-                    <div class="modal" id="myModal" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <p class="modal-title">preview</p>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <!--                    티켓-->
-                                    <div class="container-fluid rounded shadow-lg" style="width:295px">
-
-                                        <div class="row">
-                                            <div class="col-12 bg-warning rounded-top" style="height: 210px">
-                                                <div class="row" style="height: 30px"></div>
-                                                <div class="row" style="height: 30px">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <p class="fw-bold" style="color: black">Bus Pass</p>
-                                                    </div>
-                                                </div>
-                                                <div class="row" style="height: 40px"></div>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <h1 class="d-flex justify-content-center"
-                                                            style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;"
-                                                            id="modalDeparts"></h1>
-                                                        <h2 style="position: relative;left: 30px;"
-                                                            id="modalArrivals"></h2>
-                                                    </div>
-                                                    <div class="col-6 gx-4 gy-2">
-                                                        <h2 class="d-flex justify-content-center"><i
-                                                                class="fa-solid fa-bus"></i></h2>
-                                                        <div style="height: 15px"></div>
-                                                        <p class="d-flex justify-content-center" style="color: black"
-                                                           id="modalBusType"></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--                    1열-->
-                                        <div class="row">
-                                            <div class="col-4 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>BusID</p></div>
-                                                    <div class="col-12 fw-bold" id="modalBusId"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 p-3"></div>
-                                            <div class="col-4 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Home</p></div>
-                                                    <div class="col-12 fw-bold" id="modalDeparts2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--                    2열-->
-                                        <div class="row">
-                                            <div class="col-4 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Date</p></div>
-                                                    <div class="col-12 fw-bold" id="modalBookedDate"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Departs</p></div>
-                                                    <div class="col-12 fw-bold" id="modalDepartTime"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Arrivers</p></div>
-                                                    <div class="col-12 fw-bold" id="modalArrivalTime"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--                    3열-->
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <hr>
-                                            </div>
-                                        </div>
-                                        <!--                    4열-->
-                                        <div class="row">
-                                            <div class="col-5 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>PassType</p></div>
-                                                    <div class="col-12 fw-bold" id="modalPassType"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Seat</p></div>
-                                                    <div class="col-12 fw-bold" id="modalSeatNum"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Cost</p></div>
-                                                    <div class="col-12 fw-bold" id="modalCost"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--                    5열-->
-                                        <div class="row">
-                                            <div class="col-12 d-flex justify-content-center"><img
-                                                    src="../assets/img/testqr.png" style="width: 65px;height: 65px;">
-                                            </div>
-                                        </div>
-                                        <!--                    6열-->
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <hr>
-                                            </div>
-                                        </div>
-                                        <!--                    티켓-->
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 
                 </div>
+
+                <!--          모달-->
+                <div class="modal" id="myModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="modal-title">preview</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <!--                    티켓-->
+                                <div class="container-fluid rounded shadow-lg" style="width:295px">
+
+                                    <div class="row">
+                                        <div class="col-12 bg-warning rounded-top" style="height: 210px">
+                                            <div class="row" style="height: 30px"></div>
+                                            <div class="row" style="height: 30px">
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <p class="fw-bold" style="color: black">Bus Pass</p>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="height: 40px"></div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <h1 class="d-flex justify-content-center"
+                                                        style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;"
+                                                        id="modalDeparts"></h1>
+                                                    <h2 style="position: relative;left: 30px;"
+                                                        id="modalArrivals"></h2>
+                                                </div>
+                                                <div class="col-6 gx-4 gy-2">
+                                                    <h2 class="d-flex justify-content-center"><i
+                                                            class="fa-solid fa-bus"></i></h2>
+                                                    <div style="height: 15px"></div>
+                                                    <p class="d-flex justify-content-center" style="color: black"
+                                                       id="modalBusType"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                    1열-->
+                                    <div class="row">
+                                        <div class="col-4 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>BusID</p></div>
+                                                <div class="col-12 fw-bold" id="modalBusId"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 p-3"></div>
+                                        <div class="col-4 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>Home</p></div>
+                                                <div class="col-12 fw-bold" id="modalDeparts2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                    2열-->
+                                    <div class="row">
+                                        <div class="col-4 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>Date</p></div>
+                                                <div class="col-12 fw-bold" id="modalBookedDate"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>Departs</p></div>
+                                                <div class="col-12 fw-bold" id="modalDepartTime"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>Arrivers</p></div>
+                                                <div class="col-12 fw-bold" id="modalArrivalTime"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                    3열-->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <!--                    4열-->
+                                    <div class="row">
+                                        <div class="col-5 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>PassType</p></div>
+                                                <div class="col-12 fw-bold" id="modalPassType"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>Seat</p></div>
+                                                <div class="col-12 fw-bold" id="modalSeatNum"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 p-3">
+                                            <div class="row">
+                                                <div class="col-12"><p>Cost</p></div>
+                                                <div class="col-12 fw-bold" id="modalCost"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                    5열-->
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center"><img
+                                                src="../assets/img/testqr.png" style="width: 65px;height: 65px;">
+                                        </div>
+                                    </div>
+                                    <!--                    6열-->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <!--                    티켓-->
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-        </main>
+    </div>
+    </main>
 
     </div>
     <!--            본문-->
@@ -520,46 +526,60 @@
 
         // 폼함수
         (function () {
-            'use strict'
+            'use strict';
 
-            var forms = document.querySelectorAll('.needs')
+            var button = document.getElementById('pay'); // 특정 버튼의 id를 지정해주세요.
+            var form = document.querySelector('.needs');
 
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
 
-                    form.addEventListener('submit', function (event) {
+                var selectedValues = [];
+                var checkboxes = form.querySelectorAll('input[name="data"]:checked');
+                checkboxes.forEach(function (checkbox) {
+                    selectedValues.push(checkbox.value);
+                });
 
+                console.log(selectedValues);
 
-                        var selectedValues = [];
-                        var checkboxes = form.querySelectorAll('input[name="data"]:checked');
-                        checkboxes.forEach(function (checkbox) {
-                            selectedValues.push(checkbox.value);
-                        });
+                if (selectedValues.length === 0) {
+                    alert("결제할 항목을 1개 이상 선택해주세요!");
+                } else {
+                    // 폼 전송 로직 추가
+                    form.method = 'POST';
+                    form.action = "/bus/payment";
+                    form.submit();
+                }
+            });
+        })();
 
-                        console.log(selectedValues);
+        (function () {
+            'use strict';
 
-                        if (selectedValues.length == 0) {
-                            event.preventDefault();
-                            alert("결제할 항목을 1개 이상 선택해주세요!");
+            var button = document.getElementById('cancel'); // 특정 버튼의 id를 지정해주세요.
+            var form = document.querySelector('.needs');
 
-                        } else {
-                            form.method = 'POST';
-                            form.action = "/bus/payment"; // /결제페이지로 폼 전송을 원한다면 action 설정
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
 
-                        }
+                var selectedValues = [];
+                var checkboxes = form.querySelectorAll('input[name="data"]:checked');
+                checkboxes.forEach(function (checkbox) {
+                    selectedValues.push(checkbox.value);
+                });
 
+                console.log(selectedValues);
 
-                        // if (!form.checkValidity()) {
-                        //   event.preventDefault()
-                        //   event.stopPropagation()
-                        // }else {
-                        //   form.action = "/bus/timetable"; // /search로 폼 전송을 원한다면 action 설정
-                        // }
-
-
-                    }, false)
-                })
-        })()
+                if (selectedValues.length === 0) {
+                    alert("취소할 항목을 1개 이상 선택해주세요!");
+                } else {
+                    // 폼 전송 로직 추가
+                    form.method = 'POST';
+                    form.action = "/bus/cancel";
+                    form.submit();
+                }
+            });
+        })();
 
 
     </script>
