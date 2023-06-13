@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+    <!--            본문-->
+    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="content">
+
+
+                    <div class="container-fluid">
+
+
+                        <div class="row">
+
+                            <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 gx-5 gy-4 d-flex justify-content-center">
+                                <!--티켓 col-->
+
+                                <div class="card text-bg-light mb-3" style="height: 650px;width: 350px">
+                                    <div class="card-header">승차권</div>
+                                    <div class="card-body overflow-scroll">
+
+                                        <div class="row">
+                                            <tbody>
+
+                                            <!--                                            타임리프 for문 start-->
+                                            <th:block th:each="reservation, iteration : ${reservationList}">
+
+                                                <div class="col-12">
+
+                                                    <div class="container-fluid rounded shadow-lg" style="width:295px">
+                                                        <!--                    티켓-->
+
+                                                        <div class="row">
+                                                            <div class="col-12 bg-warning rounded-top"
+                                                                 style="height: 210px">
+                                                                <div class="row" style="height: 30px"></div>
+                                                                <div class="row" style="height: 30px">
+                                                                    <div class="col-12 d-flex justify-content-center">
+                                                                        <p class="fw-bold" style="color: black">Bus
+                                                                            Pass</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="height: 40px"></div>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <h1 class="d-flex justify-content-center"
+                                                                            style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
+                                                                            <span th:text="${reservation.departure}"></span>
+                                                                        </h1>
+                                                                        <h2 style="position: relative;left: 30px;"><i
+                                                                                class="fas fa-arrow-right"></i><span
+                                                                                th:text="${reservation.destination}"></span>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div class="col-6 gx-4 gy-2">
+                                                                        <h2 class="d-flex justify-content-center"><i
+                                                                                class="fa-solid fa-bus"></i></h2>
+                                                                        <div style="height: 15px"></div>
+                                                                        <p class="d-flex justify-content-center"
+                                                                           style="color: black"><span
+                                                                                th:text="${reservation.busType}"></span>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    1열-->
+                                                        <div class="row">
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>BusID</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.busNum}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3"></div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Home</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.departure}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    2열-->
+                                                        <div class="row">
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Date</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.departureDate}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Departs</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.departureTime}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Arrivals</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.arrivalTime}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    3열-->
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <hr>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    4열-->
+                                                        <div class="row">
+                                                            <div class="col-5 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>PassType</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.passengerType}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Seat</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.seatNum}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4 p-3">
+                                                                <div class="row">
+                                                                    <div class="col-12"><p>Cost</p></div>
+                                                                    <div class="col-12 fw-bold"><span
+                                                                            th:text="${reservation.payment}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    5열-->
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center"><img
+                                                                    src="../assets/img/testqr.png"
+                                                                    style="width: 65px;height: 65px;"></div>
+                                                        </div>
+                                                        <!--                    6열-->
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-12 text-center">
+                                                                <hr>
+                                                            </div>
+                                                        </div>
+                                                        <!--                    티켓-->
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12" style="height: 30px">
+                                                    <hr>
+                                                </div>
+                                            </th:block>
+
+                                            <!--                                            타임리프 for문 end-->
+                                            </tbody>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1"></div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12"> <!--테이블 col-->
+
+                                <!--                  영수증-->
+                                <div class="card text-bg-light mb-3" style="width: 100%;height: 100%">
+                                    <div class="card-header">결제 정보</div>
+                                    <div class="card-body">
+                                        <form class="needs-validation">
+                                            <div class="container-fluid">
+                                                <tbody>
+                                                <th:block th:each="reservation : ${reservationList}">
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <!--                                                        타임리프 start-->
+                                                            <p class="card-text">출발지</p>
+                                                            <input class="form-control h5" id="departs"
+                                                                   th:value="${reservation.departure}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">목적지</p>
+                                                            <input class="form-control h5" id="arrivers"
+                                                                   th:value="${reservation.destination}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">버스 종류</p>
+                                                            <input class="form-control h5" id="busType"
+                                                                   th:value="${reservation.busType}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">버스 ID</p>
+                                                            <input class="form-control h5" id="busId"
+                                                                   th:value="${reservation.busNum}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">출발일</p>
+                                                            <input class="form-control h5" id="busDate"
+                                                                   th:value="${reservation.departureDate}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">예약 좌석</p>
+                                                            <input class="form-control h5" id="seat"
+                                                                   th:value="${reservation.seatNum}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">예약 일자</p>
+                                                            <input class="form-control h5" id="bookedDate"
+                                                                   th:value="${reservation.createdDate}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <p class="card-text">총 결제 금액</p>
+                                                            <input class="form-control h5" id="totalCost"
+                                                                   th:value="${reservation.payment}"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-12 text-center">
+                                                                <hr>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                                </tbody>
+                                                <!--                                                    타임리프 end-->
+
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <p class="card-text me-2">총 취소 금액</p>
+                                                    <span th:text="${paymentSum}"></span>
+                                                    <span>원</span>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <button id="iamportCancel" type="submit" class="btn btn-primary">
+                                                        취소
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!--                  영수증-->
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--                    모달창 html-->
+
+                    <!--                    모달창 html-->
+
+
+                </div>
+            </div>
+        </main>
+
+    </div>
+    <!--            본문-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+    <script th:inline="javascript">
+
+        // 폼 함수
+        (function () {
+            'use strict'
+
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        } else {
+                            event.preventDefault()
+
+                            //성공시 모달창 열기 / 결제 api 호출 코드
+                            $(document).ready(function () {
+                                $("#iamportCancel").click(function () {
+                                    cancelPayments();
+                                });
+                            })
+
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        function cancelPayments(data) {
+            const merchantUid = [[${merchantUid}]];
+            const strReservationIds = [[${strReservationIds}]];
+            const paymentSum = [[${paymentSum}]];
+
+            $.ajax({
+                type: "POST",
+                url: '/bus/payment/cancel/',
+                data: JSON.stringify({
+                    "merchantUid": merchantUid,
+                    "reservationIds": strReservationIds,
+                    "paymentSum": paymentSum
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    alert("결제금액 환불완료");
+                    //self.close();//팝업창닫기
+                    //결제 취소화면으로 이동해주기.
+                },
+                error: function (result) {
+                    alert("결제금액 환불못함. 이유: " + result.responseText);
+                }
+            });
+        }//cancelPayments
+
+    </script>
+</th:block>
+
+</html>
+<style>
+</style>
+
+
