@@ -91,4 +91,20 @@ public class BusController {
         return "bus/bus-payment";
     }
 
+    @PostMapping("/bus/cancel")
+    public String getCancelList(@RequestParam("data") Long[] reservationIds, Model model) {
+
+        List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
+        Long paymentSum = reservationService.getPaymentSum(reservationIds);
+        String strReservationIds = reservationService.getStrReservationIds(reservationIds);
+        String merchantUid = reservationService.getMerchantUid(reservationIds);
+
+        model.addAttribute("reservationList", reservationList);
+        model.addAttribute("paymentSum", paymentSum);
+        model.addAttribute("strReservationIds", strReservationIds);
+        model.addAttribute("merchantUid", merchantUid);
+
+        return "bus/bus-cancel";
+    }
+
 }
