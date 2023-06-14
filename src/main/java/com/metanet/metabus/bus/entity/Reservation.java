@@ -47,6 +47,8 @@ public class Reservation extends BaseEntity {
     @Nullable
     private String impUid;
 
+    private Long busId;
+
     public void updatePaymentStatus(String impUid) {
         this.reservationStatus = ReservationStatus.PAID;
         this.impUid = impUid;

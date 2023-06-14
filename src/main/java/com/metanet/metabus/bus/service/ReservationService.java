@@ -80,7 +80,7 @@ public class ReservationService {
                         break;
                 }
 
-                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], reservationStatus);
+                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], reservationStatus, bus.getId());
                 Reservation savedReservation = reservationRepository.save(reservation);
                 reservationIdList.add(savedReservation.getId());
             }
