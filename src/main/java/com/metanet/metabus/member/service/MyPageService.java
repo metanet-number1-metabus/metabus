@@ -10,7 +10,7 @@ import com.metanet.metabus.member.repository.MyPageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,9 +27,11 @@ public class MyPageService {
         return myPageRepository.findByMemberAndDeletedDateIsNullAndReservationStatus(member, ReservationStatus.PAID);
     }
 
-    public Timestamp selectDates(Long id) {
-        Timestamp dates = myPageRepository.myDates(id);
-        return dates;
+    public LocalDate getCreatedDate(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        return member.getCreatedDate().toLocalDate();
     }
 
     public String selectGrade(Long id) {
@@ -41,4 +43,5 @@ public class MyPageService {
         Long mileage = myPageRepository.myMileage(id);
         return mileage;
     }
+
 }

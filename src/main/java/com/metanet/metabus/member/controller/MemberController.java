@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -311,13 +312,13 @@ public class MemberController {
             return "redirect:/member/login";
         }
         List<Reservation> reservationList = mypageService.selectTickets(memberDto);
-        Timestamp dates = mypageService.selectDates(memberDto.getId());
+        LocalDate createdDate = mypageService.getCreatedDate(memberDto);
         String grade = mypageService.selectGrade(memberDto.getId());
         Long mileage = mypageService.selectMileage(memberDto.getId());
 
         model.addAttribute("tickets", reservationList.size());
         model.addAttribute("member", memberDto);
-        model.addAttribute("dates", dates);
+        model.addAttribute("createdDate", createdDate);
         model.addAttribute("grade", grade);
         model.addAttribute("mileage", mileage);
         model.addAttribute("memberDto", memberDto);

@@ -42,8 +42,7 @@ public class ReservationService {
 
         List<Long> reservationIdList = new ArrayList<>();
 
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
         String departureTime = makeLocalTime(reservationInfoRequest.getDepartureTime());
         String arrivalTime = makeLocalTime(reservationInfoRequest.getArrivalTime());
@@ -93,29 +92,25 @@ public class ReservationService {
     }
 
     public List<Reservation> readAllReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
         return reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDesc(member);
     }
 
     public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
         return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.UNPAID);
     }
 
     public List<Reservation> readPaidReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
         return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.PAID);
     }
 
     public List<Reservation> readPastReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
         return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.Expired);
     }
@@ -296,6 +291,11 @@ public class ReservationService {
         }
 
         return passengerType;
+    }
+
+    private Member getMember(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        return memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
     }
 
 }
