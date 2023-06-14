@@ -318,7 +318,7 @@ public class MemberController {
 
         model.addAttribute("tickets", reservationList.size());
         model.addAttribute("member", memberDto);
-        model.addAttribute("createdDate", createdDate);
+        model.addAttribute("dates", createdDate);
         model.addAttribute("grade", grade);
         model.addAttribute("mileage", mileage);
         model.addAttribute("memberDto", memberDto);
