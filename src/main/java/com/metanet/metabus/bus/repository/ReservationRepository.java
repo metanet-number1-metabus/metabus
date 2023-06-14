@@ -28,4 +28,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByCreatedDateBeforeAndPaymentStatusAndDeletedDateIsNull(LocalDateTime threshold, PaymentStatus paymentStatus);
 
     Reservation findBySeatId(Seat seat);
+
+    List<Reservation> findByDepartureDateAndDeletedDateIsNullAndPaymentStatus(LocalDate yesterday, PaymentStatus paymentStatus);
 }
