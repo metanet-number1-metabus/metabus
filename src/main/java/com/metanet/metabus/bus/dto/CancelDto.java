@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class CancelDto {
-    private String merchantUid;
+
+    private String impUid;
     private String reservationIds;
     private String paymentSum;
+
 }
