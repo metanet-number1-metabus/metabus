@@ -1,7 +1,7 @@
-package com.metanet.metabus.bus.scheduler;
+package com.metanet.metabus.scheduler;
 
-import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.ReservationStatus;
 import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
@@ -25,7 +25,7 @@ public class MinuteJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LocalDateTime threshold = LocalDateTime.now().minusMinutes(10);
-        List<Reservation> expiredEntities = reservationRepository.findByCreatedDateBeforeAndPaymentStatusAndDeletedDateIsNull(threshold, PaymentStatus.UNPAID);
+        List<Reservation> expiredEntities = reservationRepository.findByCreatedDateBeforeAndReservationStatusAndDeletedDateIsNull(threshold, ReservationStatus.UNPAID);
 
         for (Reservation reservation : expiredEntities) {
             Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);

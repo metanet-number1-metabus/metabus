@@ -1,7 +1,5 @@
-package com.metanet.metabus.config;
+package com.metanet.metabus.scheduler;
 
-import com.metanet.metabus.bus.scheduler.MinuteJob;
-import com.metanet.metabus.mileage.scheduler.DailyJob;
 import org.quartz.JobDetail;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
