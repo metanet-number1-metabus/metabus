@@ -351,33 +351,19 @@
                 })
         })()
 
-        // 주문번호 만들기
-        function createOrderNum() {
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
-
-            let orderNum = year + month + day + '_';
-            for (let i = 0; i < 10; i++) {
-                orderNum += Math.floor(Math.random() * 8);
-            }
-            return orderNum;
-        }
-
         function payment(data) {
             const strReservationIds = [[${strReservationIds}]];
+            const memberId = [[${member.id}]];
 
             IMP.init('imp73665317');
             IMP.request_pay({
-                pg: 'html5_inicis.INIBillTst',
+                pg: 'html5_inicis.INIpayTest',
                 pay_method: 'card',
-                merchant_uid: createOrderNum(),
                 name: '메타버스',
                 amount: [[${paymentSum}]],
-                buyer_email: [[${memberEmail}]],
-                buyer_name: [[${memberName}]],
-                buyer_tel: [[${memberPhoneNum}]],
+                buyer_email: [[${member.email}]],
+                buyer_name: [[${member.name}]],
+                buyer_tel: [[${member.phoneNum}]],
                 m_redirect_url: 'http://www.metabus.site/'
             }, function (rsp) {
                 if (rsp.success) {
@@ -385,7 +371,14 @@
                         url: '/bus/payment/complete/',
                         method: 'POST',
                         data: JSON.stringify({
-                            "merchantUid": rsp.merchant_uid,
+                            "applyNum": rsp.apply_num,
+                            "memberId": memberId,
+                            "cardName": rsp.card_name,
+                            "cardNum": rsp.card_number,
+                            "impUid": rsp.imp_uid,
+                            "merchantName": rsp.name,
+                            "payment": rsp.paid_amount,
+                            "payMethod": rsp.pay_method,
                             "reservationIds": strReservationIds
                         }),
                         contentType: 'application/json',

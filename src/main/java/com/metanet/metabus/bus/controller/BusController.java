@@ -2,8 +2,10 @@ package com.metanet.metabus.bus.controller;
 
 import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.service.PaymentService;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.dto.MemberDto;
+import com.metanet.metabus.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import java.util.List;
 public class BusController {
 
     private final ReservationService reservationService;
+    private final PaymentService paymentService;
 
     @GetMapping("/bus/timetable")
     public String searchBus(
@@ -75,20 +78,14 @@ public class BusController {
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
         String strReservationIds = reservationService.getStrReservationIds(reservationIds);
 
-        String[] memberInfo = reservationService.getMemberInfo(reservationIds);
-        String memberEmail = memberInfo[0];
-        String memberName = memberInfo[1];
-        String memberPhoneNum = memberInfo[2];
+        Member member = reservationService.getMember(reservationIds);
 
         model.addAttribute("reservationListSize", reservationList.size());
 
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
         model.addAttribute("strReservationIds", strReservationIds);
-
-        model.addAttribute("memberEmail", memberEmail);
-        model.addAttribute("memberName", memberName);
-        model.addAttribute("memberPhoneNum", memberPhoneNum);
+        model.addAttribute("member", member);
 
         return "bus/bus-payment";
     }
@@ -99,12 +96,12 @@ public class BusController {
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
         String strReservationIds = reservationService.getStrReservationIds(reservationIds);
-        String merchantUid = reservationService.getMerchantUid(reservationIds);
+        String impUid = paymentService.getImpUid(reservationIds);
 
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
         model.addAttribute("strReservationIds", strReservationIds);
-        model.addAttribute("merchantUid", merchantUid);
+        model.addAttribute("impUid", impUid);
 
         return "bus/bus-cancel";
     }
