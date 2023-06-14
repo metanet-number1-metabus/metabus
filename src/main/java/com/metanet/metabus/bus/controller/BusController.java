@@ -80,6 +80,8 @@ public class BusController {
         String memberName = memberInfo[1];
         String memberPhoneNum = memberInfo[2];
 
+        model.addAttribute("reservationListSize", reservationList.size());
+
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
         model.addAttribute("strReservationIds", strReservationIds);
