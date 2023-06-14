@@ -6,26 +6,21 @@ import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
 import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MyJob implements Job {
 
     private final ReservationRepository reservationRepository;
     private final SeatRepository seatRepository;
-
-    @Autowired
-    public MyJob(ReservationRepository reservationRepository, SeatRepository seatRepository) {
-        this.reservationRepository = reservationRepository;
-        this.seatRepository = seatRepository;
-    }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
