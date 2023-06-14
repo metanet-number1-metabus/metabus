@@ -40,15 +40,20 @@ public class Reservation extends BaseEntity {
     private String passengerType;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
+    private ReservationStatus reservationStatus = ReservationStatus.UNPAID;
 
     private String busType;
 
     @Nullable
-    private String merchantUid;
+    private String impUid;
 
-    public void updatePaymentStatus(String merchantUid) {
-        this.paymentStatus = PaymentStatus.PAID;
-        this.merchantUid = merchantUid;
+    public void updatePaymentStatus(String impUid) {
+        this.reservationStatus = ReservationStatus.PAID;
+        this.impUid = impUid;
     }
+
+    public void updateExpiredStatus(ReservationStatus reservationStatus) {
+        this.reservationStatus = ReservationStatus.Expired;
+    }
+
 }
