@@ -72,7 +72,7 @@
                                             선택하신 출발날짜를 '월/일' 확인해주세요.
                                         </div>
                                     </div>
-                                    <div class="form-check mb-3 d-flex justify-content-end">
+                                    <div class="form-check mb-3 d-flex justify-content-end d-none">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox" name="roundtrip"> 왕복
                                         </label>
@@ -272,6 +272,7 @@
         //openAPI
         var busDataList;
         function getDepListAjax() {
+            // var url = "http://43.201.165.100:8888/metabusapi/get_departure_list";
             var url = "https://metabus.site:8443/metabusapi/get_departure_list";
             console.log(url);
             $.ajax({
@@ -289,6 +290,7 @@
             });
         }
         function getDesListAjax(clickedItem) {
+            // var url = "http://43.201.165.100:8888/metabusapi/get_destination_list";
             var url = "https://metabus.site:8443/metabusapi/get_destination_list";
             var departure = clickedItem; //우리는 서버 사이드에서 디코딩 해줘서 그냥 한글로 써서 보내면 댐
             var apiUrl = url + "?departure=" + departure;
