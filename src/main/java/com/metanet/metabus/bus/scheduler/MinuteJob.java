@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class MyJob implements Job {
+public class MinuteJob implements Job {
 
     private final ReservationRepository reservationRepository;
     private final SeatRepository seatRepository;
