@@ -20,6 +20,5 @@ public class ReceiptResponse {
     private String merchantName;
     private Long payment;
     private String payMethod;
-    private String reservationIds;
 
 }

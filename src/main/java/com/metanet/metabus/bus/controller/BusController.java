@@ -67,6 +67,7 @@ public class BusController {
             model.addAttribute("ReservationList", pastReservationList);
             model.addAttribute("checkButton", "만료된 승차권");
         }
+        model.addAttribute("memberDto", memberDto);
 
         return "bus/bus-reservation-table";
     }

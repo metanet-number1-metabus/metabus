@@ -39,6 +39,7 @@ public class MileageController {
         model.addAttribute("mileageList", mileageList);
         model.addAttribute("memberGrade", memberGrade);
         model.addAttribute("numberOfReservations", numberOfReservations);
+        model.addAttribute("memberDto", memberDto);
 
         return "mypage/mileage-table";
     }

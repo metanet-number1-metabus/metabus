@@ -106,6 +106,7 @@
                                                     <!--                                                    반복td-->
                                                     <th:block th:each="reservation, iteration : ${ReservationList}">
                                                         <tr class="cstr">
+<!--                                                            reservationStatus이라는 컬럼 결제대기: unpaid, 결제완료: paid, 만료: expired-->
 <!--                                                            th:classappend="" 를 사용해 전체 데이터 내려왔을 때 만료된 친구는 "cstrexpr" (검은색)으로 준다. 결제 대기인 친구는 "cstrwait", 결제 완료 친구는 "cstrdone"-->
                                                             <td th:text="${reservation.departureDate}"></td>
                                                             <td th:text="${reservation.departureTime}"></td>
@@ -146,7 +147,7 @@
                                                             </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-secondary"
-                                                                        onclick="clkBil(this)" id="temp">
+                                                                        onclick="clkBil(this)" th:id="${reservation.impUid}">
                                                                     <!--                      타임리프 주문번호-->
                                                                     영수증
                                                                 </button>
@@ -201,7 +202,7 @@
                                                                            name="data" th:value="${reservation.id}">
                                                                 </div>
                                                             </td>
-                                                            <td th:text="타임리프 결제 번호"></td>
+                                                            <td th:text="${reservation.impUid}"></td>
                                                             <td th:text="${reservation.departureDate}"></td>
                                                             <td th:text="${reservation.departureTime}"></td>
                                                             <td th:text="${reservation.departure} + ' - ' + ${reservation.destination}"></td>
@@ -213,7 +214,7 @@
                                                             </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-secondary"
-                                                                        onclick="clkBil(this)" id="temp">
+                                                                        onclick="clkBil(this)" th:id="${reservation.impUid}">
                                                                     <!--                      타임리프 주문번호-->
                                                                     영수증
                                                                 </button>
@@ -476,14 +477,16 @@
                     console.log("API 로딩 성공")
                     paymentDataList = data;
 
+                    console.log(paymentDataList);
+
                     // 밑의 예시처럼 지우고 넣어주기
                     // $("#modalDeparts").empty();
                     // $("#modalDeparts").append(reservationDataList.departure);
                     // $("#modalBusType").empty();
                     // $("#modalBusType").append(reservationDataList.busType);
 
-                    const myModalBil = new bootstrap.Modal(document.getElementById('내모달'));
-                    myModalBil.show();
+                    // const myModalBil = new bootstrap.Modal(document.getElementById('내모달'));
+                    // myModalBil.show();
 
                 },
                 error: function (xhr, status, error) {
