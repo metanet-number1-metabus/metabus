@@ -1,8 +1,10 @@
-package com.metanet.metabus.bus.scheduler;
+package com.metanet.metabus.config;
 
+import com.metanet.metabus.bus.scheduler.MyJob;
 import org.quartz.JobDetail;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
@@ -25,5 +27,13 @@ public class QuartzConfig {
         triggerFactory.setRepeatInterval(60000); // 1분 (단위: 밀리초)
         return triggerFactory;
     }
-}
 
+    @Bean
+    public CronTriggerFactoryBean dailyTrigger(JobDetail jobDetail) {
+        CronTriggerFactoryBean triggerFactory = new CronTriggerFactoryBean();
+        triggerFactory.setJobDetail(jobDetail);
+        triggerFactory.setCronExpression("0 0 12 * * ?"); // 매일 정오에 실행
+        return triggerFactory;
+    }
+
+}
