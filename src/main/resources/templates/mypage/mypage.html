@@ -9,16 +9,21 @@
             <div class="container-fluid px-4">
                 <div class="content">
                     <div class="container-fluid">
-
+                        <div class="row">
+                            <div class="col-lg-1 col-md-0"></div>
+                            <div class="col-lg-11 col-md-12">
                         <h1 class="mt-4">마이페이지</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/">홈</a></li>
                             <li class="breadcrumb-item active">마이페이지</li>
                         </ol>
-
+                            </div>
+                        </div>
 
                         <div class="row mb-4" >
-                            <div class="col-12" >
+                            <div class="row">
+                            <div class="col-lg-1 col-md-0"></div>
+                            <div class="col-lg-10 col-md-12" >
 
 
                                 <div class="card">
@@ -26,18 +31,18 @@
 
                                         <div class="row">
                                             <div class="col-lg-6 col-md-12">
-                                                <div class="row" style="height: 75px;"></div>
+                                                <div class="row" style="height: 100px;"></div>
                                                 <div class="row">
-                                                    <div class="col-12"><h4 style="padding-top: 15px;color: #5c636a;float: left">정봉경님의 회원등급은 </h4><h1 style="color: darkturquoise;float: left">META</h1><h4 style="padding-top: 15px;color: #5c636a">등급입니다.</h4></div>
+                                                    <div class="col-12"><h4 style="padding-top: 15px;color: #5c636a;float: left">[[${session.loginMember.getName()}]]님의 회원등급은 </h4><h1 style="color: darkturquoise;float: left" th:text="${grade}">META</h1><h4 style="padding-top: 15px;color: #5c636a">등급입니다.</h4></div>
                                                 </div>
-                                                <div class="row" style="height: 75px;"></div>
+                                                <div class="row" style="height: 120px;"></div>
                                             </div>
                                             <div class="col-lg-3 col-md-6">
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <h5 class="card-title">마일리지</h5>
                                                         <div class="mt-2">
-                                                            <h5 class="card-title" style="float:left;"><i class="fa-solid fa-coins"></i> </h5><h5>13000</h5>
+                                                            <h5 class="card-title" style="float:left;"><i class="fa-solid fa-coins" style="margin-right:5px"></i> </h5><h5 th:text="${mileage}"></h5>
                                                         </div>
                                                         <p class="card-text">회원님의 회원등급, 마일리지 사용내역, 등급 달성도 등 다양한 정보를 알 수 있습니다.</p>
                                                         <a href="/mileage" class="btn btn-primary">이동</a>
@@ -50,7 +55,7 @@
                                                     <div class="card-body">
                                                         <h5 class="card-title">승차권</h5>
                                                         <div class="mt-2">
-                                                            <h5 class="card-title" style="float:left;"><i class="fa-solid fa-ticket"></i> </h5><h5 style="float: left">4</h5><h5>장</h5>
+                                                            <h5 class="card-title" style="float:left;"><i class="fa-solid fa-ticket" style="margin-right:5px"></i> </h5><h5 style="float: left" th:text="${tickets}"></h5><h5>장</h5>
                                                         </div>
                                                         <p class="card-text">회원님이 예약/예매하신 승차권에 대한 정보확인과 결제가 가능합니다.</p>
                                                         <a href="/bus/reservation" class="btn btn-primary">이동</a>
@@ -64,46 +69,80 @@
                                 </div>
 
 
-                            </div>
+<!--                            </div>-->
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-
+                            <div class="col-lg-1 col-md-0"></div>
+                            </div>
+                   <div class="row" style="margin-top: 20px;">
+<!--                            <div class="col-lg-6 col-md-12" style="min-width:690px;">-->
+                            <div class="col-lg-1 col-md-0"></div>
+                            <div class="col-lg-10 col-md-12">
                                 <div class="card">
                                     <div class="card-header">
                                         회원 정보
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <button type="button" onclick = "location.href = 'http://localhost:8081/member/check/info'" class="btn btn-primary">회원 정보 수정</button>
-                                        <button type="button" onclick = "location.href = 'http://localhost:8081/member/check/pwd'" class="btn btn-success">비밀번호 변경</button>
-                                        <form class="form-signup" th:action="@{/member/delete}" method="post" novalidate>
-                                            <button class="btn btn-danger" type="submit">회원 탈퇴</button>
+                                        <div style="margin-top:20px;">
+                                        <b class="card-title" style="font-size: xxx-large" th:text="${session.loginMember.getName()}"></b>
+                                        <b th:if="${session.loginMember.getRole().name() == 'USER'}" style="font-size: small; display: inline-block; vertical-align: middle; color: white;
+                                        background-color: skyblue; margin-bottom:15px; border-radius: 5px;width:40px;text-align:center;">[[${session.loginMember.getRole()}]]</b>
+                                            <b th:if="${session.loginMember.getRole().name() == 'ADMIN'}" style="font-size: small; display: inline-block; vertical-align: middle; color: white;
+                                        background-color: skyblue; margin-bottom:15px; border-radius: 5px;width:50px;text-align:center;">[[${session.loginMember.getRole()}]]</b>
+                                            <button type="button" onclick="location.href='http://localhost:8081/member/check/info'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                                <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/edit.png" style="width: 27px; height: 20px; margin-bottom: 13px;" alt="Edit">
+                                            </button>
+                                            <br>
+                                            <div class="row" style="height: 50px;"></div>
+                                        </div>
+                                        <div style="">
+                                        <p style="font-size: small;color: #aaaaaa;margin: 0">이메일</p>
+                                        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/email.png" style="width:20px;height: 15px;margin-right:5px;margin-bottom:3px"><b th:text="${session.loginMember.getEmail()}" style="font-size: large"></b><br>
+                                            <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
+
+                                            <p style="font-size: small;color: #aaaaaa;margin: 0">전화번호</p>
+                                        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/phone.png" style="width:20px;height: 16px;margin-right:5px;margin-bottom:3px"><b th:text="${session.loginMember.getPhoneNum()}" style="font-size: large"></b><br>
+                                            <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
+
+                                            <p style="font-size: small;color: #aaaaaa;margin: 0">가입 일자</p>
+                                        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/date.png" style="width:20px;height: 15px;margin-right:5px;margin-bottom:3px">
+                                        <b th:text="${dates}" style="font-size: large"></b>
+                                            <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
+
+                                            <p style="font-size: small;color: #aaaaaa;margin: 0">비밀번호</p>
+                                            <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/passward.png" style="width:20px;height: 16px;margin-right:5px;margin-bottom:10px;"><b th:text="*{session.loginMember.getPassword().replaceAll('.', '*')}" style="font-size: large"></b>
+                                            <button type="button" onclick="location.href='http://localhost:8081/member/check/pwd'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                                <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/edit.png" style="width: 27px; height: 20px; margin-bottom: 12px;" alt="Edit">
+                                            </button>
+                                            <br>
+                                            <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
+
+                                        </div>
+                                        <div class="row" style="height: 50px;"></div>
+                                        <form class="form-signup" th:action="@{/member/delete}" method="post" novalidate style="text-align: right;">
+                                            <input type="submit" style="color: #aaaaaa; background-color: transparent; border: none; cursor: pointer;" value="회원탈퇴" onclick="return confirm('정말로 회원탈퇴하시겠습니까?')">
                                         </form>
-                                        <!--<button type="button" onclick = "location.href = 'http://localhost:8081/member/delete'" class="btn btn-danger">회원 탈퇴</button>-->
+
 
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="col-lg-1 col-md-0"></div>
                             </div>
                         </div>
 
-                    </div>
+       </div>
+
+<!--                </div>-->
 
                 </div>
-
-
             </div>
         </main>
 
     </div>
-    <!--            본문-->
-    <script th:inline="javascript">
 
-    </script>
 </th:block>
 
 </html>
+
 
 
