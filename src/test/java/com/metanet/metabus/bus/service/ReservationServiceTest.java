@@ -434,7 +434,7 @@ class ReservationServiceTest {
         reservations.add(new Reservation());
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDesc(member)).thenReturn(reservations);
+        when(reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDescCreatedDateDesc(member)).thenReturn(reservations);
 
         List<Reservation> result = reservationService.readAllReservation(memberDto);
 
@@ -450,7 +450,7 @@ class ReservationServiceTest {
         reservations.add(new Reservation());
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.UNPAID)).thenReturn(reservations);
+        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.UNPAID)).thenReturn(reservations);
 
         List<Reservation> result = reservationService.readUnpaidReservation(memberDto);
 
@@ -466,7 +466,7 @@ class ReservationServiceTest {
         reservations.add(new Reservation());
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.PAID)).thenReturn(reservations);
+        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.PAID)).thenReturn(reservations);
 
         List<Reservation> result = reservationService.readPaidReservation(memberDto);
 
@@ -482,7 +482,7 @@ class ReservationServiceTest {
         reservations.add(new Reservation());
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.Expired)).thenReturn(reservations);
+        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.Expired)).thenReturn(reservations);
 
         List<Reservation> result = reservationService.readPastReservation(memberDto);
 
