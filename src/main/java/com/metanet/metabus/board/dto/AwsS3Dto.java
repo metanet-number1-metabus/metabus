@@ -6,16 +6,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AwsS3 {
+public class AwsS3Dto {
     private String key;
     private String path;
 
-    public AwsS3() {
+    public AwsS3Dto() {
 
     }
 
     @Builder
-    public AwsS3(String key, String path) {
+    public AwsS3Dto(String key, String path) {
         this.key = key;
         this.path = path;
     }

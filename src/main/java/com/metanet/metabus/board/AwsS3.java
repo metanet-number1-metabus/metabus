@@ -1,17 +1,20 @@
 package com.metanet.metabus.board;
 
+
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.metanet.metabus.board.dto.AwsS3Dto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 
 import java.io.File;
 import java.io.IOException;
-
-@Service
 @RequiredArgsConstructor
+@Component
 public class AwsS3 {
 
     private final AmazonS3 amazonS3;
@@ -19,20 +22,17 @@ public class AwsS3 {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public com.metanet.metabus.board.dto.AwsS3 upload(File multipartFile, String dirName, String fileName) throws IOException {
-
-//        File file = convertMultipartFileToFile(multipartFile)
-//                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
+    public AwsS3Dto upload(File multipartFile, String dirName, String fileName) throws IOException {
 
         return upload(multipartFile, fileName);
     }
 
-    private com.metanet.metabus.board.dto.AwsS3 upload(File file, String fileName) {
+    private AwsS3Dto upload(File file, String fileName) {
         String key = fileName;
         String path = putS3(file, key);
         removeFile(file);
 
-        return com.metanet.metabus.board.dto.AwsS3
+        return AwsS3Dto
                 .builder()
                 .key(key)
                 .path(path)
@@ -54,17 +54,6 @@ public class AwsS3 {
         file.delete();
     }
 
-//    public Optional<File> convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
-//        File file = new File(System.getProperty("user.dir") + "/" + multipartFile.getOriginalFilename());
-//
-//        if (file.createNewFile()) {
-//            try (FileOutputStream fos = new FileOutputStream(file)) {
-//                fos.write(multipartFile.getBytes());
-//            }
-//            return Optional.of(file);
-//        }
-//        return Optional.empty();
-//    }
 
 
 }
