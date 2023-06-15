@@ -76,7 +76,7 @@ class BusControllerTest {
     @Test
     @DisplayName("버스 시간표 GET 성공(1) - 예매 탭이 null 일 때")
     void get_readReservation_success() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -100,7 +100,7 @@ class BusControllerTest {
     @Test
     @DisplayName("버스 시간표 GET 성공(2) - 예매 탭이 전체 일 때")
     void get_readReservation_success2() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -124,7 +124,7 @@ class BusControllerTest {
     @Test
     @DisplayName("버스 시간표 GET 성공(3) - 예매 탭이 결제대기 일 때")
     void get_readReservation_success3() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -148,7 +148,7 @@ class BusControllerTest {
     @Test
     @DisplayName("버스 시간표 GET 성공(4) - 예매 탭이 결제완료 일 때")
     void get_readReservation_success4() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -172,7 +172,7 @@ class BusControllerTest {
     @Test
     @DisplayName("버스 시간표 GET 성공(5) - 예매 탭이 만료된 승차권 일 때")
     void get_readReservation_success5() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -196,7 +196,7 @@ class BusControllerTest {
     @Test
     @DisplayName("버스 시간표 GET 성공(6) - 예매 탭이 그 외 일 때")
     void get_readReservation_success6() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
