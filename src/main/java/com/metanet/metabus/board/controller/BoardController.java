@@ -1,10 +1,10 @@
 package com.metanet.metabus.board.controller;
 
 
-import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.AwsS3;
-import com.metanet.metabus.board.service.BoardService;
 import com.metanet.metabus.board.ImageUtils;
+import com.metanet.metabus.board.dto.LostBoardDto;
+import com.metanet.metabus.board.service.BoardService;
 import com.metanet.metabus.common.exception.unauthorized.invalidSession;
 import com.metanet.metabus.member.controller.SessionConst;
 import com.metanet.metabus.member.dto.MemberDto;
@@ -43,11 +43,11 @@ public class BoardController {
 
     @GetMapping("/board/write")
     public String boardwriteForm(HttpSession session) {
-        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
-        if(memberDto==null){
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        if (memberDto == null) {
             return "redirect:/member/login";
         }
-        if(!memberDto.getRole().name().equals("ADMIN")){
+        if (!memberDto.getRole().name().equals("ADMIN")) {
             invalidSession invalidSession = new invalidSession();
             return "redirect:/board/list";
         }
@@ -57,7 +57,7 @@ public class BoardController {
 
     @PostMapping("/board/writepro")
     public String boardWritePro(LostBoardDto board, Model model, MultipartFile[] file, HttpSession session) throws IOException {
-        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
 
         model.addAttribute("message", "글 작성이 완료 되었습니다.");
         model.addAttribute("SearchUrl", "/board/list");
@@ -67,25 +67,23 @@ public class BoardController {
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String fileName = uuid + ".png";
 
-
-
         if (file != null) {
             boolean check = false;
             for (MultipartFile uploadedFile : file) {
                 if (
                         ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
                     check = true;
-                }else{
+                } else {
                     check = false;
                     break;
                 }
             }
-            if(check==true){
+            if (check == true) {
                 File mergedImageFile = ImageUtils.mergeImagesVertically(file);
                 awsS3.upload(mergedImageFile, "upload", fileName);
             }
         }
-        boardService.write(board, fileName,memberDto.getId());
+        boardService.write(board, fileName, memberDto.getId());
 
         return "redirect:/board/list";
     }
@@ -97,9 +95,8 @@ public class BoardController {
                             String searchKeyword) {
 
 
-
         Page<LostBoardDto> list = null;
-       System.out.println(pageable);
+        System.out.println(pageable);
         if (searchKeyword == null) {
             list = boardService.boardList(pageable);
         } else {
@@ -109,16 +106,14 @@ public class BoardController {
 
         int nowPage = list.getPageable().getPageNumber() + 1;
         int endPage = Math.min(nowPage + 4, list.getTotalPages());
-        int startPage = Math.max(endPage-4, 1);
+        int startPage = Math.max(endPage - 4, 1);
 
 
-
-            model.addAttribute("list", list);
-            model.addAttribute("nowPage", nowPage);
-            model.addAttribute("startPage", startPage);
-            model.addAttribute("endPage", endPage);
-            model.addAttribute("memberDto", memberDto);
-
+        model.addAttribute("list", list);
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("memberDto", memberDto);
 
 
         return "board/boardList";
@@ -126,20 +121,24 @@ public class BoardController {
     }
 
     @GetMapping("/board/view")
-    public String boardView(Model model, Long id) {
+    public String boardView(HttpSession session, Model model, Long id) {
         LostBoardDto boardDto = boardService.boardView(id);
 
         model.addAttribute("board", boardDto);
+
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", memberDto);
+
         return "board/boardview";
     }
 
     @GetMapping("/board/delete")
-    public String boardDelete(Long id, Model model,HttpSession session) {
-        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
-        if(memberDto==null){
+    public String boardDelete(Long id, Model model, HttpSession session) {
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        if (memberDto == null) {
             return "redirect:/member/login";
         }
-        if(!memberDto.getRole().name().equals("ADMIN")){
+        if (!memberDto.getRole().name().equals("ADMIN")) {
             invalidSession invalidSession = new invalidSession();
             return "redirect:/board/list";
         }
@@ -152,12 +151,12 @@ public class BoardController {
     }
 
     @GetMapping("/board/modify/{id}")
-    public String boardModify(@PathVariable("id") Long id, Model model,HttpSession session) {
-        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
-        if(memberDto==null){
+    public String boardModify(@PathVariable("id") Long id, Model model, HttpSession session) {
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        if (memberDto == null) {
             return "redirect:/member/login";
         }
-        if(!memberDto.getRole().name().equals("ADMIN")){
+        if (!memberDto.getRole().name().equals("ADMIN")) {
             invalidSession invalidSession = new invalidSession();
             return "redirect:/board/list";
         }
@@ -167,8 +166,8 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Long id,MultipartFile[] file,HttpSession session) throws IOException {
-        MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
+    public String boardUpdate(LostBoardDto board, Model model, @PathVariable("id") Long id, MultipartFile[] file, HttpSession session) throws IOException {
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
 
         model.addAttribute("message", "글 수정 완료.");
         model.addAttribute("SearchUrl", "/board/list");
@@ -183,17 +182,17 @@ public class BoardController {
             for (MultipartFile uploadedFile : file) {
                 if (ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
                     check = true;
-                }else{
+                } else {
                     check = false;
                     break;
                 }
             }
-            if(check==true){
+            if (check == true) {
                 File mergedImageFile = ImageUtils.mergeImagesVertically(file);
                 awsS3.upload(mergedImageFile, "upload", fileName);
             }
         }
-        boardService.update(board, fileName,id);
+        boardService.update(board, fileName, id);
 
         return "redirect:/board/list";
     }

@@ -1,5 +1,6 @@
 package com.metanet.metabus.bus.controller;
 
+import com.metanet.metabus.bus.dto.ReceiptResponse;
 import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.service.PaymentService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,13 +31,16 @@ public class BusController {
             @RequestParam("departurehome") String departureHome,
             @RequestParam("destinationhome") String destinationHome,
             @RequestParam("departuredate") String departureDate,
-            @RequestParam(value = "roundtrip", defaultValue = "off") String roundTrip, Model model
+            @RequestParam(value = "roundtrip", defaultValue = "off") String roundTrip, HttpSession session, Model model
     ) {
 
         model.addAttribute("departureHome", departureHome);
         model.addAttribute("destinationHome", destinationHome);
         model.addAttribute("departureDate", departureDate);
         model.addAttribute("roundTrip", roundTrip);
+
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", memberDto);
 
         return "bus/bus-time-table";
     }
@@ -76,7 +81,7 @@ public class BusController {
     }
 
     @PostMapping("/bus/payment")
-    public String getPaymentList(@RequestParam("data") Long[] reservationIds, Model model) {
+    public String getPaymentList(@RequestParam("data") Long[] reservationIds, HttpSession session, Model model) {
 
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
@@ -91,11 +96,14 @@ public class BusController {
         model.addAttribute("strReservationIds", strReservationIds);
         model.addAttribute("member", member);
 
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", memberDto);
+
         return "bus/bus-payment";
     }
 
     @PostMapping("/bus/cancel")
-    public String getCancelList(@RequestParam("data") Long[] reservationIds, Model model) {
+    public String getCancelList(@RequestParam("data") Long[] reservationIds, HttpSession session, Model model) {
 
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
@@ -107,7 +115,19 @@ public class BusController {
         model.addAttribute("strReservationIds", strReservationIds);
         model.addAttribute("impUid", impUid);
 
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", memberDto);
+
         return "bus/bus-cancel";
     }
 
+    @GetMapping("/pay/receipt/{impUid}")
+    public String makeReceipt(@PathVariable String impUid, Model model) {
+
+        ReceiptResponse receiptResponse = paymentService.makeReceipt(impUid);
+
+        model.addAttribute("receiptResponse", receiptResponse);
+
+        return "bus/receipt";
+    }
 }

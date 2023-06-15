@@ -150,6 +150,7 @@ public class ReservationService {
                 .seatNum(seatNum)
                 .createdDate(createdDate)
                 .payment(reservation.getPayment())
+                .impUid(reservation.getImpUid())
                 .build();
     }
 
