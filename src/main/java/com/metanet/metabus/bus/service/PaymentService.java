@@ -2,6 +2,19 @@ package com.metanet.metabus.bus.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.metanet.metabus.bus.dto.PayRequest;
+import com.metanet.metabus.bus.dto.ReceiptResponse;
+import com.metanet.metabus.bus.entity.Payment;
+import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.Seat;
+import com.metanet.metabus.bus.repository.PaymentRepository;
+import com.metanet.metabus.bus.repository.ReservationRepository;
+import com.metanet.metabus.bus.repository.SeatRepository;
+import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
+import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
+import com.metanet.metabus.member.entity.Member;
+import com.metanet.metabus.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import net.minidev.json.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,6 +29,7 @@ import java.util.Map;
 
 @Service
 @Component
+@RequiredArgsConstructor
 public class PaymentService {
 
     //---------------------환불, 결제 토큰생성
@@ -24,6 +38,11 @@ public class PaymentService {
 
     @Value("${imp_secret}")
     private String impSecret;
+
+    private final ReservationRepository reservationRepository;
+    private final SeatRepository seatRepository;
+    private final MemberRepository memberRepository;
+    private final PaymentRepository paymentRepository;
 
     public String getToken() throws Exception {
 
@@ -62,7 +81,7 @@ public class PaymentService {
         return token;
     }
 
-    public void paymentCancel(String accessToken, String merchantUid, String amount) throws IOException, ParseException {
+    public void paymentCancel(String accessToken, String impUid, String amount) throws IOException, ParseException {
         HttpsURLConnection conn;
         URL url = new URL("https://api.iamport.kr/payments/cancel");
 
@@ -78,9 +97,8 @@ public class PaymentService {
 
         JsonObject json = new JsonObject();
 
-        json.addProperty("merchant_uid", merchantUid);
+        json.addProperty("imp_uid", impUid);
         json.addProperty("amount", amount);
-        json.addProperty("checksum", amount);
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 
@@ -92,5 +110,79 @@ public class PaymentService {
 
         br.close();
         conn.disconnect();
+    }
+
+    public void completePayment(PayRequest payRequest) {
+
+        Long memberId = payRequest.getMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        String impUid = payRequest.getImpUid();
+
+        String reservationIds = payRequest.getReservationIds();
+        String[] strReservationIds = reservationIds.split(",");
+
+        Payment payment = Payment.builder()
+                .applyNum(payRequest.getApplyNum())
+                .member(member)
+                .cardName(payRequest.getCardName())
+                .cardNum(payRequest.getCardNum())
+                .impUid(impUid)
+                .merchantName(payRequest.getMerchantName())
+                .payment(payRequest.getPayment())
+                .payMethod(payRequest.getPayMethod())
+                .build();
+
+        paymentRepository.save(payment);
+
+        for (String strReservationId : strReservationIds) {
+            long reservationId = Long.parseLong(strReservationId.trim());
+            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+            reservation.updatePaymentStatus(impUid);
+            reservationRepository.save(reservation);
+        }
+    }
+
+    public void paymentCancel(String impUid, String reservationIds) {
+
+        Payment payment = paymentRepository.findByImpUidAndDeletedDateIsNull(impUid);
+        payment.delete();
+        paymentRepository.save(payment);
+
+        String[] strReservationIds = reservationIds.split(",");
+
+        for (String strReservationId : strReservationIds) {
+            long reservationId = Long.parseLong(strReservationId.trim());
+            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+            Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);
+            seat.delete();
+            seatRepository.save(seat);
+            reservation.delete();
+            reservationRepository.save(reservation);
+        }
+    }
+
+    public String getImpUid(Long[] reservationIds) {
+
+        Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationIds[0]);
+        return reservation.getImpUid();
+    }
+
+    public ReceiptResponse makeReceipt(String impUid) {
+        Payment payment = paymentRepository.findByImpUidAndDeletedDateIsNull(impUid);
+        Member member = payment.getMember();
+
+        return ReceiptResponse.builder()
+                .applyNum(payment.getApplyNum())
+                .memberEmail(member.getEmail())
+                .memberName(member.getName())
+                .memberPhoneNum(member.getPhoneNum())
+                .cardName(payment.getCardName())
+                .cardNum(payment.getCardNum())
+                .impUid(impUid)
+                .merchantName(payment.getMerchantName())
+                .payment(payment.getPayment())
+                .payMethod(payment.getPayMethod())
+                .build();
     }
 }

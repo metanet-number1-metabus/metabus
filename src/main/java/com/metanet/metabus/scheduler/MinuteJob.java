@@ -1,36 +1,31 @@
-package com.metanet.metabus.bus.scheduler;
+package com.metanet.metabus.scheduler;
 
-import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.ReservationStatus;
 import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
 import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-public class MyJob implements Job {
+@RequiredArgsConstructor
+public class MinuteJob implements Job {
 
     private final ReservationRepository reservationRepository;
     private final SeatRepository seatRepository;
 
-    @Autowired
-    public MyJob(ReservationRepository reservationRepository, SeatRepository seatRepository) {
-        this.reservationRepository = reservationRepository;
-        this.seatRepository = seatRepository;
-    }
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LocalDateTime threshold = LocalDateTime.now().minusMinutes(10);
-        List<Reservation> expiredEntities = reservationRepository.findByCreatedDateBeforeAndPaymentStatusAndDeletedDateIsNull(threshold, PaymentStatus.UNPAID);
+        List<Reservation> expiredEntities = reservationRepository.findByCreatedDateBeforeAndReservationStatusAndDeletedDateIsNull(threshold, ReservationStatus.UNPAID);
 
         for (Reservation reservation : expiredEntities) {
             Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);

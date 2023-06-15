@@ -28,14 +28,6 @@ public class ChatDto {
                 .build();
     }
 
-    /**
-     * 채팅 생성
-     *
-     * @param room    채팅 방
-     * @param sender  보낸이
-     * @param message 내용
-     * @return Chat Entity
-     */
     public static Chat createChat(Room room, String sender, String message) {
         return Chat.builder()
                 .room(room)
@@ -43,5 +35,6 @@ public class ChatDto {
                 .message(message)
                 .build();
     }
+
 
 }

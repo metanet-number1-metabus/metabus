@@ -1,0 +1,149 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Receipt</title>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v6.4.0/css/all.css' rel='stylesheet'>
+
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+    <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
+</head>
+<div>
+    <div class="container-fluid rounded shadow-lg" style="width:320px">
+
+        <div class="row" style="height: 25px"></div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <h5>RECEIPT_</h5><h5 th:text="${receiptResponse.impUid}">#158452</h5>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <p id="merchantName">메타버스</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr class="hr-dotted" style="width: 100%">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4"><p>승인번호</p></div>
+                    <div class="col-8 d-flex justify-content-end"><p th:text="${receiptResponse.applyNum}">68484646</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><p>구매자</p></div>
+                    <div class="col-9 d-flex justify-content-end"><p th:text="${receiptResponse.memberName}">정봉경</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><p>P.H</p></div>
+                    <div class="col-9 d-flex justify-content-end"><p th:text="${receiptResponse.memberPhoneNum}">
+                        010-7477-4744</p></div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><p>Email</p></div>
+                    <div class="col-9 d-flex justify-content-end"><p th:text="${receiptResponse.memberEmail}">
+                        bongazd@wdawd.dwd</p></div>
+                </div>
+                <div class="row">
+                    <div class="col-4"><p>결제방식</p></div>
+                    <div class="col-8 d-flex justify-content-end"><p th:text="${receiptResponse.payMethod}">card</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <hr class="hr-dashed" style="width: 80%">
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-12" style="width: 75%">
+                <div class="row">
+                    <div class="col-6"><h4>ITEM</h4></div>
+                    <div class="col-6 d-flex justify-content-end"><h4>PRICE</h4></div>
+                </div>
+                <div class="row">
+                    <div class="col-6"><span>시외버스표*n</span></div>
+                    <div class="col-6 d-flex justify-content-end"><span style="float:left"
+                                                                        th:text="${receiptResponse.payment}">30000</span><span>원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <hr class="hr-dashed" style="width: 80%">
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-12" style="width: 65%">
+                <div class="row">
+                    <div class="col-6"><h5>SubTotal:</h5></div>
+                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left"
+                                                                      th:text="${receiptResponse.payment}">30000</h5>
+                        <h5>
+                            원</h5></div>
+                </div>
+                <div class="row">
+                    <div class="col-6"><h5>Tax:</h5></div>
+                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left">0</h5><h5>원</h5></div>
+                </div>
+                <div class="row">
+                    <div class="col-6"><h5>Total:</h5></div>
+                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left"
+                                                                      th:text="${receiptResponse.payment}">30000</h5>
+                        <h5>
+                            원</h5></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr class="hr-dotted" style="width: 100%">
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-12" style="width: 80%">
+                <div class="row">
+                    <div class="col-6"><span>Card Corp.</span></div>
+                    <div class="col-6 d-flex justify-content-end"><span
+                            th:text="${receiptResponse.cardName}">국민카드</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-6"><span>Card #</span></div>
+                    <div class="col-6 d-flex justify-content-end"><span th:text="${receiptResponse.cardNum}">xxxx-xxxx-xxxx-xxxx</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr class="hr-dotted" style="width: 100%">
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-center" style="width: 60%">
+                <h5>THANK YOU FOR CHOOSING US!</h5>
+            </div>
+            <div class="col-12 d-flex justify-content-center" style="width: 60%">
+                <p>www.metabus.site</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script type='text/javascript'>
+
+
+</script>
+</body>
+</html>

@@ -247,7 +247,7 @@
         var seat_booked_list = [];
         var busDataList;
         $(document).ready(function () {
-            var url = "https://43.201.165.100:8443/metabusapi/get_bus_list";
+            var url = "https://metabus.site:8443/metabusapi/get_bus_list";
             var departure = [[${departureHome}]]; //우리는 서버 사이드에서 디코딩 해줘서 그냥 한글로 써서 보내면 댐
             var destination = [[${destinationHome}]];
             var apiUrl = url + "?departure=" + departure + "&destination=" + destination;
@@ -265,7 +265,7 @@
                         // <tr className="spacer">
                         //     <td colSpan="100"></td>
                         // </tr>
-                        var row = $("<tr th:if=''>");
+                        var row = $("<tr class='cstr'>");
                         var row_spacer = $("<tr>");
                         row_spacer.attr("class", "spacer");
                         var col_spacer = $("<td>");
@@ -661,5 +661,13 @@
 </th:block>
 
 </html>
+
+<style>
+
+    .cstr:hover {
+        background-color: rgba(0, 206, 209, 0.8);
+        cursor: pointer;
+    }
+</style>
 
 

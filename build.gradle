@@ -20,6 +20,9 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -60,40 +63,38 @@ dependencies {
 jacoco {
     toolVersion = '0.8.8'
 }
+
+test {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
 jacocoTestReport {
-    dependsOn test
     reports {
         html.enabled true
-        xml.enabled true
+        xml.enabled false
+        csv.enabled true
+
+        html.destination file("jacoco/jacocoHtml")
+        xml.destination file("jacoco/jacoco.xml")
     }
+
+    def Qdomains = []
+    for(qPattern in "**/QA" .. "**/QZ"){
+        Qdomains.add(qPattern+"*")
+    }
+
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(
-                    dir: it,
+            fileTree(dir: it,
                     includes: [
                             'com/metanet/metabus/**/controller/*',
                             'com/metanet/metabus/**/service/*',
                     ],
-                    excludes: [
-                            'com/metanet/metabus/common/*'
-                    ])
+                    exclude: [
+                            'com/metanet/metabus/common.*',
+                            'com/metanet/metabus/config.*'
+                    ] + Qdomains)
         }))
     }
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-    finalizedBy 'jacocoTestReport'
-}
-//
-//test {
-//	finalizedBy jacocoTestReport // 테스트 실행 후 Jacoco 보고서 생성
-//}
-//
-//jacocoTestReport {
-//	reports {
-//		xml.enabled true // XML 형식으로 커버리지 보고서 생성
-//		html.enabled true // HTML 형식으로 커버리지 보고서 생성
-//		html.destination file("${buildDir}/jacocoHtml") // HTML 보고서 생성 경로
-//	}
-//}

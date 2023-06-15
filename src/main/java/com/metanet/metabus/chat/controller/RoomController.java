@@ -24,63 +24,58 @@ public class RoomController {
      * 채팅방 참여하기
      *
      * @param roomId 채팅방 id
-     *
-     *
-     *
      */
 
-
     @GetMapping("/{roomId}")
-    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,@PathVariable(required = false) Long roomId, Model model) {
-        if(memberDto==null){
+    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, @PathVariable(required = false) Long roomId, HttpSession session, Model model) {
+        if (memberDto == null) {
             invalidSession invalidSession = new invalidSession();
             return "redirect:/member/login";
         }
 
 
-        // 채팅탭클릭시 채팅리스트만 띄우게하기위해 -1로 보냄
         if (roomId != -1) {
             List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);
             model.addAttribute("roomId", roomId);
             model.addAttribute("chatList", chatList);
         }
         List<RoomDto> roomList = null;
-        if(memberDto.getRole().name().equals("ADMIN")){
+        if (memberDto.getRole().name().equals("ADMIN")) {
             roomList = chatService.findAllRoom();
-        } else if (memberDto.getRole().name().equals("USER")){
+        } else {
             roomList = chatService.findUserRoom(memberDto.getId());
         }
         model.addAttribute("roomList", roomList);
-//        model.addAttribute("roomForm", new RoomForm());
+
+        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", loginMember);
+
         return "chat/room";
     }
 
     @GetMapping("/complete/{roomId}")
-    public String complete(@PathVariable(required = false) Long roomId){
+    public String complete(@PathVariable(required = false) Long roomId, HttpSession session, Model model) {
         chatService.completeRoom(roomId);
+
+        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", loginMember);
+
         return "redirect:/-1";
     }
 
-    /**
-     * 채팅방 등록
-     *
-     * @param form
-     */
+    // 채팅방 등록
     @PostMapping("/chat/room")
     @ResponseBody
     public Long createRoom(HttpSession session, String name) {
         MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
         Long id = loginMember.getId();
-        if(name!=null&&!name.equals("")) {
+        if (name != null && !name.equals("")) {
             // 세션에 값을 저장하거나 가져와 사용합니다.
             chatService.createRoom(name, id);
             return id;
-        }else{
+        } else {
             return (long) -1;
         }
-
     }
-
-
 
 }

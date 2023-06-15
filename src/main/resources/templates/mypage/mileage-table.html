@@ -3,399 +3,429 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
-  <!--            본문-->
-  <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
-    <main>
-      <div class="container-fluid px-4">
-        <div class="content">
+    <!--            본문-->
+    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="content">
 
 
+                    <div class="container-fluid">
+가
+                        <!--            내용-->
 
-          <div class="container-fluid">
-
-<!--            내용-->
-
-            <h1 class="mt-4">마일리지</h1>
-            <ol class="breadcrumb mb-4">
-              <li class="breadcrumb-item"><a href="/">홈</a></li>
-              <li class="breadcrumb-item"><a href="/member/mypage">마이페이지</a></li>
-              <li class="breadcrumb-item active">마일리지</li>
-            </ol>
-            <div class="row">
-
-              <div class="col-lg-6">
-                <div class="card mb-4">
-                  <div class="card-body" style="height: 210px">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="row"><h4 class="" style="color: darkturquoise"><i class="fa-solid fa-coins"></i> Mileage</h4></div>
-                        <div class="row" style="height: 30px"></div>
+                        <h1 class="mt-4">마일리지</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">홈</a></li>
+                            <li class="breadcrumb-item"><a href="/member/mypage">마이페이지</a></li>
+                            <li class="breadcrumb-item active">마일리지</li>
+                        </ol>
                         <div class="row">
-                          <div class="col-12">
-                            <div><h1 class="count" meta="13000" style="float: left">0</h1><h4 style="padding-top: 15px;color: #5c636a">Point</h4></div>
-                          </div>
+
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-body" style="height: 210px">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row"><h4 class="" style="color: darkturquoise"><i
+                                                        class="fa-solid fa-coins"></i> Mileage</h4></div>
+                                                <div class="row" style="height: 30px"></div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div><h1 class="count" th:attr="meta=@{${mileage}}"
+                                                                 style="float: left">0</h1>
+                                                            <h4 style="padding-top: 15px;color: #5c636a">Point</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row"><h4 class="" style="color: darkturquoise"><i
+                                                        class="fa-solid fa-trophy fa-beat"></i> Grade</h4></div>
+                                                <div class="row" style="height: 8px"></div>
+                                                <div class="row"><b class="">나의 회원등급</b></div>
+                                                <div class="row" style="height: 8px"></div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div><h1 style="float: left;color: darkturquoise"
+                                                                 th:text="${memberGrade}"></h1><h4
+                                                                style="padding-top: 15px;color: #5c636a">등급</h4></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-body" style="height: 210px">
+                                        <div class="card text-bg-info">
+                                            <div class="card-body" style="height: 180px">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <p style="margin: 0px 0px 0px; padding: 0px 0px;">누적 마일리지 :</p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <b class="count mb-1 fw-bold d-flex justify-content-start"
+                                                           th:attr="meta=@{${allMileage}}">0</b>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <p style="margin: 0px 0px 0px; padding: 0px 0px;">누적 사용량 :</p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <b class="count mb-1 fw-bold d-flex justify-content-start"
+                                                           th:attr="meta=@{${usedMileage}}">0</b>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <p style="margin: 0px 0px 0px; padding: 0px 0px;">이번달 적립량 :</p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <b class="count mb-1 fw-bold d-flex justify-content-start"
+                                                           th:attr="meta=@{${mileage}}">0</b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="row"><h4 class="" style="color: darkturquoise"><i class="fa-solid fa-trophy fa-beat"></i> Grade</h4></div>
-                        <div class="row" style="height: 8px"></div>
-                        <div class="row"><b class="" >나의 회원등급</b></div>
-                        <div class="row" style="height: 8px"></div>
+                        <!--            <div class="card mb-4">-->
+                        <!--              <div class="card-header">-->
+                        <!--                <i class="fas fa-chart-area me-1"></i>-->
+                        <!--                Area Chart Example-->
+                        <!--              </div>-->
+                        <!--              <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>-->
+                        <!--              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+                        <!--            </div>-->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                아래 세 가지 조건 중 하나의 조건을 충족하시면 META 등급이 유지됩니다.
+                                <a href="javascript:gradeFunc();">회원등급 설명</a>
+                                .
+                            </div>
+                        </div>
                         <div class="row">
-                          <div class="col-12">
-                            <div><h1 style="float: left;color: darkturquoise">META</h1><h4 style="padding-top: 15px;color: #5c636a">등급</h4></div>
-                          </div>
+                            <div class="col-lg-6 col-xl-3">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fa-solid fa-trophy me-1"></i>
+                                        META 등급 달성도
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myBarChart" width="100%" height="40"></canvas>
+                                    </div>
+                                    <div class="card-footer small text-muted"
+                                         th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')} + ' 기준 데이터'"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-3">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fa-solid fa-money-check-dollar me-1"></i>
+                                        조건 A: MetaBus 사용 마일리지
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myPieChart1" width="100%" height="40"></canvas>
+                                    </div>
+                                    <div class="card-footer small text-muted"
+                                         th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')} + ' 기준 데이터'"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-3">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fa-solid fa-ticket me-1"></i>
+                                        조건 B: MetaBus 예매 횟수
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myPieChart2" width="100%" height="40"></canvas>
+                                    </div>
+                                    <div class="card-footer small text-muted"
+                                         th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')} + ' 기준 데이터'"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-3">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fa-solid fa-coins me-1"></i>
+                                        조건C: MetaBus 누적 마일리지
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myPieChart3" width="100%" height="40"></canvas>
+                                    </div>
+                                    <div class="card-footer small text-muted"
+                                         th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')} + ' 기준 데이터'"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--            데이터 테이블-->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                    <tr>
+                                        <!--                    TODO: 테이블 헤더 레이블의 데이터는 원하시는 형식에 맞게 변경해주세요-->
+                                        <th>사용자</th>
+                                        <th>마일리지 금액</th>
+                                        <th>적립/사용</th>
+                                        <th>적립/사용 날짜</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--                  타임리프-->
+                                    <th:block th:each="mileageList : ${mileageList}">
+                                        <!--                  TODO: 리스팅할 데이터 따로 페이징 로직없이 모든 데이터 for문 돌리시면 됩니다 (페이징은 자바스크립트에서 처리)-->
+                                        <tr>
+                                            <td th:text="${mileageList.name}"></td>
+                                            <td th:text="${mileageList.point}"></td>
+                                            <td th:text="${mileageList.saveStatus}"></td>
+                                            <td th:text="${mileageList.createdDate}"></td>
+                                        </tr>
+                                        <!--타임리프-->
+                                        <!--                  <tr>-->
+                                        <!--                    <td>Garrett Winters</td>-->
+                                        <!--                    <td>Accountant</td>-->
+                                        <!--                    <td>Tokyo</td>-->
+                                        <!--                    <td>63</td>-->
+                                        <!--                    <td>2011/07/25</td>-->
+                                        <!--                    <td>$170,750</td>-->
+                                        <!--                  </tr>-->
+                                    </th:block>
+                                    </tbody>
+
+                                </table>
+                            </div>
                         </div>
 
-                      </div>
+
+                        <!--            내용-->
+                    </div>
+                    <!-- Vertically centered scrollable modal -->
+                    <div class="modal" tabindex="-1" id="myModal">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">회원등급</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>- ALPHA</h3><br>
+                                    <p>혜택 1.</p>
+                                    <h5>시외버스 예약시 마일리지 3% 적립</h5><br>
+                                    <p>혜택 2.</p>
+                                    <h5>MetaBus 각종 이벤트 참여자격</h5><br>
+                                    <h3>- META</h3><br>
+                                    <p>혜택 1.</p>
+                                    <h5>시외버스 예약시 마일리지 5% 적립</h5><br>
+                                    <p>혜택 2.</p>
+                                    <h5>MetaBus 각종 프리미엄 이벤트 참여자격</h5><br>
+                                    <p>혜택 3.</p>
+                                    <h5>시외버스 예매취소 수수료 무료</h5><br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
-                  </div>
                 </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="card mb-4" >
-                  <div class="card-body" style="height: 210px">
-                    <div class="card text-bg-info">
-                      <div class="card-body" style="height: 180px">
-                        <div class="row">
-                          <div class="col-12">
-                            <p style="margin: 0px 0px 0px; padding: 0px 0px;">누적 마일리지 :</p>
-                          </div>
-                          <div class="col-12">
-                            <b class="count mb-1 fw-bold d-flex justify-content-start" meta="30000">0</b>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <p style="margin: 0px 0px 0px; padding: 0px 0px;">누적 사용량 :</p>
-                          </div>
-                          <div class="col-12">
-                            <b class="count mb-1 fw-bold d-flex justify-content-start" meta="17000">0</b>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <p style="margin: 0px 0px 0px; padding: 0px 0px;">이번달 적립량 :</p>
-                          </div>
-                          <div class="col-12">
-                            <b class="count mb-1 fw-bold d-flex justify-content-start" meta="5000">0</b>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
             </div>
-<!--            <div class="card mb-4">-->
-<!--              <div class="card-header">-->
-<!--                <i class="fas fa-chart-area me-1"></i>-->
-<!--                Area Chart Example-->
-<!--              </div>-->
-<!--              <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>-->
-<!--              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-<!--            </div>-->
-            <div class="card mb-4">
-              <div class="card-body">
-                아래 세 가지 조건 중 하나의 조건을 충족하시면 META 등급이 유지됩니다.
-                <a  href="javascript:gradeFunc();">회원등급 설명</a>
-                .
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-xl-3">
-                <div class="card mb-4">
-                  <div class="card-header">
-                    <i class="fa-solid fa-trophy me-1"></i>
-                    META 등급 달성도
-                  </div>
-                  <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                  <div class="card-footer small text-muted">2023.06.09 기준 데이터</div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-3">
-                <div class="card mb-4">
-                  <div class="card-header">
-                    <i class="fa-solid fa-money-check-dollar me-1"></i>
-                    (조건 A) MetaBus 사용 마일리지
-                  </div>
-                  <div class="card-body"><canvas id="myPieChart1" width="100%" height="40"></canvas></div>
-                  <div class="card-footer small text-muted">2023.06.09 기준 데이터</div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-3">
-                <div class="card mb-4">
-                  <div class="card-header">
-                    <i class="fa-solid fa-ticket me-1"></i>
-                    (조건 B) MetaBus 예매 횟수
-                  </div>
-                  <div class="card-body"><canvas id="myPieChart2" width="100%" height="40"></canvas></div>
-                  <div class="card-footer small text-muted">2023.06.09 기준 데이터</div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-3">
-                <div class="card mb-4">
-                  <div class="card-header">
-                    <i class="fa-solid fa-coins me-1"></i>
-                    (조건C) MetaBus 누적 마일리지
-                  </div>
-                  <div class="card-body"><canvas id="myPieChart3" width="100%" height="40"></canvas></div>
+        </main>
 
-                  <div class="card-footer small text-muted">2023.06.09 기준 데이터</div>
-                </div>
-              </div>
-            </div>
-<!--            데이터 테이블-->
-            <div class="card mb-4">
-              <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                DataTable Example
-              </div>
-              <div class="card-body">
-                <table id="datatablesSimple">
-                  <thead>
-                  <tr>
-<!--                    TODO: 테이블 헤더 레이블의 데이터는 원하시는 형식에 맞게 변경해주세요-->
-                    <th>사용자</th>
-                    <th>마일리지 금액</th>
-                    <th>적립/사용</th>
-                    <th>적립/사용 날짜</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-<!--                  타임리프-->
-<!--                  TODO: 리스팅할 데이터 따로 페이징 로직없이 모든 데이터 for문 돌리시면 됩니다 (페이징은 자바스크립트에서 처리)-->
-                  <tr>
-                    <td>bongzzang</td>
-                    <td>17000</td>
-                    <td>사용</td>
-                    <td>2023.06.09</td>
-                  </tr>
-                  <!--타임리프-->
-<!--                  <tr>-->
-<!--                    <td>Garrett Winters</td>-->
-<!--                    <td>Accountant</td>-->
-<!--                    <td>Tokyo</td>-->
-<!--                    <td>63</td>-->
-<!--                    <td>2011/07/25</td>-->
-<!--                    <td>$170,750</td>-->
-<!--                  </tr>-->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-
-
-<!--            내용-->
-          </div>
-          <!-- Vertically centered scrollable modal -->
-            <div class="modal" tabindex="-1" id="myModal">
-              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">회원등급</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <h3>- USER</h3><br>
-                    <p>혜택 1.</p>
-                    <h5>시외버스 예약시 마일리지 3% 적립</h5><br>
-                    <p>혜택 2.</p>
-                    <h5>MetaBus 각종 이벤트 참여자격</h5><br>
-                    <h3>- META</h3><br>
-                    <p>혜택 1.</p>
-                    <h5>시외버스 예약시 마일리지 5% 적립</h5><br>
-                    <p>혜택 2.</p>
-                    <h5>MetaBus 각종 프리미엄 이벤트 참여자격</h5><br>
-                    <p>혜택 3.</p>
-                    <h5>시외버스 예매취소 수수료 무료</h5><br>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-        </div>
-      </div>
-    </main>
-
-  </div>
-  <!--            본문-->
-  <script th:inline="javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-  <script th:inline="javascript"  src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-  <script th:inline="javascript">
-    // 애니매이션
-    const counter = ($counter, max) => {
-      let now = max;
-      const handle = setInterval(() => {
-        $counter.innerHTML = Math.ceil(max - now);
-        // 목표수치에 도달하면 정지
-        if (now < 1) {clearInterval(handle);}
-        // 증가되는 값이 계속하여 작아짐
-        const step = now / 10;
-        // 값을 적용시키면서 다음 차례에 영향을 끼침
-        now -= step;
-      }, 50);
-    }
-    window.onload = () => {
-      // 카운트를 적용시킬 요소
-      const $counters = Array.from(document.getElementsByClassName("count"));
-      console.log($counters);
-      //비동기방식으로 메서드 호출 필요
-      //forEach() 메서드를 사용하여 $counters 배열의 각 요소에 대해 개별적으로 호출됨. 이렇게 하면 각 요소에 대해 개별적인 카운터가 시작
-      $counters.forEach(($counter) => {
-        // 목표 수치
-        const max = parseInt($counter.getAttribute("meta"));
-        setTimeout(() => counter($counter, max), 600);
-      });
-    }
-
-    // 차트
-    // 도넛
-    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#292b2c';
-
-    // Pie Chart Example
-    var ctx1 = document.getElementById("myPieChart1");
-    var myPieChart1 = new Chart(ctx1, {
-      type: 'doughnut',
-      data: {
-        //사용 마일리지 (30000)
-        labels: ["사용 마일리지", "남은 사용량"],
-        datasets: [{
-          // 타임리프
-          // TODO: query --> 로그인된 유저의 마일리지 사용내역 (당해 데이터만) 모두 조회한 결과 SUM _ result
-          // TODO: 연산 --> 30000(기준값) - result = 결과값 B에 입력 (정수 or 0), result 값 A에 입력 (30000(기준값) 보다 크면 기준값 입력)
-          //       A     B
-          data: [17000,13000],
-          // 타임리프
-          backgroundColor: ['#00CED1', '#b1afaf'],
-        }],
-      },
-    });
-    var ctx2 = document.getElementById("myPieChart2");
-    var myPieChart2 = new Chart(ctx2, {
-      type: 'doughnut',
-      data: {
-        //예매 횟수 (50번)
-        labels: ["예매 휫수", "남은 횟수"],
-        datasets: [{
-          // 타임리프
-          // TODO: query --> 로그인된 유저의 예매 횟수 (당해 데이터만) _ result
-          // TODO: 연산 --> 50(달성 기준값) - result = 결과값 B에 입력 (정수 or 0), result 값 A에 입력 (50(기준값) 보다 크면 기준값 입력)
-          //     A  B
-          data: [50,0],
-          // 타임리프
-          backgroundColor: ['#00CED1', '#b1afaf'],
-        }],
-      },
-    });
-    var ctx3 = document.getElementById("myPieChart3");
-    var myPieChart3 = new Chart(ctx3, {
-      type: 'doughnut',
-      data: {
-        // 누적 마일리지 (50000)
-        labels: ["누적 마일리지", "남은 마일리지"],
-        datasets: [{
-          // 타임리프
-          // TODO: query --> 로그인된 유저의 마일리지 (당해 데이터만) 모두 조회한 결과 SUM _ result
-          // TODO: 연산 --> 50000(달성 기준값) - result = 결과값 B에 입력 (정수값 or 0), result 값 A에 입력 (50000(기준값) 보다 크면 기준값 입력)
-          //       A     B
-          data: [30000,20000],
-          // 타임리프
-          backgroundColor: ['#00CED1', '#b1afaf'],
-        }],
-
-      },
-
-    });
-    // 바 차트
-    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#292b2c';
-
-    // Bar Chart Example
-    var ctx = document.getElementById("myBarChart");
-    var myLineChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ["조건A", "조건B", "조건C"],
-        datasets: [{
-          label: "Revenue",
-          backgroundColor: "rgb(0,206,209)",
-          borderColor: "rgb(0,206,209)",
-          // 타임리프
-          // TODO: 조건A, 조건B, 조건C 의 달성도 백분율 데이터 삽입 (0~100)
-          data: [70, 100, 70],
-          // 타임리프
-        }],
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            gridLines: {
-              display: false
-            },
-            ticks: {
-              maxTicksLimit: 6
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              min: 0,
-              max: 100,
-              maxTicksLimit: 5
-            },
-            gridLines: {
-              display: true
-            }
-          }],
-        },
-        legend: {
-          display: false
+    </div>
+    <!--            본문-->
+    <script th:inline="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+            crossorigin="anonymous"></script>
+    <script th:inline="javascript"
+            src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        // 애니매이션
+        const counter = ($counter, max) => {
+            let now = max;
+            const handle = setInterval(() => {
+                $counter.innerHTML = Math.ceil(max - now);
+                // 목표수치에 도달하면 정지
+                if (now < 1) {
+                    clearInterval(handle);
+                }
+                // 증가되는 값이 계속하여 작아짐
+                const step = now / 10;
+                // 값을 적용시키면서 다음 차례에 영향을 끼침
+                now -= step;
+            }, 50);
         }
-      }
-    });
+        window.onload = () => {
+            // 카운트를 적용시킬 요소
+            const $counters = Array.from(document.getElementsByClassName("count"));
+            console.log($counters);
+            //비동기방식으로 메서드 호출 필요
+            //forEach() 메서드를 사용하여 $counters 배열의 각 요소에 대해 개별적으로 호출됨. 이렇게 하면 각 요소에 대해 개별적인 카운터가 시작
+            $counters.forEach(($counter) => {
+                // 목표 수치
+                const max = parseInt($counter.getAttribute("meta"));
+                setTimeout(() => counter($counter, max), 600);
+            });
+        }
+
+        // 차트
+        // 도넛
+        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#292b2c';
+
+        // Pie Chart Example
+        var ctx1 = document.getElementById("myPieChart1");
+        var A = [[${usedMileage}]];
+        var B = [[${usedMileage}]] > 20000 ? 0 : 20000 - [[${usedMileage}]];
+        var myPieChart1 = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                //사용 마일리지 (20000)
+                labels: ["사용 마일리지", "남은 사용량"],
+                datasets: [{
+                    // 타임리프
+                    // TODO: query --> 로그인된 유저의 마일리지 사용내역 (당해 데이터만) 모두 조회한 결과 SUM _ result
+                    // TODO: 연산 --> 20000(기준값) - result = 결과값 B에 입력 (정수 or 0), result 값 A에 입력 (20000(기준값) 보다 크면 기준값 입력)
+                    //       A     B
+                    data: [A, B],
+                    // 타임리프
+                    backgroundColor: ['#00CED1', '#b1afaf'],
+                }],
+            },
+        });
+        var ctx2 = document.getElementById("myPieChart2");
+        var C = [[${numberOfReservations}]];
+        var D = [[${numberOfReservations}]] > 50 ? 0 : 50 - [[${numberOfReservations}]];
+        var myPieChart2 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                //예매 횟수 (50번)
+                labels: ["예매 휫수", "남은 횟수"],
+                datasets: [{
+                    // 타임리프
+                    // TODO: query --> 로그인된 유저의 예매 횟수 (당해 데이터만) _ result
+                    // TODO: 연산 --> 50(달성 기준값) - result = 결과값 B에 입력 (정수 or 0), result 값 A에 입력 (50(기준값) 보다 크면 기준값 입력)
+                    //     A  B
+                    data: [C, D],
+                    // 타임리프
+                    backgroundColor: ['#00CED1', '#b1afaf'],
+                }],
+            },
+        });
+        var ctx3 = document.getElementById("myPieChart3");
+        var E = [[${allMileage}]];
+        var F = [[${allMileage}]] > 30000 ? 0 : 30000 - [[${allMileage}]];
+        var myPieChart3 = new Chart(ctx3, {
+            type: 'doughnut',
+            data: {
+                // 누적 마일리지 (30000)
+                labels: ["누적 마일리지", "남은 마일리지"],
+                datasets: [{
+                    // 타임리프
+                    // TODO: query --> 로그인된 유저의 마일리지 (당해 데이터만) 모두 조회한 결과 SUM _ result
+                    // TODO: 연산 --> 30000(달성 기준값) - result = 결과값 B에 입력 (정수값 or 0), result 값 A에 입력 (30000(기준값) 보다 크면 기준값 입력)
+                    //       A     B
+                    data: [E, F],
+                    // 타임리프
+                    backgroundColor: ['#00CED1', '#b1afaf'],
+                }],
+
+            },
+
+        });
+        // 바 차트
+        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#292b2c';
+
+        // Bar Chart Example
+        var ctx = document.getElementById("myBarChart");
+        var G = B = 0 ? 100 : A / 200;
+        var H = D = 0 ? 100 : C / 0.5;
+        var I = F = 0 ? 100 : E / 300;
+        var myLineChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["조건A", "조건B", "조건C"],
+                datasets: [{
+                    label: "달성률",
+                    backgroundColor: "rgb(0,206,209)",
+                    borderColor: "rgb(0,206,209)",
+                    // 타임리프
+                    // TODO: 조건A, 조건B, 조건C 의 달성도 백분율 데이터 삽입 (0~100)
+                    data: [G, H, I],
+                    // 타임리프
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 6
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            maxTicksLimit: 5
+                        },
+                        gridLines: {
+                            display: true
+                        }
+                    }],
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
 
 
+        // 데이터 테이블
+        $(document).ready(function () {
+            let myTable = new simpleDatatables.DataTable("#datatablesSimple", {
+                fixedColumns: false,
+                fixedHeight: false,
+                perPage: 10,
+                perPageSelect: [5, 10],
+                searchable: true
+            });
+
+        });
 
 
-    // 데이터 테이블
-    $(document).ready(function() {
-      let myTable = new simpleDatatables.DataTable("#datatablesSimple", {
-        fixedColumns: false,
-        fixedHeight: false,
-        perPage: 10,
-        perPageSelect : [5,10],
-        searchable: true
-      });
-
-    });
+        // 모달
+        function gradeFunc() {
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
+        }
 
 
-    // 모달
-    function gradeFunc() {
-      const myModal = new bootstrap.Modal(document.getElementById('myModal'));
-      myModal.show();
-    }
-
-
-
-
-  </script>
+    </script>
 </th:block>
 
 </html>
 <style>
 </style>
-
-

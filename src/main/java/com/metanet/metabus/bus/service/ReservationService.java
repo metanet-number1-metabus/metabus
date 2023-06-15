@@ -3,8 +3,8 @@ package com.metanet.metabus.bus.service;
 import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
 import com.metanet.metabus.bus.entity.Bus;
-import com.metanet.metabus.bus.entity.PaymentStatus;
 import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.ReservationStatus;
 import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.ReservationRepository;
@@ -42,8 +42,7 @@ public class ReservationService {
 
         List<Long> reservationIdList = new ArrayList<>();
 
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
         String departureTime = makeLocalTime(reservationInfoRequest.getDepartureTime());
         String arrivalTime = makeLocalTime(reservationInfoRequest.getArrivalTime());
@@ -60,7 +59,7 @@ public class ReservationService {
 
         String[] passengerType = makePassengerType(reservationInfoRequest);
 
-        PaymentStatus paymentStatus = PaymentStatus.UNPAID;
+        ReservationStatus reservationStatus = ReservationStatus.UNPAID;
 
         for (int i = 0; i < seatCount; i++) {
 
@@ -81,7 +80,7 @@ public class ReservationService {
                         break;
                 }
 
-                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], paymentStatus);
+                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], reservationStatus, bus.getId());
                 Reservation savedReservation = reservationRepository.save(reservation);
                 reservationIdList.add(savedReservation.getId());
             }
@@ -93,31 +92,28 @@ public class ReservationService {
     }
 
     public List<Reservation> readAllReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDesc(member);
+        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(member);
     }
 
     public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
-        return reservationRepository.findUnpaidReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.UNPAID);
     }
 
     public List<Reservation> readPaidReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
-        return reservationRepository.findPaidReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.PAID);
     }
 
     public List<Reservation> readPastReservation(MemberDto memberDto) {
-        Long memberId = memberDto.getId();
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember(memberDto);
 
-        return reservationRepository.findPastReservationsByMemberOrderByDepartureDateDesc(member, LocalDate.now());
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.EXPIRED);
+
     }
 
     public List<ReservationDto> readByReservationId(Long[] reservationIds) {
@@ -154,6 +150,7 @@ public class ReservationService {
                 .seatNum(seatNum)
                 .createdDate(createdDate)
                 .payment(reservation.getPayment())
+                .impUid(reservation.getImpUid())
                 .build();
     }
 
@@ -183,53 +180,11 @@ public class ReservationService {
         return strReservationIds.toString();
     }
 
-    public String[] getMemberInfo(Long[] reservationIds) {
-
-        String[] memberInfo = new String[3];
-
-        Long reservationId = reservationIds[0];
-
-        Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
-        Member member = reservation.getMember();
-
-        memberInfo[0] = member.getEmail();
-        memberInfo[1] = member.getName();
-        memberInfo[2] = member.getPhoneNum();
-
-        return memberInfo;
-    }
-
-    public void completePayment(String merchantUid, String reservationIds) {
-
-        String[] strReservationIds = reservationIds.split(",");
-
-        for (String strReservationId : strReservationIds) {
-            long reservationId = Long.parseLong(strReservationId);
-            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
-            reservation.updatePaymentStatus(merchantUid);
-            reservationRepository.save(reservation);
-        }
-    }
-
-    public void paymentCancel(String reservationIds) {
-
-        String[] strReservationIds = reservationIds.split(",");
-
-        for (String strReservationId : strReservationIds) {
-            long reservationId = Long.parseLong(strReservationId);
-            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
-            Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);
-            seat.delete();
-            seatRepository.save(seat);
-            reservation.delete();
-            reservationRepository.save(reservation);
-        }
-    }
-
-    public String getMerchantUid(Long[] reservationIds) {
+    public Member getMember(Long[] reservationIds) {
 
         Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationIds[0]);
-        return reservation.getMerchantUid();
+        return reservation.getMember();
+
     }
 
     private String makeLocalTime(String timeString) {
@@ -338,6 +293,11 @@ public class ReservationService {
         }
 
         return passengerType;
+    }
+
+    private Member getMember(MemberDto memberDto) {
+        Long memberId = memberDto.getId();
+        return memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
     }
 
 }
