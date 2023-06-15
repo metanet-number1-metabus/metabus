@@ -322,7 +322,7 @@
         })()
 
         function cancelPayments(data) {
-            const merchantUid = [[${merchantUid}]];
+            const impUid = [[${impUid}]];
             const strReservationIds = [[${strReservationIds}]];
             const paymentSum = [[${paymentSum}]];
 
@@ -330,7 +330,7 @@
                 type: "POST",
                 url: '/bus/payment/cancel/',
                 data: JSON.stringify({
-                    "merchantUid": merchantUid,
+                    "impUid": impUid,
                     "reservationIds": strReservationIds,
                     "paymentSum": paymentSum
                 }),

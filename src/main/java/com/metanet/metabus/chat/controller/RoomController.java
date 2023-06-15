@@ -20,10 +20,15 @@ public class RoomController {
 
     private final ChatService chatService;
 
+    /**
+     * 채팅방 참여하기
+     *
+     * @param roomId 채팅방 id
+     */
 
     @GetMapping("/{roomId}")
-    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,@PathVariable(required = false) Long roomId, Model model) {
-        if(memberDto==null){
+    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, @PathVariable(required = false) Long roomId, Model model) {
+        if (memberDto == null) {
             invalidSession invalidSession = new invalidSession();
             return "redirect:/member/login";
         }
@@ -35,7 +40,7 @@ public class RoomController {
             model.addAttribute("chatList", chatList);
         }
         List<RoomDto> roomList = null;
-        if(memberDto.getRole().name().equals("ADMIN")){
+        if (memberDto.getRole().name().equals("ADMIN")) {
             roomList = chatService.findAllRoom();
         }else{
             roomList = chatService.findUserRoom(memberDto.getId());
@@ -46,26 +51,24 @@ public class RoomController {
     }
 
     @GetMapping("/complete/{roomId}")
-    public String complete(@PathVariable(required = false) Long roomId){
+    public String complete(@PathVariable(required = false) Long roomId) {
         chatService.completeRoom(roomId);
         return "redirect:/-1";
     }
 
+    // 채팅방 등록
     @PostMapping("/chat/room")
     @ResponseBody
     public Long createRoom(HttpSession session, String name) {
         MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
         Long id = loginMember.getId();
-        if(name!=null&&!name.equals("")) {
+        if (name != null && !name.equals("")) {
             // 세션에 값을 저장하거나 가져와 사용합니다.
             chatService.createRoom(name, id);
             return id;
-        }else{
+        } else {
             return (long) -1;
         }
-
     }
-
-
 
 }

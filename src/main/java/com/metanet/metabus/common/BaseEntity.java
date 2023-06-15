@@ -30,4 +30,8 @@ public class BaseEntity {
     public void undelete(){
         this.deletedDate = null;
     }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 }

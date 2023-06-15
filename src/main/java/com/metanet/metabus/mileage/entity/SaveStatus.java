@@ -1,4 +1,6 @@
 package com.metanet.metabus.mileage.entity;
 
-public class testEntity {
+public enum SaveStatus {
+    UP,
+    DOWN
 }

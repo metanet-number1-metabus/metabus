@@ -1,5 +1,6 @@
 package com.metanet.metabus.member.controller;
 
+import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.service.MemberService;
@@ -14,7 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -24,6 +26,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MyPageService mypageService;
+
     /**
      * 회원 가입
      */
@@ -87,7 +90,7 @@ public class MemberController {
     @PostMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession(false);
-        if (httpSession != null) {
+        if (httpSession.getAttribute(SessionConst.LOGIN_MEMBER) != null) {
             httpSession.invalidate();
         }
         return "redirect:/";
@@ -140,7 +143,6 @@ public class MemberController {
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
             memberService.checkPwd(memberLoginRequest, memberDto);
 
-            System.out.println("수정완료");
             return "redirect:/member/edit/info";
         }
     }
@@ -163,7 +165,6 @@ public class MemberController {
 
             memberService.checkPwd(memberLoginRequest, memberDto);
 
-            System.out.println("수정완료");
             return "redirect:/member/edit/pwd";
         }
     }
@@ -227,7 +228,6 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            System.out.println("수정완료");
             return "redirect:/";
         }
     }
@@ -250,7 +250,6 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            System.out.println("수정완료");
             return "redirect:/";
         }
     }
@@ -275,7 +274,6 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            System.out.println("수정완료");
             return "redirect:/";
         }
     }
@@ -308,16 +306,18 @@ public class MemberController {
         if (memberDto == null) {
             return "redirect:/member/login";
         }
-        Long tickets = mypageService.selectTickets(memberDto.getId());
-        Timestamp dates = mypageService.selectDates(memberDto.getId());
+        List<Reservation> reservationList = mypageService.selectTickets(memberDto);
+        LocalDate createdDate = mypageService.getCreatedDate(memberDto);
         String grade = mypageService.selectGrade(memberDto.getId());
         Long mileage = mypageService.selectMileage(memberDto.getId());
 
-        model.addAttribute("tickets",tickets);
+        model.addAttribute("tickets", reservationList.size());
         model.addAttribute("member", memberDto);
-        model.addAttribute("dates",dates);
-        model.addAttribute("grade",grade);
-        model.addAttribute("mileage",mileage);
+        model.addAttribute("dates", createdDate);
+        model.addAttribute("grade", grade);
+        model.addAttribute("mileage", mileage);
+        model.addAttribute("memberDto", memberDto);
+
         return "mypage/mypage";
     }
 
