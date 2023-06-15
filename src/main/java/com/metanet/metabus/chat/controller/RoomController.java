@@ -27,7 +27,7 @@ public class RoomController {
      */
 
     @GetMapping("/{roomId}")
-    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, @PathVariable(required = false) Long roomId, Model model) {
+    public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, @PathVariable(required = false) Long roomId, HttpSession session, Model model) {
         if (memberDto == null) {
             invalidSession invalidSession = new invalidSession();
             return "redirect:/member/login";
@@ -42,17 +42,24 @@ public class RoomController {
         List<RoomDto> roomList = null;
         if (memberDto.getRole().name().equals("ADMIN")) {
             roomList = chatService.findAllRoom();
-        }else{
+        } else {
             roomList = chatService.findUserRoom(memberDto.getId());
         }
         model.addAttribute("roomList", roomList);
+
+        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", loginMember);
 
         return "chat/room";
     }
 
     @GetMapping("/complete/{roomId}")
-    public String complete(@PathVariable(required = false) Long roomId) {
+    public String complete(@PathVariable(required = false) Long roomId, HttpSession session, Model model) {
         chatService.completeRoom(roomId);
+
+        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+        model.addAttribute("memberDto", loginMember);
+
         return "redirect:/-1";
     }
 
