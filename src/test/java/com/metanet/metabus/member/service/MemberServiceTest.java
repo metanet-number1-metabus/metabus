@@ -136,7 +136,7 @@ class MemberServiceTest {
         when(passwordEncoder.encode(any())).thenReturn(encoded);
 
         MemberDto result = Assertions.assertDoesNotThrow(() ->
-                memberService.editInfo(memberEditInfoRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum())));
+                memberService.editInfo(memberEditInfoRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade())));
 
         assertEquals(result.getId(), member.getId());
         assertEquals(result.getName(), memberEditInfoRequest.getName());
@@ -158,7 +158,7 @@ class MemberServiceTest {
         when(passwordEncoder.encode(memberPasswordRequest.getPassword())).thenReturn(encoded);
 
         MemberDto result = Assertions.assertDoesNotThrow(() ->
-                memberService.editPassword(memberPasswordRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum())));
+                memberService.editPassword(memberPasswordRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade())));
 
         assertEquals(result.getId(), member.getId());
         assertEquals(result.getName(), member.getName());
@@ -180,7 +180,7 @@ class MemberServiceTest {
         when(passwordEncoder.encode(memberOAuthRequest.getPassword())).thenReturn(encoded);
 
         MemberDto result = Assertions.assertDoesNotThrow(() ->
-                memberService.editInfoOAuth(memberOAuthRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum())));
+                memberService.editInfoOAuth(memberOAuthRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade())));
 
         assertEquals(result.getId(), member.getId());
         assertEquals(result.getName(), memberOAuthRequest.getName());
@@ -199,7 +199,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(!passwordEncoder.matches(member.getPassword(), "12345678")).thenReturn(true);
 
-        Assertions.assertDoesNotThrow(() -> memberService.checkPwd(new MemberLoginRequest(member.getEmail(), member.getPassword()), new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum())));
+        Assertions.assertDoesNotThrow(() -> memberService.checkPwd(new MemberLoginRequest(member.getEmail(), member.getPassword()), new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade())));
 
     }
 
@@ -225,7 +225,7 @@ class MemberServiceTest {
         when(!passwordEncoder.matches(member.getPassword(), "123456788")).thenReturn(false);
 
         InvalidPasswordException exception = Assertions.assertThrows(InvalidPasswordException.class, () -> {
-            memberService.checkPwd(new MemberLoginRequest("test@test.com", "12345678"), new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum()));
+            memberService.checkPwd(new MemberLoginRequest("test@test.com", "12345678"), new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade()));
         });
 
         assertEquals(ErrorCode.INVALID_PASSWORD, exception.getErrorCode());
@@ -239,7 +239,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(memberRepository.save(any(Member.class))).thenReturn(member);
 
-        Assertions.assertDoesNotThrow(() -> memberService.delete(new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum())));
+        Assertions.assertDoesNotThrow(() -> memberService.delete(new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade())));
     }
 
     @Test

@@ -1,17 +1,21 @@
 package com.metanet.metabus.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.AwsS3;
-import com.metanet.metabus.board.service.BoardService;
 import com.metanet.metabus.board.ImageUtils;
+import com.metanet.metabus.board.dto.LostBoardDto;
+import com.metanet.metabus.board.service.BoardService;
 import com.metanet.metabus.member.dto.MemberDto;
+import com.metanet.metabus.member.entity.Grade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
@@ -31,7 +35,8 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,8 +69,8 @@ class BoardControllerTest {
 
         MockHttpSession session = new MockHttpSession();
 
-        MemberDto memberDto = new MemberDto(1L,"나","123456789","test@test.com",0L,
-                com.metanet.metabus.member.entity.Role.ADMIN,"123456789");
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.ADMIN, "123456789", Grade.ALPHA);
 
         session.setAttribute("loginMember", memberDto);
 
@@ -93,8 +98,8 @@ class BoardControllerTest {
         MockHttpSession session = new MockHttpSession();
 
 
-        MemberDto memberDto = new MemberDto(1L,"나","123456789","test@test.com",0L,
-                com.metanet.metabus.member.entity.Role.USER,"123456789");
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -113,14 +118,14 @@ class BoardControllerTest {
 
 
         MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
 
         List<LostBoardDto> boardList = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        boardList.add(new LostBoardDto(1L,"제목","내용",now));
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
@@ -147,7 +152,7 @@ class BoardControllerTest {
 
 
         MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -157,7 +162,7 @@ class BoardControllerTest {
 
         List<LostBoardDto> boardList = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        boardList.add(new LostBoardDto(1L,"제목","내용",now));
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
         Pageable pageable = PageRequest.of(0, 10);
         Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
 
@@ -204,7 +209,7 @@ class BoardControllerTest {
 
 
         MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
-                com.metanet.metabus.member.entity.Role.ADMIN, "123456789");
+                com.metanet.metabus.member.entity.Role.ADMIN, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -229,7 +234,7 @@ class BoardControllerTest {
         // Given
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         doNothing().when(boardService).write(any(LostBoardDto.class), any(String.class), any(Long.class));
@@ -257,7 +262,7 @@ class BoardControllerTest {
         // Given
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         doNothing().when(boardService).write(any(LostBoardDto.class), any(String.class), any(Long.class));
@@ -290,7 +295,7 @@ class BoardControllerTest {
         // Given
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         doNothing().when(boardService).write(any(LostBoardDto.class), any(String.class), any(Long.class));
@@ -318,7 +323,7 @@ class BoardControllerTest {
         // Given
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         doNothing().when(boardService).write(any(LostBoardDto.class), any(String.class), any(Long.class));
@@ -363,7 +368,7 @@ class BoardControllerTest {
         MockHttpSession session = new MockHttpSession();
 
         MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
         session.setAttribute("loginMember", memberDto);
 
@@ -382,7 +387,7 @@ class BoardControllerTest {
 
 
         MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
         session.setAttribute("loginMember", memberDto);
 
@@ -400,9 +405,9 @@ class BoardControllerTest {
 
 
         MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
-                com.metanet.metabus.member.entity.Role.ADMIN, "123456789");
+                com.metanet.metabus.member.entity.Role.ADMIN, "123456789", Grade.ALPHA);
         LocalDateTime now = LocalDateTime.now();
-        LostBoardDto board = new LostBoardDto(1L,"a","a",now);
+        LostBoardDto board = new LostBoardDto(1L, "a", "a", now);
 
         session.setAttribute("loginMember", memberDto);
         given(boardService.boardView(1L)).willReturn(board);
@@ -426,7 +431,7 @@ class BoardControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         doNothing().when(boardService).write(any(LostBoardDto.class), any(String.class), any(Long.class));
@@ -442,14 +447,13 @@ class BoardControllerTest {
     }
 
 
-
     @Test
     @DisplayName("게시글 수정 성공")
     void boardUpdateSuccess() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         doNothing().when(boardService).write(any(LostBoardDto.class), any(String.class), any(Long.class));
@@ -463,10 +467,6 @@ class BoardControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/board/list"));
     }
-
-
-
-
 
 
 }
