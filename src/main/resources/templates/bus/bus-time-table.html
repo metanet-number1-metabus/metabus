@@ -265,7 +265,7 @@
                         // <tr className="spacer">
                         //     <td colSpan="100"></td>
                         // </tr>
-                        var row = $("<tr th:if=''>");
+                        var row = $("<tr class='cstr'>");
                         var row_spacer = $("<tr>");
                         row_spacer.attr("class", "spacer");
                         var col_spacer = $("<td>");
@@ -661,5 +661,13 @@
 </th:block>
 
 </html>
+
+<style>
+
+    .cstr:hover {
+        background-color: rgba(0, 206, 209, 0.8);
+        cursor: pointer;
+    }
+</style>
 
 

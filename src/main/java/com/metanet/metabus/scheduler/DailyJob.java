@@ -30,7 +30,7 @@ public class DailyJob implements Job {
         List<Reservation> reservations = reservationRepository.findByDepartureDateAndDeletedDateIsNullAndReservationStatus(yesterday, ReservationStatus.PAID);
 
         for (Reservation reservation : reservations) {
-            reservation.updateExpiredStatus(ReservationStatus.Expired);
+            reservation.updateExpiredStatus(ReservationStatus.EXPIRED);
             reservationRepository.save(reservation);
 
             Mileage mileage = mileageService.saveMileage(reservation);
