@@ -364,7 +364,7 @@
                 buyer_email: [[${member.email}]],
                 buyer_name: [[${member.name}]],
                 buyer_tel: [[${member.phoneNum}]],
-                m_redirect_url: 'http://www.metabus.site/'
+                m_redirect_url: '/'
             }, function (rsp) {
                 if (rsp.success) {
                     $.ajax({
@@ -383,7 +383,7 @@
                         }),
                         contentType: 'application/json',
                         success: function (response) {
-                            window.location.href = 'http://www.metabus.site/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
+                            window.location.href = '/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
                         },
                         error: function (xhr, status, error) {
                             alert("실패: " + status + " / " + error);
