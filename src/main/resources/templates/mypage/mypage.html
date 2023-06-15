@@ -96,11 +96,11 @@
                                         </div>
                                         <div style="">
                                         <p style="font-size: small;color: #aaaaaa;margin: 0">이메일</p>
-                                        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/email.png" style="width:20px;height: 15px;margin-right:5px;margin-bottom:3px"><b th:text="${session.loginMember.getEmail()}" style="font-size: large"></b><br>
+                                            <span class="fa-regular fa-envelope p-2"></span><b th:text="${session.loginMember.getEmail()}" style="font-size: large"></b><br>
                                             <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
 
                                             <p style="font-size: small;color: #aaaaaa;margin: 0">전화번호</p>
-                                        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/phone.png" style="width:20px;height: 16px;margin-right:5px;margin-bottom:3px"><b th:text="${session.loginMember.getPhoneNum()}" style="font-size: large"></b><br>
+                                            <span class="fa fa-phone p-2"></span> <b th:text="${session.loginMember.getPhoneNum()}" style="font-size: large"></b><br>
                                             <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
 
                                             <p style="font-size: small;color: #aaaaaa;margin: 0">가입 일자</p>
@@ -109,7 +109,7 @@
                                             <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
 
                                             <p style="font-size: small;color: #aaaaaa;margin: 0">비밀번호</p>
-                                            <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/passward.png" style="width:20px;height: 16px;margin-right:5px;margin-bottom:10px;"><b th:text="*{session.loginMember.getPassword().replaceAll('.', '*')}" style="font-size: large"></b>
+                                            <span class="fas fa-lock px-2"></span><b th:if="${session.loginMember.getPassword()}" th:text="*{session.loginMember.getPassword().replaceAll('.', '*')}" style="font-size: large"></b>
                                             <button type="button" onclick="location.href='http://localhost:8081/member/check/pwd'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
                                                 <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/edit.png" style="width: 27px; height: 20px; margin-bottom: 12px;" alt="Edit">
                                             </button>
