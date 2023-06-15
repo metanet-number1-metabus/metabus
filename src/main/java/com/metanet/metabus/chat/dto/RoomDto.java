@@ -1,5 +1,6 @@
 package com.metanet.metabus.chat.dto;
 
+import com.metanet.metabus.common.BaseEntity;
 import lombok.*;
 import com.metanet.metabus.chat.entity.Room;
 
@@ -25,16 +26,4 @@ public class RoomDto {
                 .build();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RoomDto roomDto = (RoomDto) o;
-        return Objects.equals(id, roomDto.id) && Objects.equals(name, roomDto.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 }

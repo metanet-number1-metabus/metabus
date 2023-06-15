@@ -12,9 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -37,8 +41,11 @@ class RoomControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
     @Test
-    @DisplayName("Complete Room")
+    @DisplayName("방 완료처리")
     void completeRoomRedirectToDefaultPage() throws Exception {
 
         Long roomId = 1L;
@@ -50,22 +57,20 @@ class RoomControllerTest {
     }
 
     @Test
-    @DisplayName("Join Room ID")
+    @DisplayName("방보이기 유저")
     void joinRoomWithValidRoomId() throws Exception {
-        // Create a mock session
+
         MockHttpSession session = new MockHttpSession();
 
-        // Create a memberDto representing a logged-in user
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
                 com.metanet.metabus.member.entity.Role.USER, "123456789");
 
-        // Set the memberDto in the session
+
         session.setAttribute("loginMember", memberDto);
 
-        // Set up a valid room ID
         Long roomId = 1L;
 
-        // Perform the request to join the room
+
         mockMvc.perform(get("/{roomId}", roomId)
                         .session(session))
                 .andExpect(status().isOk())
@@ -76,22 +81,21 @@ class RoomControllerTest {
     }
 
     @Test
-    @DisplayName("Join Room ADMIN")
+    @DisplayName("방보이기 운영자")
     void joinRoomWithValidRoomIdA() throws Exception {
-        // Create a mock session
+
         MockHttpSession session = new MockHttpSession();
 
-        // Create a memberDto representing a logged-in user
+
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
                 Role.ADMIN, "123456789");
 
-        // Set the memberDto in the session
+
         session.setAttribute("loginMember", memberDto);
 
-        // Set up a valid room ID
+
         Long roomId = 1L;
 
-        // Perform the request to join the room
         mockMvc.perform(get("/{roomId}", roomId)
                         .session(session))
                 .andExpect(status().isOk())
@@ -102,7 +106,7 @@ class RoomControllerTest {
     }
 
     @Test
-    @DisplayName("Join Room null")
+    @DisplayName("방보기 세션없음")
     void joinRoomWithNull() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -113,7 +117,7 @@ class RoomControllerTest {
     }
 
     @Test
-    @DisplayName("Join Room -1")
+    @DisplayName("방초기화면 ")
     void joinRoomWithNegativeRoomId() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -129,33 +133,31 @@ class RoomControllerTest {
     }
 
     @Test
-    @DisplayName("Join Room as User")
+    @DisplayName("유저 방리스트")
     void joinRoomAsUser() throws Exception {
 
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
                 com.metanet.metabus.member.entity.Role.USER, "123456789");
 
         Room room = new Room(1L,"나",1L,"완료");
-        // 가짜 채팅 리스트
+
         List<ChatDto> fakeChatList = Arrays.asList(
                 new ChatDto(1L, room, "User1", "Hello", LocalDateTime.now()),
                 new ChatDto(2L, room, "User2", "Hi", LocalDateTime.now())
         );
 
-        // 가짜 방 리스트
+
         List<RoomDto> fakeRoomList = Arrays.asList(
                 new RoomDto(1L, "Room 1", 1L, "완료"),
                 new RoomDto(2L, "Room 2", 1L, "완료")
         );
 
-        // memberDto를 세션에 설정
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("loginMember", memberDto);
 
-        // chatService의 findAllChatByRoomId() 메서드에 대한 Mock 설정
         when(chatService.findAllChatByRoomId(1L)).thenReturn(fakeChatList);
 
-        // chatService의 findUserRoom() 메서드에 대한 Mock 설정
+
         when(chatService.findUserRoom(memberDto.getId())).thenReturn(fakeRoomList);
 
         mockMvc.perform(get("/{roomId}", 1L)
@@ -167,25 +169,62 @@ class RoomControllerTest {
                 .andExpect(model().attribute("roomList", fakeRoomList));
     }
 
+
     @Test
-    @DisplayName("Create Room")
-    void createRoom() throws Exception {
-        // 입력 데이터
-        String name = "Room 1";
+    @DisplayName("방만들기 이름있음")
+    void createRoom_validName_success() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
                 Role.USER, "123456789");
 
-        // 세션에 loginMember 객체 설정
-        MockHttpSession session = new MockHttpSession();
+
         session.setAttribute("loginMember", memberDto);
-
-        // chatService의 createRoom() 메서드에 대한 Mock 설정
-        doNothing().when(chatService).createRoom(name, memberDto.getId());
-
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(post("/chat/room")
                         .session(session)
-                        .param("name", name))
+                        .param("name", "name")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
-                .andExpect(content().string(memberDto.getId().toString()));
+                .andExpect(content().string("1"));
     }
+
+    @Test
+    @DisplayName("방만들기 이름공백")
+    void createRoom_validName_fail() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+        MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
+                Role.USER, "123456789");
+
+
+        session.setAttribute("loginMember", memberDto);
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc.perform(post("/chat/room")
+                        .session(session)
+                        .param("name", "")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(content().string("-1"));
+    }
+
+    @Test
+    @DisplayName("방만들기 이름null")
+    void createRoom_validName_fail_null() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+        MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
+                Role.USER, "123456789");
+
+
+        session.setAttribute("loginMember", memberDto);
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc.perform(post("/chat/room")
+                        .session(session)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(content().string("-1"));
+    }
+
+
 }

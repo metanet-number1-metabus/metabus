@@ -59,7 +59,7 @@ class BoardControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("게시판 글쓰기 폼 - 관리자로 로그인한 경우")
+    @DisplayName("게시판 글쓰기 폼 관리자로 로그인한 경우")
     void boardWriteFormWithAdminUser() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -76,7 +76,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시판 글쓰기 폼 - 세션에 값이없는경우")
+    @DisplayName("게시판 글쓰기 폼 세션에 값이없는경우")
     void boardWriteFormRedirectToLoginWhenSessionIsNull() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -87,7 +87,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시판 글쓰기 폼 - 운영자가 아닌경우")
+    @DisplayName("게시판 글쓰기 폼 운영자가 아닌경우")
     void boardWriteFormRedirectToListWhenUserRoleIsNotAdmin() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -106,7 +106,7 @@ class BoardControllerTest {
 
 
     @Test
-    @DisplayName("게시판 목록 조회 - list 속성이 존재하는 경우")
+    @DisplayName("게시판 목록 조회 list 속성이 존재하는 경우")
     void boardListTest_WithListAttribute() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -140,7 +140,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시판 목록 조회 - 검색어 포함")
+    @DisplayName("게시판 목록 조회 검색어 포함")
     void boardListWithSearchKeywordTest() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -197,7 +197,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 삭제 - 운영자")
+    @DisplayName("게시글 삭제 운영자")
     void boardDeleteTest_Admin() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -357,7 +357,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 삭제 - 일반 사용자")
+    @DisplayName("게시글 삭제 일반 사용자")
     void boardDeleteTest_User() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -375,7 +375,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 수정 폼 - 운영자가 아닌 경우")
+    @DisplayName("게시글 수정 폼 운영자가 아닌 경우")
     void boardModifyFormRedirectToListWhenUserRoleIsNotAdmin() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -393,7 +393,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 수정 폼 - 운영자인경우")
+    @DisplayName("게시글 수정 폼 운영자인경우")
     void boardModifyFormRedirectToListWhenUserRoleIsAdmin() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -413,7 +413,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 수정 폼 - 세션이 없는 경우")
+    @DisplayName("게시글 수정 폼 세션이 없는 경우")
     void boardModifyFormRedirectToLoginWhenSessionIsNull() throws Exception {
         mockMvc.perform(get("/board/modify/1"))
                 .andExpect(status().is3xxRedirection())
@@ -421,7 +421,7 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 작성 - 성공")
+    @DisplayName("게시글 작성 성공")
     void boardWriteSuccess() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
@@ -444,7 +444,7 @@ class BoardControllerTest {
 
 
     @Test
-    @DisplayName("게시글 수정 - 성공")
+    @DisplayName("게시글 수정 성공")
     void boardUpdateSuccess() throws Exception {
 
         MockHttpSession session = new MockHttpSession();

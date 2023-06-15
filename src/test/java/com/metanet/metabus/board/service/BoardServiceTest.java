@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,18 +29,18 @@ class BoardServiceTest {
     @Test
     @DisplayName("게시글 작성")
     void write() throws IOException {
-        // 입력 데이터
+
         LostBoardDto boardDto = new LostBoardDto(1L,"제목","내용", LocalDateTime.now());
         String fileName = "example.jpg";
         Long memId = 1L;
 
-        // 예상되는 저장된 파일 경로
+
         String expectedFilePath = "/files/" + fileName;
 
-        // 테스트 대상 메서드 호출
+
         Assertions.assertDoesNotThrow(() -> boardService.write(boardDto, fileName, memId));
 
-        // boardDto의 필드 값이 올바르게 설정되었는지 확인
+
         assertEquals(fileName, boardDto.getFilename());
         assertEquals(expectedFilePath, boardDto.getFilepath());
     }
@@ -49,18 +48,18 @@ class BoardServiceTest {
     @Test
     @DisplayName("게시글 업데이트")
     void updateLostBoard() throws IOException {
-        // 입력 데이터
+
         LostBoardDto boardDto = new LostBoardDto(1L,"제목","내용", LocalDateTime.now());
         String fileName = "example.jpg";
         Long memId = 1L;
 
-        // 예상되는 저장된 파일 경로
+
         String expectedFilePath = "/files/" + fileName;
 
-        // 테스트 대상 메서드 호출
+
         Assertions.assertDoesNotThrow(() -> boardService.update(boardDto, fileName, memId));
 
-        // boardDto의 필드 값이 올바르게 설정되었는지 확인
+
         assertEquals(fileName, boardDto.getFilename());
         assertEquals(expectedFilePath, boardDto.getFilepath());
     }
