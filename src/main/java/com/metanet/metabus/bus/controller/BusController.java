@@ -66,6 +66,9 @@ public class BusController {
         } else if (specialValue.equals("만료된 승차권")) {
             model.addAttribute("ReservationList", pastReservationList);
             model.addAttribute("checkButton", "만료된 승차권");
+        } else {
+            model.addAttribute("ReservationList", allReservationList);
+            model.addAttribute("checkButton", "전체");
         }
         model.addAttribute("memberDto", memberDto);
 
