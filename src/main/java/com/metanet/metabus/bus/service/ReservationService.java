@@ -10,6 +10,7 @@ import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
 import com.metanet.metabus.common.exception.bad_request.BadDateException;
+import com.metanet.metabus.common.exception.bad_request.BadPaymentException;
 import com.metanet.metabus.common.exception.bad_request.BadTimeException;
 import com.metanet.metabus.common.exception.conflict.DuplicateSeatException;
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
@@ -69,15 +70,21 @@ public class ReservationService {
                 Long payment = reservationInfoRequest.getPayment();
                 Seat seat = saveSeatBySeatNumAndBus(seatNum[i], bus);
 
-                switch (passengerType[i]) {
-                    case "성인":
-                        break;
-                    case "중고생":
-                        payment = payment * 8 / 10; // 20% 할인
-                        break;
-                    case "아동":
-                        payment = payment * 5 / 10; // 50% 할인
-                        break;
+                if (payment == null || payment == 0) {
+                    throw new BadPaymentException();
+
+                } else {
+
+                    switch (passengerType[i]) {
+                        case "성인":
+                            break;
+                        case "중고생":
+                            payment = payment * 8 / 10; // 20% 할인
+                            break;
+                        case "아동":
+                            payment = payment * 5 / 10; // 50% 할인
+                            break;
+                    }
                 }
 
                 Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], reservationStatus, bus.getId());
