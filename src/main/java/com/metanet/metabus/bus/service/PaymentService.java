@@ -145,7 +145,7 @@ public class PaymentService {
 
     public void paymentCancel(String impUid, String reservationIds) {
 
-        Payment payment = paymentRepository.findByImpUid(impUid);
+        Payment payment = paymentRepository.findByImpUidAndDeletedDateIsNull(impUid);
         payment.delete();
         paymentRepository.save(payment);
 
@@ -169,7 +169,7 @@ public class PaymentService {
     }
 
     public ReceiptResponse makeReceipt(String impUid) {
-        Payment payment = paymentRepository.findByImpUid(impUid);
+        Payment payment = paymentRepository.findByImpUidAndDeletedDateIsNull(impUid);
         Member member = payment.getMember();
 
         return ReceiptResponse.builder()

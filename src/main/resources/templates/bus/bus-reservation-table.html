@@ -118,7 +118,7 @@
                                         <!--                    5열-->
                                         <div class="row">
                                             <div class="col-12 d-flex justify-content-center"><img
-                                                    src="../assets/img/testqr.png" style="width: 65px;height: 65px;">
+                                                    src="" style="width: 100px;height: 100px;" id="modalQR">
                                             </div>
                                         </div>
                                         <!--                    6열-->
@@ -423,7 +423,7 @@
                                     <div class="row" style="height: 25px"></div>
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center">
-                                            <h4>RECEIPT_</h4><h4 id="impUid">#158452</h4>
+                                            <h5>RECEIPT_</h5><h5 id="impUid">#158452</h5>
                                         </div>
                                         <div class="col-12 d-flex justify-content-center">
                                             <p id="merchantName">메타버스</p>
@@ -594,6 +594,7 @@
                         $("#modalSeatNum").append(reservationDataList.seatNum);
                         $("#modalCost").empty();
                         $("#modalCost").append(reservationDataList.payment);
+                        $("#modalQR").attr("src","https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=https://www.metabus.site/pay/receipt/"+reservationDataList.impUid);
 
                         $("#ticketctn").fadeIn(280);
                     });
