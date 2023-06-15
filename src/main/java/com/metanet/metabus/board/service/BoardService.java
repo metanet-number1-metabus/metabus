@@ -3,24 +3,22 @@ package com.metanet.metabus.board.service;
 import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.entity.LostBoard;
 import com.metanet.metabus.board.repository.BoardRepository;
-import com.metanet.metabus.member.dto.MemberDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    private BoardRepository boardRepository;
 
-    private LostBoardDto lostBoardDto ;
+    private final BoardRepository boardRepository;
+
 
     //글 작성 처리
     public void write(LostBoardDto board ,String fileName,Long memid) throws IOException {

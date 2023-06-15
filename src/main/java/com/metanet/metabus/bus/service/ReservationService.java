@@ -94,25 +94,26 @@ public class ReservationService {
     public List<Reservation> readAllReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDesc(member);
+        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDescCreatedDateDesc(member);
     }
 
     public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.UNPAID);
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.UNPAID);
     }
 
     public List<Reservation> readPaidReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.PAID);
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.PAID);
     }
 
     public List<Reservation> readPastReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
         return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.EXPIRED);
+
     }
 
     public List<ReservationDto> readByReservationId(Long[] reservationIds) {

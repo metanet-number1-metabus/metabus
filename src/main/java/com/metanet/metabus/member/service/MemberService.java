@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +56,7 @@ public class MemberService {
                 .email(memberLoginRequest.getEmail())
                 .password(memberLoginRequest.getPassword())
                 .role(member.getRole())
+                .mileage(member.getMileage())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -71,6 +71,7 @@ public class MemberService {
                 .password(encoded)
                 .name(memberEditInfoRequest.getName())
                 .role(memberDto.getRole())
+                .mileage(memberDto.getMileage())
                 .phoneNum(memberEditInfoRequest.getPhoneNum())
                 .build();
 
@@ -82,6 +83,7 @@ public class MemberService {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
+                .mileage(memberDto.getMileage())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -97,6 +99,7 @@ public class MemberService {
                 .password(encoded)
                 .name(memberDto.getName())
                 .role(memberDto.getRole())
+                .mileage(memberDto.getMileage())
                 .phoneNum(memberDto.getPhoneNum())
                 .build();
 
@@ -108,6 +111,7 @@ public class MemberService {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
+                .mileage(memberDto.getMileage())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -123,6 +127,7 @@ public class MemberService {
                 .password(encoded)
                 .name(memberDto.getName())
                 .role(Role.USER)
+                .mileage(memberDto.getMileage())
                 .phoneNum(memberDto.getPhoneNum())
                 .build();
 
@@ -134,6 +139,7 @@ public class MemberService {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
+                .mileage(memberDto.getMileage())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -166,7 +172,4 @@ public class MemberService {
         }
         return validatorResult;
     }
-
-
-
 }

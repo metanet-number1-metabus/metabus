@@ -26,7 +26,6 @@ public class RoomController {
      * @param roomId 채팅방 id
      */
 
-
     @GetMapping("/{roomId}")
     public String joinRoom(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, @PathVariable(required = false) Long roomId, Model model) {
         if (memberDto == null) {
@@ -35,7 +34,6 @@ public class RoomController {
         }
 
 
-        // 채팅탭클릭시 채팅리스트만 띄우게하기위해 -1로 보냄
         if (roomId != -1) {
             List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);
             model.addAttribute("roomId", roomId);
@@ -44,12 +42,11 @@ public class RoomController {
         List<RoomDto> roomList = null;
         if (memberDto.getRole().name().equals("ADMIN")) {
             roomList = chatService.findAllRoom();
-        } else if (memberDto.getRole().name().equals("USER")) {
+        }else{
             roomList = chatService.findUserRoom(memberDto.getId());
         }
         model.addAttribute("roomList", roomList);
-        model.addAttribute("memberDto", memberDto);
-//        model.addAttribute("roomForm", new RoomForm());
+
         return "chat/room";
     }
 
@@ -72,8 +69,6 @@ public class RoomController {
         } else {
             return (long) -1;
         }
-
     }
-
 
 }

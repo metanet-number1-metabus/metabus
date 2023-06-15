@@ -2,9 +2,9 @@ package com.metanet.metabus.board.controller;
 
 
 import com.metanet.metabus.board.dto.LostBoardDto;
-import com.metanet.metabus.board.service.AwsS3Service;
+import com.metanet.metabus.board.AwsS3;
 import com.metanet.metabus.board.service.BoardService;
-import com.metanet.metabus.board.service.ImageUtils;
+import com.metanet.metabus.board.ImageUtils;
 import com.metanet.metabus.common.exception.unauthorized.invalidSession;
 import com.metanet.metabus.member.controller.SessionConst;
 import com.metanet.metabus.member.dto.MemberDto;
@@ -34,10 +34,10 @@ public class BoardController {
     private BoardService boardService;
 
     @Autowired
-    private final AwsS3Service awsS3Service;
+    private final AwsS3 awsS3;
 
-    public BoardController(AwsS3Service awsS3Service) {
-        this.awsS3Service = awsS3Service;
+    public BoardController(AwsS3 awsS3) {
+        this.awsS3 = awsS3;
     }
 
 
@@ -58,17 +58,7 @@ public class BoardController {
     @PostMapping("/board/writepro")
     public String boardWritePro(LostBoardDto board, Model model, MultipartFile[] file, HttpSession session) throws IOException {
         MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
-        if(memberDto==null){
-            return "redirect:/member/login";
-        }
-        if(!memberDto.getRole().name().equals("ADMIN")){
-            invalidSession invalidSession = new invalidSession();
-            return "redirect:/board/list";
-        }
 
-        if(board.getTitle().equals("")){
-            return "redirect:/board/list";
-        }
         model.addAttribute("message", "글 작성이 완료 되었습니다.");
         model.addAttribute("SearchUrl", "/board/list");
         /*식별자 . 랜덤으로 이름 만들어줌*/
@@ -79,10 +69,11 @@ public class BoardController {
 
 
 
-        if (file != null && file.length > 0) {
+        if (file != null) {
             boolean check = false;
             for (MultipartFile uploadedFile : file) {
-                if (ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
+                if (
+                        ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
                     check = true;
                 }else{
                     check = false;
@@ -91,7 +82,7 @@ public class BoardController {
             }
             if(check==true){
                 File mergedImageFile = ImageUtils.mergeImagesVertically(file);
-                awsS3Service.upload(mergedImageFile, "upload", fileName);
+                awsS3.upload(mergedImageFile, "upload", fileName);
             }
         }
         boardService.write(board, fileName,memberDto.getId());
@@ -108,7 +99,7 @@ public class BoardController {
 
 
         Page<LostBoardDto> list = null;
-
+       System.out.println(pageable);
         if (searchKeyword == null) {
             list = boardService.boardList(pageable);
         } else {
@@ -178,16 +169,6 @@ public class BoardController {
     @PostMapping("/board/update/{id}")
     public String boardUpdate(LostBoardDto board, Model model,@PathVariable("id") Long id,MultipartFile[] file,HttpSession session) throws IOException {
         MemberDto memberDto = (MemberDto)session.getAttribute("loginMember");
-        if(memberDto==null){
-            return "redirect:/member/login";
-        }
-        if(!memberDto.getRole().name().equals("ADMIN")){
-            invalidSession invalidSession = new invalidSession();
-            return "redirect:/board/list";
-        }
-        if(board.getTitle().equals("")){
-            return "redirect:/board/list";
-        }
 
         model.addAttribute("message", "글 수정 완료.");
         model.addAttribute("SearchUrl", "/board/list");
@@ -197,7 +178,7 @@ public class BoardController {
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String fileName = uuid + ".png";
 
-        if (file != null && file.length > 0) {
+        if (file != null) {
             boolean check = false;
             for (MultipartFile uploadedFile : file) {
                 if (ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
@@ -209,7 +190,7 @@ public class BoardController {
             }
             if(check==true){
                 File mergedImageFile = ImageUtils.mergeImagesVertically(file);
-                awsS3Service.upload(mergedImageFile, "upload", fileName);
+                awsS3.upload(mergedImageFile, "upload", fileName);
             }
         }
         boardService.update(board, fileName,id);
