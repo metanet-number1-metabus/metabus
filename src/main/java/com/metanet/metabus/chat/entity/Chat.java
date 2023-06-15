@@ -27,7 +27,7 @@ public class Chat {
     private String sender;
 
 
-    @Column(columnDefinition = "TEXT", name = "MESSAGE")
+    @Column(columnDefinition = "CLOB", name = "MESSAGE")
     private String message;
 
     @CreatedDate
@@ -41,6 +41,5 @@ public class Chat {
         this.message = message;
         this.sendDate = LocalDateTime.now();
     }
-
 
 }

@@ -3,7 +3,6 @@ package com.metanet.metabus.board.dto;
 import com.metanet.metabus.board.entity.LostBoard;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,11 +15,9 @@ public class LostBoardDto {
     private Long memberId;
     private String title;
     private String content;
-    private Long hit;
     private LocalDateTime createDate;
     private LocalDateTime editDate;
     private LocalDateTime deleteDate;
-    private String completeYN;
     private String filename;//파일이름
     private String filepath;//파일경로
 
