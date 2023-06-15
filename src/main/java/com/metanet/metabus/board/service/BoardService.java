@@ -1,9 +1,11 @@
 package com.metanet.metabus.board.service;
 
+import com.metanet.metabus.board.AwsS3;
 import com.metanet.metabus.board.dto.LostBoardDto;
 import com.metanet.metabus.board.entity.LostBoard;
 import com.metanet.metabus.board.repository.BoardRepository;
 import com.metanet.metabus.member.dto.MemberDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +17,12 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    private BoardRepository boardRepository;
 
-    private LostBoardDto lostBoardDto ;
+    private final BoardRepository boardRepository;
+
 
     //글 작성 처리
     public void write(LostBoardDto board ,String fileName,Long memid) throws IOException {

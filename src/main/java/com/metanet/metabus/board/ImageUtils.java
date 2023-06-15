@@ -1,4 +1,4 @@
-package com.metanet.metabus.board.service;
+package com.metanet.metabus.board;
 
 import org.springframework.web.multipart.MultipartFile;
 

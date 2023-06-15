@@ -25,17 +25,9 @@ public class Room extends BaseEntity {
     private Long memId;
 
     private String completeYN;
-//    @Builder
-//    public Room(String name) {
-//        this.name = name;
-//    }
 
-    /**
-     * 채팅방 생성
-     *
-     * @param name 방 이름
-     * @return Room Entity
-     */
+
+
     public static Room createRoom(String name,Long memId,String completeYN) {
         return Room.builder()
                 .name(name)
