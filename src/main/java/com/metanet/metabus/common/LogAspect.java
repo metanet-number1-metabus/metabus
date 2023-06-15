@@ -14,6 +14,6 @@ public class LogAspect {
     public void logMethodAccess(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getName();
-        System.out.println("Accessing method: " + className + "." + methodName);
+        log.info("메서드 접근: " + className + "." + methodName);
     }
 }

@@ -6,6 +6,7 @@ import com.metanet.metabus.common.exception.not_found.AlreadyDeletedMemberExcept
 import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
+import com.metanet.metabus.member.entity.Grade;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.repository.MemberRepository;
@@ -36,7 +37,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원가입 성공")
     void register_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(memberRepository.save(any(Member.class))).thenReturn(member);
@@ -49,7 +50,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원가입 실패 - 이메일 중복")
     void register_fail() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail()))
                 .thenReturn(Optional.of(member));
@@ -63,7 +64,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("로그인 성공")
     void login_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(!passwordEncoder.matches(member.getPassword(), "12345678")).thenReturn(true);
@@ -83,7 +84,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("로그인 실패(1) - 존재하지 않는 유저")
     void login_fail() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
         MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
@@ -97,7 +98,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("로그인 실패(2) - 이미 탈퇴한 회원인 경우")
     void login_fail2() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(memberRepository.findByEmailAndDeletedDateIsNotNull(member.getEmail())).thenReturn(Optional.of(member));
@@ -112,7 +113,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("로그인 실패(3) - 비밀번호 불일치")
     void login_fail3() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(!passwordEncoder.matches(member.getPassword(), "123456788")).thenReturn(false);
@@ -127,7 +128,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 정보 수정(info) 성공")
     void editInfo_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MemberEditInfoRequest memberEditInfoRequest = new MemberEditInfoRequest("test@test.com", "test_edit", "010-1111-1111");
         String encoded = "EhATgL83Pc6";
 
@@ -149,7 +150,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("비밀번호 수정 성공")
     void editPassword_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MemberPasswordRequest memberPasswordRequest = new MemberPasswordRequest("12345678910");
         String encoded = "EhATgL83Pc6";
 
@@ -171,7 +172,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 정보 수정(oauth) 성공")
     void editInfoOAuth_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MemberOAuthRequest memberOAuthRequest = new MemberOAuthRequest("test@test.com", "test", "12345678");
         String encoded = "EhATgL83Pc6";
 
@@ -193,7 +194,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("비밀번호 확인 성공")
     void checkPwd_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(!passwordEncoder.matches(member.getPassword(), "12345678")).thenReturn(true);
@@ -205,7 +206,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("비밀번호 확인 실패(1) - 존재하지 않는 유저")
     void checkPwd_fail() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
         MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
@@ -218,7 +219,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("비밀번호 확인 실패(2) - 비밀번호 불일치")
     void checkPwd_fail2() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(!passwordEncoder.matches(member.getPassword(), "123456788")).thenReturn(false);
@@ -233,7 +234,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 삭제 성공")
     void delete_success() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(memberRepository.save(any(Member.class))).thenReturn(member);
@@ -244,7 +245,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 삭제 실패(1) - 존재하지 않는 유저")
     void delete_fail() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
         MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
