@@ -434,7 +434,7 @@ class ReservationServiceTest {
         reservations.add(new Reservation());
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDescCreatedDateDesc(member)).thenReturn(reservations);
+        when(reservationRepository.findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(member)).thenReturn(reservations);
 
         List<Reservation> result = reservationService.readAllReservation(memberDto);
 
@@ -482,7 +482,7 @@ class ReservationServiceTest {
         reservations.add(new Reservation());
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.Expired)).thenReturn(reservations);
+        when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.EXPIRED)).thenReturn(reservations);
 
         List<Reservation> result = reservationService.readPastReservation(memberDto);
 

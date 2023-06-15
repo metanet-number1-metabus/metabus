@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByMemberAndDeletedDateIsNullOrderByDepartureDateDescCreatedDateDesc(Member member);
+    List<Reservation> findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(Member member);
 
     List<Reservation> findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(Member member, ReservationStatus reservationStatus);
 

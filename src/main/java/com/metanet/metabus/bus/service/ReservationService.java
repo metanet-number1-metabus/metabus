@@ -94,7 +94,7 @@ public class ReservationService {
     public List<Reservation> readAllReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByDepartureDateDescCreatedDateDesc(member);
+        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(member);
     }
 
     public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
@@ -112,7 +112,7 @@ public class ReservationService {
     public List<Reservation> readPastReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.EXPIRED);
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.EXPIRED);
 
     }
 
