@@ -6,7 +6,6 @@ import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Member;
-import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,6 +56,7 @@ public class MemberService {
                 .password(memberLoginRequest.getPassword())
                 .role(member.getRole())
                 .mileage(member.getMileage())
+                .grade(member.getGrade())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -72,6 +72,7 @@ public class MemberService {
                 .name(memberEditInfoRequest.getName())
                 .role(memberDto.getRole())
                 .mileage(memberDto.getMileage())
+                .grade(memberDto.getGrade())
                 .phoneNum(memberEditInfoRequest.getPhoneNum())
                 .build();
 
@@ -83,7 +84,8 @@ public class MemberService {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
-                .mileage(memberDto.getMileage())
+                .mileage(member.getMileage())
+                .grade(member.getGrade())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -100,6 +102,7 @@ public class MemberService {
                 .name(memberDto.getName())
                 .role(memberDto.getRole())
                 .mileage(memberDto.getMileage())
+                .grade(memberDto.getGrade())
                 .phoneNum(memberDto.getPhoneNum())
                 .build();
 
@@ -111,7 +114,8 @@ public class MemberService {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
-                .mileage(memberDto.getMileage())
+                .mileage(member.getMileage())
+                .grade(member.getGrade())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
@@ -126,8 +130,9 @@ public class MemberService {
                 .email(memberDto.getEmail())
                 .password(encoded)
                 .name(memberDto.getName())
-                .role(Role.USER)
+                .role(memberDto.getRole())
                 .mileage(memberDto.getMileage())
+                .grade(memberDto.getGrade())
                 .phoneNum(memberDto.getPhoneNum())
                 .build();
 
@@ -139,7 +144,8 @@ public class MemberService {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
-                .mileage(memberDto.getMileage())
+                .mileage(member.getMileage())
+                .grade(member.getGrade())
                 .phoneNum(member.getPhoneNum())
                 .build();
     }
