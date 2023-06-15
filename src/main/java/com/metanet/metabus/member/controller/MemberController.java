@@ -90,7 +90,7 @@ public class MemberController {
     @PostMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession(false);
-        if (httpSession != null) {
+        if (httpSession.getAttribute(SessionConst.LOGIN_MEMBER) != null) {
             httpSession.invalidate();
         }
         return "redirect:/";
@@ -143,7 +143,6 @@ public class MemberController {
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
             memberService.checkPwd(memberLoginRequest, memberDto);
 
-            System.out.println("수정완료");
             return "redirect:/member/edit/info";
         }
     }
@@ -166,7 +165,6 @@ public class MemberController {
 
             memberService.checkPwd(memberLoginRequest, memberDto);
 
-            System.out.println("수정완료");
             return "redirect:/member/edit/pwd";
         }
     }
@@ -230,7 +228,6 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            System.out.println("수정완료");
             return "redirect:/";
         }
     }
@@ -253,7 +250,6 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            System.out.println("수정완료");
             return "redirect:/";
         }
     }
@@ -278,7 +274,6 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            System.out.println("수정완료");
             return "redirect:/";
         }
     }
@@ -322,6 +317,7 @@ public class MemberController {
         model.addAttribute("grade", grade);
         model.addAttribute("mileage", mileage);
         model.addAttribute("memberDto", memberDto);
+
         return "mypage/mypage";
     }
 
