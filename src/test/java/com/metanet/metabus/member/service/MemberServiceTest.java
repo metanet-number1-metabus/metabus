@@ -54,7 +54,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(member.getEmail()))
                 .thenReturn(Optional.of(member));
 
-        DuplicateEmailException exception = Assertions.assertThrows(DuplicateEmailException.class, () ->{
+        DuplicateEmailException exception = Assertions.assertThrows(DuplicateEmailException.class, () -> {
             memberService.register(new MemberRegisterRequest("test@test.com", "test2", "12345678", "010-0000-0000"));
         });
         assertEquals(ErrorCode.DUPLICATED_EMAIL, exception.getErrorCode());
@@ -86,7 +86,7 @@ class MemberServiceTest {
         Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
-        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () ->{
+        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
             memberService.login(new MemberLoginRequest("test2@test.com", "12345678"));
         });
 
@@ -102,7 +102,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(memberRepository.findByEmailAndDeletedDateIsNotNull(member.getEmail())).thenReturn(Optional.of(member));
 
-        AlreadyDeletedMemberException exception = Assertions.assertThrows(AlreadyDeletedMemberException.class, () ->{
+        AlreadyDeletedMemberException exception = Assertions.assertThrows(AlreadyDeletedMemberException.class, () -> {
             memberService.login(new MemberLoginRequest("test@test.com", "12345678"));
         });
 
@@ -117,7 +117,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
         when(!passwordEncoder.matches(member.getPassword(), "123456788")).thenReturn(false);
 
-        InvalidPasswordException exception = Assertions.assertThrows(InvalidPasswordException.class, () ->{
+        InvalidPasswordException exception = Assertions.assertThrows(InvalidPasswordException.class, () -> {
             memberService.login(new MemberLoginRequest("test@test.com", "12345678"));
         });
 
@@ -208,7 +208,7 @@ class MemberServiceTest {
         Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
-        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () ->{
+        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
             memberService.checkPwd(new MemberLoginRequest("test2@test.com", "12345678"), new MemberDto());
         });
 
@@ -247,7 +247,7 @@ class MemberServiceTest {
         Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
         when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
-        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () ->{
+        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
             memberService.delete(new MemberDto());
         });
 
