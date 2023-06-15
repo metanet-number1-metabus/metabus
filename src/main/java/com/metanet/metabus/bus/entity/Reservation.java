@@ -55,7 +55,7 @@ public class Reservation extends BaseEntity {
     }
 
     public void updateExpiredStatus(ReservationStatus reservationStatus) {
-        this.reservationStatus = ReservationStatus.Expired;
+        this.reservationStatus = ReservationStatus.EXPIRED;
     }
 
 }

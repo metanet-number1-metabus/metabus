@@ -112,7 +112,7 @@ public class ReservationService {
     public List<Reservation> readPastReservation(MemberDto memberDto) {
         Member member = getMember(memberDto);
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.Expired);
+        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDesc(member, ReservationStatus.EXPIRED);
     }
 
     public List<ReservationDto> readByReservationId(Long[] reservationIds) {
