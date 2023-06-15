@@ -36,11 +36,11 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String phoneNum;
 
-    @Column(nullable = false)
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private Grade grade = Grade.ALPHA;
 
     @Builder
-    public Member(Long id, String name, String password, String email, Long mileage, Role role, String phoneNum) {
+    public Member(Long id, String name, String password, String email, Long mileage, Role role, String phoneNum, Grade grade) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -48,5 +48,10 @@ public class Member extends BaseEntity {
         this.mileage = 0L;
         this.role = role == null ? Role.USER : role;
         this.phoneNum = phoneNum;
+        this.grade = grade == null ? Grade.ALPHA : grade;
+    }
+
+    public void updateMileage(Long mileage) {
+        this.mileage = mileage;
     }
 }

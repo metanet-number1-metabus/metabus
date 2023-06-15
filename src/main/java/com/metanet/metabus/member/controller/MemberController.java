@@ -1,5 +1,6 @@
 package com.metanet.metabus.member.controller;
 
+import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.service.MemberService;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -303,16 +306,18 @@ public class MemberController {
         if (memberDto == null) {
             return "redirect:/member/login";
         }
-        Long tickets = mypageService.selectTickets(memberDto.getId());
-        Timestamp dates = mypageService.selectDates(memberDto.getId());
+        List<Reservation> reservationList = mypageService.selectTickets(memberDto);
+        LocalDate createdDate = mypageService.getCreatedDate(memberDto);
         String grade = mypageService.selectGrade(memberDto.getId());
         Long mileage = mypageService.selectMileage(memberDto.getId());
 
-        model.addAttribute("tickets", tickets);
+        model.addAttribute("tickets", reservationList.size());
         model.addAttribute("member", memberDto);
-        model.addAttribute("dates", dates);
+        model.addAttribute("dates", createdDate);
         model.addAttribute("grade", grade);
         model.addAttribute("mileage", mileage);
+        model.addAttribute("memberDto", memberDto);
+
         return "mypage/mypage";
     }
 
