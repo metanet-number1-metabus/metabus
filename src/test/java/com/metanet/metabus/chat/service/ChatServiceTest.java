@@ -194,5 +194,19 @@ class ChatServiceTest {
         assertEquals("미완료", updatedRoom.getCompleteYN());
     }
 
+    @Test
+    @DisplayName("방 이름 가져오기")
+    public void testFindTitle() {
+
+        Room room = new Room(1L,"제목",1L,"완료");
+
+        when(roomRepository.findById(1L)).thenReturn(java.util.Optional.of(room));
+
+        String title = chatService.findTitle(1L);
+
+        Assertions.assertEquals("제목", title);
+    }
+
+
 
 }

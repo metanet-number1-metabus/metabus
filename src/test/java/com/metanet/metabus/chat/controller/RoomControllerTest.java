@@ -6,6 +6,7 @@ import com.metanet.metabus.chat.dto.RoomDto;
 import com.metanet.metabus.chat.entity.Room;
 import com.metanet.metabus.chat.service.ChatService;
 import com.metanet.metabus.member.dto.MemberDto;
+import com.metanet.metabus.member.entity.Grade;
 import com.metanet.metabus.member.entity.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -44,6 +44,7 @@ class RoomControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
     @Test
     @DisplayName("방 완료처리")
     void completeRoomRedirectToDefaultPage() throws Exception {
@@ -63,7 +64,7 @@ class RoomControllerTest {
         MockHttpSession session = new MockHttpSession();
 
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -88,7 +89,7 @@ class RoomControllerTest {
 
 
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                Role.ADMIN, "123456789");
+                Role.ADMIN, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -111,7 +112,7 @@ class RoomControllerTest {
 
         MockHttpSession session = new MockHttpSession();
 
-        mockMvc.perform(get("/{roomId}",1L).session(session))
+        mockMvc.perform(get("/{roomId}", 1L).session(session))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/member/login"));
     }
@@ -122,7 +123,7 @@ class RoomControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
         session.setAttribute("loginMember", memberDto);
 
         mockMvc.perform(get("/-1")
@@ -137,9 +138,9 @@ class RoomControllerTest {
     void joinRoomAsUser() throws Exception {
 
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                com.metanet.metabus.member.entity.Role.USER, "123456789");
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
 
-        Room room = new Room(1L,"나",1L,"완료");
+        Room room = new Room(1L, "나", 1L, "완료");
 
         List<ChatDto> fakeChatList = Arrays.asList(
                 new ChatDto(1L, room, "User1", "Hello", LocalDateTime.now()),
@@ -176,7 +177,7 @@ class RoomControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                Role.USER, "123456789");
+                Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -195,7 +196,7 @@ class RoomControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                Role.USER, "123456789");
+                Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);
@@ -214,7 +215,7 @@ class RoomControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         MemberDto memberDto = new MemberDto(1L, "user", "password", "user@example.com", 0L,
-                Role.USER, "123456789");
+                Role.USER, "123456789", Grade.ALPHA);
 
 
         session.setAttribute("loginMember", memberDto);

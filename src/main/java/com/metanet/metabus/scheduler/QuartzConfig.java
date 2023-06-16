@@ -22,7 +22,7 @@ public class QuartzConfig {
     public SimpleTriggerFactoryBean minuteTrigger(JobDetail minuteJobDetail) {
         SimpleTriggerFactoryBean triggerFactory = new SimpleTriggerFactoryBean();
         triggerFactory.setJobDetail(minuteJobDetail);
-        triggerFactory.setStartDelay(60000); // 1분 (단위: 밀리초)
+        triggerFactory.setStartDelay(5000); // 1분 (단위: 밀리초)
         triggerFactory.setRepeatInterval(60000); // 1분 (단위: 밀리초)
         return triggerFactory;
     }

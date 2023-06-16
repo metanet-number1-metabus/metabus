@@ -18,6 +18,7 @@ public enum ErrorCode {
     BAD_CONSTANT(BAD_REQUEST, "잘못된 인자입니다."),
     BAD_TIME(BAD_REQUEST, "잘못된 형식의 시간입니다."),
     BAD_DATE(BAD_REQUEST, "잘못된 형식의 날짜입니다."),
+    BAD_PAYMENT(BAD_REQUEST, "최소 결제금액 미만입니다."),
     API_REQUEST_TIMEOUT(REQUEST_TIMEOUT, "요청 시간이 초과되었습니다."),
     DUPLICATED_NICKNAME(CONFLICT, "이미 사용중인 닉네임입니다."),
     DUPLICATED_SEAT(CONFLICT, "이미 예약된 자리입니다."),

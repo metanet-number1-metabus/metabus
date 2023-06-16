@@ -10,6 +10,7 @@ import com.metanet.metabus.bus.repository.BusRepository;
 import com.metanet.metabus.bus.repository.ReservationRepository;
 import com.metanet.metabus.bus.repository.SeatRepository;
 import com.metanet.metabus.common.exception.bad_request.BadDateException;
+import com.metanet.metabus.common.exception.bad_request.BadPaymentException;
 import com.metanet.metabus.common.exception.bad_request.BadTimeException;
 import com.metanet.metabus.common.exception.conflict.DuplicateSeatException;
 import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
@@ -407,6 +408,34 @@ class ReservationServiceTest {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(new Reservation());
 
         assertThrows(InvalidSeatCountException.class, () -> reservationService.create(memberDto, reservationInfoRequest));
+
+    }
+
+    @Test
+    @DisplayName("버스 예약 실패: 최소 결제금액 미만")
+    void create_fail_bad_payment() {
+
+        ReservationInfoRequest reservationInfoRequest = ReservationInfoRequest.builder()
+                .departureTime("12시30분")
+                .arrivalTime("16시01분")
+                .busNum(busNum)
+                .departureDate(strDepartureDate)
+                .departure("간성")
+                .destination("동서울")
+                .payment(0L)
+                .seatNum(seatNum)
+                .passengerType(new int[]{2, 0, 0})
+                .busType("일반")
+                .build();
+
+        when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
+        when(busRepository.findByBusNumAndDepartureDate(any(Long.class), any(LocalDate.class))).thenReturn(Optional.of(bus));
+        when(seatRepository.findBySeatNumAndBusAndDeletedDateIsNull(any(Long.class), any(Bus.class))).thenReturn(Optional.empty());
+        when(busRepository.save(any(Bus.class))).thenReturn(bus);
+        when(seatRepository.save(any(Seat.class))).thenReturn(new Seat());
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(new Reservation());
+
+        assertThrows(BadPaymentException.class, () -> reservationService.create(memberDto, reservationInfoRequest));
 
     }
 

@@ -34,9 +34,9 @@ public class MileageService {
         long point = 0L;
 
         if (grade == Grade.ALPHA) {
-            point = payment * 3 / 100;
+            point = payment / 100 * 3;
         } else if (grade == Grade.META) {
-            point = payment * 5 / 100;
+            point = payment / 100 * 5;
         }
 
         return Mileage.builder()

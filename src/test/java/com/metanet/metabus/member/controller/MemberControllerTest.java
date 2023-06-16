@@ -5,6 +5,7 @@ import com.metanet.metabus.common.exception.conflict.DuplicateEmailException;
 import com.metanet.metabus.common.exception.not_found.AlreadyDeletedMemberException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
+import com.metanet.metabus.member.entity.Grade;
 import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.service.MemberService;
 import com.metanet.metabus.member.service.MyPageService;
@@ -234,7 +235,7 @@ class MemberControllerTest {
     @DisplayName("로그아웃 POST 성공 - 세션 O")
     void post_logout() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -269,7 +270,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("비밀번호 체크 GET 성공(1) - info")
     void get_checkPwd_success() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -284,7 +285,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("비밀번호 체크 GET 성공(2) - pwd")
     void get_checkPwd_success2() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -299,7 +300,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("비밀번호 체크 GET 실패(1) - 잘못된 url 요청")
     void get_checkPwd_fail() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -323,7 +324,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("비밀번호 체크 GET 실패(3) - Role이 GUEST 일 때")
     void get_checkPwd_fail3() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -356,7 +357,7 @@ class MemberControllerTest {
     @DisplayName("비밀번호 체크(info) POST 성공 - 유효성 검사 통과")
     void post_checkPwdInfo() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -375,7 +376,7 @@ class MemberControllerTest {
     @DisplayName("비밀번호 체크(info) POST 실패(1) - 유효성 검사 실패(빈 값 입력)")
     void post_checkPwdInfo_fail() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -401,7 +402,7 @@ class MemberControllerTest {
     @DisplayName("비밀번호 체크(pwd) POST 성공 - 유효성 검사 통과")
     void post_checkPwdPwd() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -420,7 +421,7 @@ class MemberControllerTest {
     @DisplayName("비밀번호 체크(pwd) POST 실패(1) - 유효성 검사 실패(빈 값 입력)")
     void post_checkPwdPwd_fail() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -446,7 +447,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원 정보 수정 GET 성공(1) - info & Role이 GUEST가 아닐 때")
     void get_editPwd_success() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -461,7 +462,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("비밀번호 변경 GET 성공(2) - pwd & Role이 GUEST가 아닐 때")
     void get_editPwd_success2() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -476,7 +477,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원 정보 수정 GET 성공(3) - oauth & Role이 GUEST일 때")
     void get_editPwd_success3() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -491,7 +492,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원 정보 수정 & 비밀번호 변경 GET 실패(1) - 잘못된 url 요청")
     void get_editPwd_fail() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -515,7 +516,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원 정보 수정 & 비밀번호 변경 GET 실패(3) - info & Role이 GUEST 일 때")
     void get_editPwd_fail3() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -528,7 +529,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("비밀번호 변경 GET 실패(4) - pwd & Role이 GUEST 일 때")
     void get_editPwd_fail4() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -542,7 +543,7 @@ class MemberControllerTest {
     @DisplayName("회원 정보 수정(oauth) POST 성공 - 유효성 검사 통과")
     void post_oauthRegister() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -587,7 +588,7 @@ class MemberControllerTest {
     @DisplayName("회원 정보 수정(info) POST 성공 - 유효성 검사 통과")
     void post_editInfo() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -632,7 +633,7 @@ class MemberControllerTest {
     @DisplayName("비밀번호 변경 POST 성공 - 유효성 검사 통과")
     void post_editPwd() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
@@ -674,7 +675,7 @@ class MemberControllerTest {
     @DisplayName("회원 탈퇴 POST 성공 - 세션 O")
     void post_delete() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000");
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 

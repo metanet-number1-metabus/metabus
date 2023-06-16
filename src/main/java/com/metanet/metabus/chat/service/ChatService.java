@@ -85,4 +85,12 @@ public class ChatService {
     }
 
 
+    public String findTitle(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElse(null);
+        String title = room.getName();
+        title = title.replace("!","");
+            return title;
+    }
+
+
 }

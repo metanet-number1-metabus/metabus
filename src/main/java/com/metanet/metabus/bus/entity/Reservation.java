@@ -22,7 +22,7 @@ public class Reservation extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_reservation_member"))
     private Member member;
 

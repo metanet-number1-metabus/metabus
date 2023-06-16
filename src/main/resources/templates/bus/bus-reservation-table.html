@@ -21,7 +21,7 @@
                         <div class="row mt-5" style="width:100%">
 <!--                            표 ajax-->
                             <div class="col-12 col-lg-4 d-flex justify-content-center mb-5">
-                                <div class="rounded shadow-lg bg-white" style="height:655px">
+                                <div class="rounded shadow-lg bg-white" style="height:687px">
                                     <div class="container-fluid rounded shadow-lg" style="width:295px" id="ticketctn">
 
                                         <div class="row">
@@ -29,7 +29,7 @@
                                                 <div class="row" style="height: 30px"></div>
                                                 <div class="row" style="height: 30px">
                                                     <div class="col-12 d-flex justify-content-center">
-                                                        <p class="fw-bold" style="color: black">Bus Pass</p>
+                                                        <p class="fw-bold" style="color: black">승차권</p>
                                                     </div>
                                                 </div>
                                                 <div class="row" style="height: 40px"></div>
@@ -37,16 +37,16 @@
                                                     <div class="col-6">
                                                         <h3 class="d-flex justify-content-center"
                                                             style="color: #ffc107;text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;"
-                                                            id="modalDeparts">미리보기</h3>
+                                                            id="modalDeparts">출발지</h3>
                                                         <h2 style="position: relative;left: 30px;"
-                                                            id="modalArrivals">-</h2>
+                                                            id="modalArrivals">도착지</h2>
                                                     </div>
                                                     <div class="col-6 gx-4 gy-2">
                                                         <h2 class="d-flex justify-content-center"><i
                                                                 class="fa-solid fa-bus"></i></h2>
                                                         <div style="height: 15px"></div>
                                                         <p class="d-flex justify-content-center" style="color: black"
-                                                           id="modalBusType">-</p>
+                                                           id="modalBusType">등급</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -55,15 +55,15 @@
                                         <div class="row">
                                             <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>BusID</p></div>
-                                                    <div class="col-12 fw-bold" id="modalBusId">-</div>
+                                                    <div class="col-12"><p>버스번호</p></div>
+                                                    <div class="col-12 fw-bold" id="modalBusId">00000</div>
                                                 </div>
                                             </div>
                                             <div class="col-4 p-3"></div>
                                             <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>Home</p></div>
-                                                    <div class="col-12 fw-bold" id="modalDeparts2">-</div>
+                                                    <div class="col-12"><p>홈</p></div>
+                                                    <div class="col-12 fw-bold" id="modalDeparts2">승차홈</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -71,20 +71,20 @@
                                         <div class="row">
                                             <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>Date</p></div>
-                                                    <div class="col-12 fw-bold" id="modalBookedDate">-</div>
+                                                    <div class="col-12"><p>날짜</p></div>
+                                                    <div class="col-12 fw-bold" id="modalBookedDate">0000-00-00</div>
                                                 </div>
                                             </div>
                                             <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>Departs</p></div>
-                                                    <div class="col-12 fw-bold" id="modalDepartTime">-</div>
+                                                    <div class="col-12"><p>출발</p></div>
+                                                    <div class="col-12 fw-bold" id="modalDepartTime">00:00</div>
                                                 </div>
                                             </div>
                                             <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>Arrivers</p></div>
-                                                    <div class="col-12 fw-bold" id="modalArrivalTime">-</div>
+                                                    <div class="col-12"><p>도착</p></div>
+                                                    <div class="col-12 fw-bold" id="modalArrivalTime">00:00</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -96,29 +96,29 @@
                                         </div>
                                         <!--                    4열-->
                                         <div class="row">
-                                            <div class="col-5 p-3">
+                                            <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>PassType</p></div>
-                                                    <div class="col-12 fw-bold" id="modalPassType">-</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3 p-3">
-                                                <div class="row">
-                                                    <div class="col-12"><p>Seat</p></div>
-                                                    <div class="col-12 fw-bold" id="modalSeatNum">-</div>
+                                                    <div class="col-12"><p>승객</p></div>
+                                                    <div class="col-12 fw-bold" id="modalPassType">승객</div>
                                                 </div>
                                             </div>
                                             <div class="col-4 p-3">
                                                 <div class="row">
-                                                    <div class="col-12"><p>Cost</p></div>
-                                                    <div class="col-12 fw-bold" id="modalCost">-</div>
+                                                    <div class="col-12"><p>좌석</p></div>
+                                                    <div class="col-12 fw-bold" id="modalSeatNum">0</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 p-3">
+                                                <div class="row">
+                                                    <div class="col-12"><p>운임</p></div>
+                                                    <div class="col-12 fw-bold" id="modalCost">0</div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!--                    5열-->
                                         <div class="row">
                                             <div class="col-12 d-flex justify-content-center"><img
-                                                    src="" style="width: 100px;height: 100px;" id="modalQR">
+                                                    src="/assets/img/whiteqr.png" style="width: 100px;height: 100px;" id="modalQR">
                                             </div>
                                         </div>
                                         <!--                    6열-->
