@@ -36,8 +36,10 @@ public class RoomController {
 
         if (roomId != -1) {
             List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);
+            String title = chatService.findTitle(roomId);
             model.addAttribute("roomId", roomId);
             model.addAttribute("chatList", chatList);
+            model.addAttribute("title",title);
         }
         List<RoomDto> roomList = null;
         if (memberDto.getRole().name().equals("ADMIN")) {
@@ -71,6 +73,7 @@ public class RoomController {
         Long id = loginMember.getId();
         if (name != null && !name.equals("")) {
             // 세션에 값을 저장하거나 가져와 사용합니다.
+            name = name.replace(" ","");
             chatService.createRoom(name, id);
             return id;
         } else {

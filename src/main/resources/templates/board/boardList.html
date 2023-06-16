@@ -70,7 +70,7 @@
                             <div class="row">
                                 <nav id="pagination" aria-label="Page navigation example">
                                     <ul class="pagination justify-content-center">
-                                        <li class="page-item"><a class="page-link" onclick="previousPage()">Previous</a></li>
+                                        <li class="page-item"><a class="page-link" onclick="previousPage()">이전</a></li>
                                         <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}">
                                             <th:block th:if="${page != nowPage}">
                                                 <a class="page-link" th:if="${page > 0}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
@@ -80,7 +80,7 @@
                                                 <strong class="page-link" id="nowPages" style="color: red;" th:text="${page}"></strong>
                                             </th:block>
                                         </li>
-                                        <li class="page-item"><a class="page-link" onclick="nextPage()">Next</a></li>
+                                        <li class="page-item"><a class="page-link" onclick="nextPage()">다음</a></li>
                                     </ul>
                                 </nav>
                             </div>
