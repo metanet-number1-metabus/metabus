@@ -8,11 +8,18 @@
     <link href='https://use.fontawesome.com/releases/v6.4.0/css/all.css' rel='stylesheet'>
     <style>@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+    @font-face {
+        font-family: 'GmarketSansMedium';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
     * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
-        font-family: 'Poppins', sans-serif
+        font-family: 'GmarketSansMedium', sans-serif
     }
 
     body {
@@ -141,7 +148,8 @@
         <div class="col-lg-4 col-md-6 col-sm-8" style="margin: 0px; padding: 0px">
             <div class="panel border bg-white">
                 <div class="panel-heading">
-                    <h3 class="pt-3 font-weight-bold">비밀번호 설정</h3>
+                    <h3 class="pt-3 font-weight-bold" style="margin-top: 10px;">비밀번호 설정</h3>
+                    <h6 style="color: gray">비밀번호를 먼저 설정해 주세요.</h6>
                 </div>
                 <div class="panel-body p-3">
 <!--                    주요 내용(꼭있어야함)  -->
@@ -150,33 +158,33 @@
                         <th:block th:if="${original == null}">
 
                             <div class="form-group py-2">
-                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${memberOAuthRequest.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
+                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${memberOAuthRequest.email}" th:readonly="readonly" name="email" class="form-control" placeholder="이메일" required autofocus> </div>
                                 <span th:text="${valid_email}" style="color: red"></span>
                             </div>
                             <div class="form-group py-2">
-                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${memberOAuthRequest.name}" th:readonly="readonly" name="name" class="form-control" placeholder="name" required autofocus> </div>
+                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${memberOAuthRequest.name}" th:readonly="readonly" name="name" class="form-control" placeholder="이름" required autofocus> </div>
                                 <span th:text="${valid_name}" style="color: red"></span>
                             </div>
                             <div class="form-group py-1 pb-2">
-                                <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:field="${memberOAuthRequest.password}" name="password" class="form-control" placeholder="password" required autofocus></div>
+                                <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:field="${memberOAuthRequest.password}" name="password" class="form-control" placeholder="비밀번호" required autofocus></div>
                                 <span th:text="${valid_password}" style="color: red"></span>
                             </div>
-                            <button class="btn btn-primary btn-block mt-3" type="submit">저장</button>
+                            <button class="btn btn-primary btn-block mt-3" type="submit">설정하기</button>
                         </th:block>
                         <th:block th:unless="${original == null}">
                             <div class="form-group py-2">
-                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${original.email}" th:readonly="readonly" name="email" class="form-control" placeholder="email" required autofocus> </div>
+                                <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:field="${original.email}" th:readonly="readonly" name="email" class="form-control" placeholder="이메일" required autofocus> </div>
                                 <span th:text="${valid_email}" style="color: red"></span>
                             </div>
                             <div class="form-group py-2">
-                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${original.name}" th:readonly="readonly" name="name" class="form-control" placeholder="name" required autofocus> </div>
+                                <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:field="${original.name}" th:readonly="readonly" name="name" class="form-control" placeholder="이름" required autofocus> </div>
                                 <span th:text="${valid_name}" style="color: red"></span>
                             </div>
                             <div class="form-group py-1 pb-2">
-                                <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:field="${original.password}" name="password" class="form-control" placeholder="password" required autofocus></div>
+                                <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="password" th:field="${original.password}" name="password" class="form-control" placeholder="비밀번호" required autofocus></div>
                                 <span th:text="${valid_password}" style="color: red"></span>
                             </div>
-                            <button class="btn btn-primary btn-block mt-3" type="submit">저장</button>
+                            <button class="btn btn-primary btn-block mt-3" type="submit">설정하기</button>
                         </th:block>
                     </form>
 <!--                    여기까지 -->
@@ -187,12 +195,6 @@
     </div>
 </div>
 <script type='text/javascript'>
-    var alertShown = localStorage.getItem('alertShown');
-
-    if (!alertShown) {
-        alert("비밀번호를 먼저 설정해 주세요.");
-        localStorage.setItem('alertShown', true);
-    }
 </script>
 
 </body>
