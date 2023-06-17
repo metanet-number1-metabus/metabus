@@ -1,6 +1,7 @@
 package com.metanet.metabus.bus.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.metanet.metabus.bus.dto.ReceiptResponse;
 import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.service.PaymentService;
@@ -284,7 +285,7 @@ class BusControllerTest {
         reservationList.add(reservationDto);
 
         given(reservationService.readByReservationId(reservationIds)).willReturn(reservationList);
-        given(reservationService.getPaymentSum(reservationIds)).willReturn(10000L);
+        given(reservationService.getRealPaymentSum(reservationIds)).willReturn(10000L);
         given(reservationService.getStrReservationIds(reservationIds)).willReturn("1");
         given(paymentService.getImpUid(reservationIds)).willReturn("imp_111111111111");
 
@@ -300,5 +301,31 @@ class BusControllerTest {
                 .andExpect(model().attribute("impUid", "imp_111111111111"));
     }
 
+    @Test
+    @DisplayName("영수증 GET 성공")
+    void get_receipt() throws Exception {
 
+        String impUid = "imp_178492282208";
+
+        ReceiptResponse receiptResponse = ReceiptResponse.builder()
+                .applyNum("33423394")
+                .memberEmail("user@test.com")
+                .memberName("user")
+                .memberPhoneNum("010-1234-5678")
+                .cardName("신한카드")
+                .cardNum("449914*********0")
+                .impUid(impUid)
+                .merchantName("메타버스")
+                .payment(21100L)
+                .payMethod("card")
+                .usedMileage(1000L)
+                .build();
+
+        given(paymentService.makeReceipt(impUid)).willReturn(receiptResponse);
+
+        mockMvc.perform(get("/pay/receipt/{impUid}", impUid))
+                .andExpect(status().isOk())
+                .andExpect(view().name("bus/receipt"))
+                .andExpect(model().attribute("receiptResponse", receiptResponse));
+    }
 }
