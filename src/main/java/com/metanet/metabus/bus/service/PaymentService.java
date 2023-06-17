@@ -14,8 +14,10 @@ import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.repository.MemberRepository;
+import com.metanet.metabus.mileage.entity.Mileage;
+import com.metanet.metabus.mileage.entity.SaveStatus;
+import com.metanet.metabus.mileage.repository.MileageRepository;
 import lombok.RequiredArgsConstructor;
-import net.minidev.json.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -43,6 +47,7 @@ public class PaymentService {
     private final SeatRepository seatRepository;
     private final MemberRepository memberRepository;
     private final PaymentRepository paymentRepository;
+    private final MileageRepository mileageRepository;
 
     public String getToken() throws Exception {
 
@@ -81,7 +86,7 @@ public class PaymentService {
         return token;
     }
 
-    public void paymentCancel(String accessToken, String impUid, String amount) throws IOException, ParseException {
+    public void paymentCancelApi(String accessToken, String impUid, String amount) throws IOException {
         HttpsURLConnection conn;
         URL url = new URL("https://api.iamport.kr/payments/cancel");
 
@@ -114,13 +119,13 @@ public class PaymentService {
 
     public void completePayment(PayRequest payRequest) {
 
+        // PaymentRepository
         Long memberId = payRequest.getMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
         String impUid = payRequest.getImpUid();
 
-        String reservationIds = payRequest.getReservationIds();
-        String[] strReservationIds = reservationIds.split(",");
+        Long usedMileage = payRequest.getUsedMileage();
 
         Payment payment = Payment.builder()
                 .applyNum(payRequest.getApplyNum())
@@ -131,35 +136,78 @@ public class PaymentService {
                 .merchantName(payRequest.getMerchantName())
                 .payment(payRequest.getPayment())
                 .payMethod(payRequest.getPayMethod())
+                .usedMileage(usedMileage)
                 .build();
 
         paymentRepository.save(payment);
 
+        // ReservationRepository
+        String reservationIds = payRequest.getReservationIds();
+        String[] strReservationIds = reservationIds.split(",");
+
+        List<Long> longReservationIds = new ArrayList<>();
         for (String strReservationId : strReservationIds) {
-            long reservationId = Long.parseLong(strReservationId.trim());
+            longReservationIds.add(Long.parseLong(strReservationId.trim()));
+        }
+
+        int reservationCount = longReservationIds.size();
+
+        for (int i = 0; i < reservationCount; i++) {
+            Long reservationId = longReservationIds.get(i);
+
             Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
             reservation.updatePaymentStatus(impUid);
+
+            if (usedMileage != 0) {
+                if (i == reservationCount - 1) {
+                    reservation.updateUsedMileage(usedMileage / reservationCount + usedMileage % reservationCount);
+                } else {
+                    reservation.updateUsedMileage(usedMileage / reservationCount);
+                }
+            }
+
             reservationRepository.save(reservation);
+        }
+
+        if (usedMileage != 0) {
+            Mileage mileage = Mileage.builder()
+                    .member(member)
+                    .point(usedMileage)
+                    .saveStatus(SaveStatus.DOWN)
+                    .build();
+
+            mileageRepository.save(mileage);
+
         }
     }
 
-    public void paymentCancel(String impUid, String reservationIds) {
-
-        Payment payment = paymentRepository.findByImpUidAndDeletedDateIsNull(impUid);
-        payment.delete();
-        paymentRepository.save(payment);
+    public void paymentCancelDb(String reservationIds) {
 
         String[] strReservationIds = reservationIds.split(",");
 
         for (String strReservationId : strReservationIds) {
             long reservationId = Long.parseLong(strReservationId.trim());
             Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+
+            Member member = reservation.getMember();
+
             Seat seat = seatRepository.findById(reservation.getSeatId().getId()).orElseThrow(SeatNotFoundException::new);
             seat.delete();
             seatRepository.save(seat);
+
+            Long usedMileage = reservation.getUsedMileage();
+            Mileage mileage = Mileage.builder()
+                    .member(member)
+                    .point(usedMileage)
+                    .saveStatus(SaveStatus.UP)
+                    .build();
+
+            mileageRepository.save(mileage);
+
             reservation.delete();
             reservationRepository.save(reservation);
         }
+
     }
 
     public String getImpUid(Long[] reservationIds) {
@@ -183,6 +231,8 @@ public class PaymentService {
                 .merchantName(payment.getMerchantName())
                 .payment(payment.getPayment())
                 .payMethod(payment.getPayMethod())
+                .usedMileage(payment.getUsedMileage())
                 .build();
     }
+
 }

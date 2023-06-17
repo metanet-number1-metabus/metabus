@@ -173,6 +173,20 @@ public class ReservationService {
         return paymentSum;
     }
 
+    public Long getRealPaymentSum(Long[] reservationIds) {
+
+        Long paymentSum = 0L;
+        Long usedMileageSum = 0L;
+
+        for (Long reservationId : reservationIds) {
+            Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
+            paymentSum += reservation.getPayment();
+            usedMileageSum += reservation.getUsedMileage();
+        }
+
+        return paymentSum - usedMileageSum;
+    }
+
     public String getStrReservationIds(Long[] reservationIds) {
         StringBuilder strReservationIds = new StringBuilder();
 
@@ -192,6 +206,12 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationIds[0]);
         return reservation.getMember();
 
+    }
+
+    public Long getMileage(MemberDto memberDto) {
+        Member member = getMember(memberDto);
+
+        return member.getMileage();
     }
 
     private String makeLocalTime(String timeString) {
