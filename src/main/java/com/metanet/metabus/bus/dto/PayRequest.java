@@ -17,5 +17,6 @@ public class PayRequest {
     private Long payment;
     private String payMethod;
     private String reservationIds;
+    private Long usedMileage;
 
 }
