@@ -84,6 +84,51 @@ function mobileReact() {
     }
 }
 
+  function navHeaderNotificationAjax() {
+      var divElement = document.getElementById('navHeaderNotification');
+      divElement.innerHTML = "";
+
+      $.ajax({
+          // /bus
+          url: '/bus/reservation/unpaid',
+          method: 'GET',
+          dataType: 'json',
+          success: function(data) {
+              if (data > 0) {
+                  // 성공 시 lottie-player를 추가
+                  var lottiePlayer = document.createElement('lottie-player');
+                  lottiePlayer.src = 'https://assets2.lottiefiles.com/packages/lf20_q70pch25.json';
+                  lottiePlayer.background = 'transparent';
+                  lottiePlayer.speed = '1';
+                  lottiePlayer.style.width = '31px';
+                  lottiePlayer.style.height = '31px';
+                  lottiePlayer.loop = true;
+                  lottiePlayer.autoplay = true;
+                  divElement.appendChild(lottiePlayer);
+              } else {
+                  var iElement = document.createElement('i');
+                  iElement.className = 'fa-regular fa-bell';
+                  iElement.style.width = '26px';
+                  iElement.style.height = '28px';
+                  divElement.appendChild(iElement);
+              }
+          },
+          error: function() {
+              var iElement = document.createElement('i');
+              iElement.className = 'fa-regular fa-bell';
+              iElement.style.width = '26px';
+              iElement.style.height = '28px';
+              divElement.appendChild(iElement);
+          }
+      });
+  }
+
+document.addEventListener('DOMContentLoaded', navHeaderNotificationAjax);
+
   // 브라우저가 로딩되고 실행
 document.addEventListener('DOMContentLoaded', mobileReact);
+  
+  function navHeaderNotification() {
+      window.location.href("/bus/reservation?specialValue=결제대기");
+  }
 

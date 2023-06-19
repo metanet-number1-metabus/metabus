@@ -110,6 +110,9 @@
             <div class="sb-sidenav-footer">
 <!--                <div class="small">Logged in as:</div>-->
 <!--                Start Bootstrap-->
+                <th:block th:unless="${memberDto == null}">
+                    <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>
+                </th:block>
             </div>
         </nav>
     </div><!--            header2-->
