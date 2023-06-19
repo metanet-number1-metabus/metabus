@@ -19,7 +19,7 @@
                     <header id="cshead">
                         <div class="text-center my-5 d-flex flex-column justify-content-center align-items-center">
                             <img class="" src="https://metabustest.s3.ap-northeast-2.amazonaws.com/testLogo.png" alt="..." style="height: 300px">
-                            <img src="assets/img/busAni2.gif" style="height: 120px; width: 77%;">
+                            <img src="assets/img/busAni2.gif" style="height: 120px; width: 77%;" id="mainImgMobile">
                         </div>
                     </header>
                 </div>
@@ -42,7 +42,7 @@
                                 <form class="needs-validation" novalidate>
                                     <div class="mb-3 mt-3">
                                         <label for="departurehome" class="form-label">출발지:</label>
-                                        <input type="text" class="form-control" autocomplete="off" id="departurehome" readonly placeholder="출발지 선택 (클릭)" name="departurehome">
+                                        <input type="text" class="form-control" autocomplete="off" id="departurehome" readonly placeholder="출발지를 선택해 주세요." name="departurehome">
                                         <div class="valid-feedback">
                                         </div>
                                         <!-- <select class="form-select" id="departurehome" name="departurehome">
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="mb-3 mt-3">
                                         <label for="destinationhome" class="form-label">목적지:</label>
-                                        <input type="text" class="form-control" autocomplete="off" id="destinationhome" name="destinationhome" placeholder="..." required>
+                                        <input type="text" class="form-control" autocomplete="off" id="destinationhome" name="destinationhome" placeholder="목적지를 선택해 주세요." required>
                                         <div class="invalid-feedback">
                                             출발지와 목적지를 정해주세요.
                                         </div>
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="departuredate" class="form-label">출발일:</label>
-                                        <input type="text" class="form-control" autocomplete="off" id="departuredate" required readonly placeholder="날짜 선택 (클릭)" name="departuredate">
+                                        <input type="text" class="form-control" autocomplete="off" id="departuredate" required readonly placeholder="날짜를 선택해 주세요." name="departuredate">
                                         <div class="invalid-feedback">
                                             출발날짜를 선택 해주세요. (년도 무시)
                                         </div>
@@ -87,53 +87,10 @@
                             </div>
                         </div>
                     </div>
-<!--                    <div class="col-xl-6">-->
-<!--                        <div class="card mb-4">-->
-<!--                            <div class="card-header">-->
-<!--                                <i class="fas fa-table me-1"></i>-->
-<!--                                공지사항-->
-<!--                            </div>-->
-<!--                            <div class="card-body">-->
-<!--                                <table id="datatable" class="table">-->
-<!--                                    <thead>-->
-<!--                                    <tr>-->
-<!--                                        <th>작성자</th>-->
-<!--                                        <th>제목</th>-->
-<!--                                        <th>작성일자</th>-->
-<!--                                    </tr>-->
-<!--                                    </thead>-->
-<!--                                    <tbody>-->
-<!--                                    <tr>-->
-<!--                                        <td>관리자</td>-->
-<!--                                        <td>(공지) 남부터미널 유지보수 작업</td>-->
-<!--                                        <td>23.05.11</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>관리자</td>-->
-<!--                                        <td>(공지) 5월 마일리지 사용에 관한 안내</td>-->
-<!--                                        <td>23.05.10</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>관리자</td>-->
-<!--                                        <td>설날 터미널별 행사</td>-->
-<!--                                        <td>23.05.10</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>관리자</td>-->
-<!--                                        <td>분실물 게시판 정리 일정</td>-->
-<!--                                        <td>23.05.10</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>관리자</td>-->
-<!--                                        <td>온라인 예약 가이드</td>-->
-<!--                                        <td>23.05.10</td>-->
-<!--                                    </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="col-xl-3 col-sm-1 col-md-2"></div>
+                </div>
+                <div class="row" style="height: 120px">
+
                 </div>
                 <!--                <div class="card mb-4">-->
 <!--                    <div class="card-header">-->
@@ -146,21 +103,42 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">리스트 선택</h5>
+                                <h5 class="modal-title">노선 정보</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-xl-6 overflow-scroll" style="height: 300px;">
+                                        <div class="col-xl-6 overflow-scroll mt-2 scrollbarcs" style="height: 300px;">
                                             <ul id="list" class="list-group">
                                                 <!-- 리스트 요소들은 JavaScript 코드로 동적으로 생성됩니다. -->
                                             </ul>
                                         </div>
-                                        <div class="col-xl-6 overflow-scroll" style="height: 300px;">
+                                        <div class="col-xl-6 overflow-scroll mt-2 scrollbarcs" style="height: 300px;">
                                             <ul id="list2" class="list-group">
                                                 <!-- 리스트 요소들은 JavaScript 코드로 동적으로 생성됩니다. -->
                                             </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <hr class="hr-dashed" style="width: 80%">
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <h3 id="departsShow" class="m-2">ㅇㅇㅇ</h3>
+                                        </div>
+                                        <div class="col-4 d-flex justify-content-center">
+                                            <i class="fa-solid fa-right-long m-2"></i>
+                                        </div>
+                                        <div class="col-4">
+                                            <h3 id="destinationShow" class="m-2">ㅇㅇㅇ</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <hr class="hr-dashed" style="width: 80%">
                                         </div>
                                     </div>
                                 </div>
@@ -178,6 +156,27 @@
     </div>
     <!--            본문-->
     <script th:inline="javascript">
+
+        const divElement = document.getElementById('mainBody');
+        const isMobile = window.matchMedia("(max-width: 576px)").matches;
+
+        // 모바일 접근/ 웹 접근
+        if (isMobile) {
+            // 모바일접근시
+
+            const imgElement = document.getElementById('mainImgMobile');
+
+            // 이미지 사이즈 변경
+            if (imgElement) {
+                imgElement.src = 'assets/img/busAni2-mobile.gif';
+                imgElement.style.width = '170%';
+            }
+            divElement.classList.remove('sb-sidenav-toggled');
+        } else {
+            //웹접근시
+            divElement.classList.add('sb-sidenav-toggled');
+        }
+
         $(function() {
             const currentDate = new Date();
             // const currentYear = currentDate.getFullYear();
@@ -201,8 +200,17 @@
         const selector = document.getElementById('departurehome');
         const selector2 = document.getElementById('destinationhome');
 
+        const departsShow = document.getElementById('departsShow');
+        const destinationShow = document.getElementById('destinationShow');
+
         // 모달창 열기
         selector.addEventListener('click', function() {
+            getDepListAjax();
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
+        });
+        // 모달창 열기
+        selector2.addEventListener('click', function() {
             getDepListAjax();
             const myModal = new bootstrap.Modal(document.getElementById('myModal'));
             myModal.show();
@@ -254,10 +262,12 @@
         // 선택된 리스트 요소로 selector의 value 업데이트
         function updateSelectorValue(value) {
             selector.value = value;
+            departsShow.innerHTML = value;
         }
 
         function updateSelectorValue2(value) {
             selector2.value = value;
+            destinationShow.innerHTML = value;
         }
 
         // 확인 버튼 클릭 시 모달창 닫기 및 selector 업데이트
@@ -267,8 +277,6 @@
             // 선택된 리스트 요소의 값 표시
             console.log(selector.value);
         }
-
-
         //openAPI
         var busDataList;
         function getDepListAjax() {
@@ -331,9 +339,45 @@
                     }, false)
                 })
         })()
+
     </script>
 </th:block>
 
 </html>
+<style>
+    .scrollbarcs {
+        overflow: scroll;
+    }
+
+    .scrollbarcs::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    .scrollbarcs::-webkit-scrollbar-track {
+        background-color: rgba(240, 241, 242, 1);
+    }
+
+    .scrollbarcs::-webkit-scrollbar-thumb {
+        background-color: rgba(136, 136, 136, 0.5);
+    }
+
+    .scrollbarcs::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 33, 248, 0.7);
+    }
+    .hr-solid {
+        border : 0px;
+        border-top: 5px solid #000000;
+    }
+
+    .hr-dotted {
+        border : 0px;
+        border-top: 5px dotted #000000;
+    }
+
+    .hr-dashed {
+        border : 0px;
+        border-top: 5px dashed #000000;
+    }
+</style>
 
 

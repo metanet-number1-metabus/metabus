@@ -50,3 +50,40 @@ const getDatePickerTitle = elem => {
     });
   } // date picker
 
+
+// 모바일 접근/ 웹 접근
+function mobileReact() {
+
+    const isMobile = window.matchMedia("(max-width: 576px)").matches;
+
+    if (isMobile) {
+        // 모바일접근시
+        const elements = document.getElementsByClassName('mobile-font-header');
+
+        // carouselExampleDark 요소의 m-5 클래스 제거
+        const carouselExampleDark = document.getElementById('carouselExampleDark');
+
+        // container-fluid rounded shadow-lg 클래스인 요소의 width를 260px로 설정
+        const containerElement = document.querySelector('.container-fluid.rounded.shadow-lg');
+
+        if (carouselExampleDark){
+            carouselExampleDark.classList.remove('m-5');
+        }
+
+        if (containerElement){
+            containerElement.style.width = '260px';
+        }
+
+        // user님 환영합니다. <-- 사이즈 깨짐으로 조절
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].style.fontSize = '11px';
+        }
+
+    } else {
+        //웹접근시
+    }
+}
+
+  // 브라우저가 로딩되고 실행
+document.addEventListener('DOMContentLoaded', mobileReact);
+
