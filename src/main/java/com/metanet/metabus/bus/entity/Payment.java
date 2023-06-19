@@ -32,5 +32,6 @@ public class Payment extends BaseEntity {
     private String merchantName;
     private Long payment;
     private String payMethod;
+    private Long usedMileage;
 
 }

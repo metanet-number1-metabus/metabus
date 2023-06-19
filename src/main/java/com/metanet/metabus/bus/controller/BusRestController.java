@@ -51,9 +51,8 @@ public class BusRestController {
         String reservationIds = cancelDto.getReservationIds();
         String amount = cancelDto.getPaymentSum();
 
-        paymentService.paymentCancel(accessToken, impUid, amount);
-
-        paymentService.paymentCancel(impUid, reservationIds);
+        paymentService.paymentCancelApi(accessToken, impUid, amount);
+        paymentService.paymentCancelDb(reservationIds);
     }
 
     @GetMapping("/bus/receipt/{impUid}")

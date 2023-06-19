@@ -6,6 +6,7 @@ import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Member;
+import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -130,7 +131,7 @@ public class MemberService {
                 .email(memberDto.getEmail())
                 .password(encoded)
                 .name(memberDto.getName())
-                .role(memberDto.getRole())
+                .role(Role.USER)
                 .mileage(memberDto.getMileage())
                 .grade(memberDto.getGrade())
                 .phoneNum(memberDto.getPhoneNum())
