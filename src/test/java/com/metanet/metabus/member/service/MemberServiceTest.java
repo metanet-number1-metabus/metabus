@@ -130,17 +130,15 @@ class MemberServiceTest {
     void editInfo_success() {
         Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MemberEditInfoRequest memberEditInfoRequest = new MemberEditInfoRequest("test@test.com", "test_edit", "010-1111-1111");
-        String encoded = "EhATgL83Pc6";
 
         when(memberRepository.save(any(Member.class))).thenReturn(member);
-        when(passwordEncoder.encode(any())).thenReturn(encoded);
 
         MemberDto result = Assertions.assertDoesNotThrow(() ->
                 memberService.editInfo(memberEditInfoRequest, new MemberDto(member.getId(), member.getName(), member.getPassword(), member.getEmail(), member.getMileage(), member.getRole(), member.getPhoneNum(), member.getGrade())));
 
         assertEquals(result.getId(), member.getId());
         assertEquals(result.getName(), memberEditInfoRequest.getName());
-        assertEquals(result.getPassword(), encoded);
+        assertEquals(result.getPassword(), member.getPassword());
         assertEquals(result.getEmail(), memberEditInfoRequest.getEmail());
         assertEquals(result.getMileage(), member.getMileage());
         assertEquals(result.getRole(), member.getRole());

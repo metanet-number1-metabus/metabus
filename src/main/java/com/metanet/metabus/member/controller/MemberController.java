@@ -145,8 +145,7 @@ public class MemberController {
             HttpSession httpSession = httpServletRequest.getSession(false);
 
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-            System.out.println("memberLoginRequest 비밀번호: "+ memberLoginRequest.getPassword());
-            System.out.println("memberDto 비밀번호: "+ memberDto.getPassword());
+
             memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/info";
@@ -164,7 +163,7 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "log/check_password_delete";
+            return "log/check_password_pwd";
         } else {
             HttpSession httpSession = httpServletRequest.getSession(false);
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);

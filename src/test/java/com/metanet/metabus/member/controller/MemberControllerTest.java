@@ -1,6 +1,7 @@
 package com.metanet.metabus.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.common.exception.conflict.DuplicateEmailException;
 import com.metanet.metabus.common.exception.not_found.AlreadyDeletedMemberException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
@@ -20,7 +21,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -298,6 +301,21 @@ class MemberControllerTest {
     }
 
     @Test
+    @DisplayName("비밀번호 체크 GET 성공(3) - delete")
+    void get_checkPwd_success3() throws Exception {
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        mockMvc.perform(get("/member/check/{url}", "delete")
+                        .session(mockHttpSession))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/check_password_delete"))
+                .andExpect(model().attributeExists("memberLoginRequest"))
+                .andExpect(model().attributeExists("original"));
+    }
+
+    @Test
     @DisplayName("비밀번호 체크 GET 실패(1) - 잘못된 url 요청")
     void get_checkPwd_fail() throws Exception {
         MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
@@ -441,6 +459,49 @@ class MemberControllerTest {
                 .andExpect(view().name("log/check_password_pwd"));
     }
 
+    @Test
+    @DisplayName("비밀번호 체크(delete) POST 성공 - 유효성 검사 통과")
+    void post_checkPwdDelete() throws Exception {
+
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "12345678");
+
+        mockMvc.perform(post("/member/check/delete")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberLoginRequest.getEmail())
+                        .param("password", memberLoginRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/member/delete"));
+    }
+
+    @Test
+    @DisplayName("비밀번호 체크(delete) POST 실패(1) - 유효성 검사 실패(빈 값 입력)")
+    void post_checkPwdDelete_fail() throws Exception {
+
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        Map<String, String> validatorResult = new HashMap<>();
+
+        validatorResult.put("valid_password", "패스워드를 입력해주세요.");
+
+        given(memberService.validateHandling(any(BindingResult.class))).willReturn(validatorResult);
+
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(" ", " ");
+
+        mockMvc.perform(post("/member/check/delete")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("password", memberLoginRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/check_password_delete"));
+    }
+
     /**
      * 회원 정보 수정 & 비밀번호 변경
      */
@@ -557,7 +618,7 @@ class MemberControllerTest {
                         .param("password", memberOAuthRequest.getPassword())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection()) // 리다이렉션 상태 코드
-                .andExpect(redirectedUrl("/")); // 리다이렉션 URL
+                .andExpect(redirectedUrl("/member/mypage")); // 리다이렉션 URL
     }
 
     @Test
@@ -704,32 +765,80 @@ class MemberControllerTest {
                 .andExpect(redirectedUrl("/member/login")); // 리다이렉션 URL
     }
 
-//    /**
-//     * 마이 페이지
-//     */
-//    @Test
-//    @DisplayName("회원 정보 수정 GET 성공(3) - oauth & Role이 GUEST일 때")
-//    void get_mypage() throws Exception {
-//        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000");
-//        MockHttpSession mockHttpSession = new MockHttpSession();
-//        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
-//
-//        mockMvc.perform(get("/member/mypage")
-//                        .session(mockHttpSession))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("log/edit_oauth"))
-//                .andExpect(model().attributeExists("memberOAuthRequest"))
-//                .andExpect(model().attributeExists("original"));
-//    }
-//
-//    @Test
-//    @DisplayName("회원 정보 수정 & 비밀번호 변경 GET 실패(1) - 세션 X")
-//    void get_mypage_fail() throws Exception {
-//        MockHttpSession mockHttpSession = new MockHttpSession();
-//
-//        mockMvc.perform(get("/member/mypage")
-//                        .session(mockHttpSession))
-//                .andExpect(status().is3xxRedirection()) // 리다이렉션 상태 코드
-//                .andExpect(redirectedUrl("/member/login")); // 리다이렉션 URL
-//    }
+    /**
+     * 마이 페이지
+     */
+    @Test
+    @DisplayName("마이페이지 GET 성공")
+    void get_mypage() throws Exception {
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.GUEST, "010-0000-0000", Grade.ALPHA);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        given(myPageService.selectTickets(any(MemberDto.class))).willReturn(List.of(new Reservation()));
+        given(myPageService.getCreatedDate(any(MemberDto.class))).willReturn(LocalDate.now());
+        given(myPageService.selectGrade(any(Long.class))).willReturn("ALPHA");
+        given(myPageService.selectMileage(any(Long.class))).willReturn(0L);
+
+        mockMvc.perform(get("/member/mypage")
+                        .session(mockHttpSession))
+                .andExpect(status().isOk())
+                .andExpect(view().name("mypage/mypage"))
+                .andExpect(model().attributeExists("tickets"))
+                .andExpect(model().attributeExists("member"))
+                .andExpect(model().attributeExists("grade"))
+                .andExpect(model().attributeExists("mileage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+    @Test
+    @DisplayName("마이페이지 GET 실패(1) - 세션 X")
+    void get_mypage_fail() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        mockMvc.perform(get("/member/mypage")
+                        .session(mockHttpSession))
+                .andExpect(status().is3xxRedirection()) // 리다이렉션 상태 코드
+                .andExpect(redirectedUrl("/member/login")); // 리다이렉션 URL
+    }
+
+    /**
+     * 관리자 페이지
+     */
+    @Test
+    @DisplayName("관리자 페이지 GET 성공")
+    void get_admin() throws Exception {
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.ADMIN, "010-0000-0000", Grade.ALPHA);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        mockMvc.perform(get("/member/admin")
+                        .session(mockHttpSession))
+                .andExpect(status().isOk())
+                .andExpect(view().name("mypage/admin"));
+    }
+
+    @Test
+    @DisplayName("관리자 페이지 GET 실패(1) - 세션 X")
+    void get_admin_fail1() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        mockMvc.perform(get("/member/admin")
+                        .session(mockHttpSession))
+                .andExpect(status().is3xxRedirection()) // 리다이렉션 상태 코드
+                .andExpect(redirectedUrl("/member/login")); // 리다이렉션 URL
+    }
+
+    @Test
+    @DisplayName("관리자 페이지 GET 실패(2) - ADMIN이 아닐때")
+    void get_admin_fail2() throws Exception {
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        mockMvc.perform(get("/member/admin")
+                        .session(mockHttpSession))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/member/login"));
+    }
 }
