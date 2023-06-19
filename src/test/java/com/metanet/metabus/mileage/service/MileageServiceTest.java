@@ -41,7 +41,7 @@ class MileageServiceTest {
             .name("name")
             .build();
 
-    Member member = Member.builder()
+    private final Member member = Member.builder()
             .id(1L)
             .name("name")
             .build();
