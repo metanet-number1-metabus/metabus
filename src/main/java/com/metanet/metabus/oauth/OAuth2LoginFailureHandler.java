@@ -17,9 +17,8 @@ import java.io.IOException;
 public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.debug("OAuth2 Login 실패");
+        log.info("OAuth2 Login 실패");
         try {
-            log.debug(exception.getMessage());
             response.sendRedirect("/");
         } catch (Exception e) {
             throw e;
