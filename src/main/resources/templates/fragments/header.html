@@ -32,8 +32,10 @@
         </ul>
         </th:block>
         <th:block th:unless="${memberDto == null}">
-            <div class="header_columns_column">
-                <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>
+            <div class="header_columns_column" style="cursor: pointer;" onclick="navHeaderNotification()" id="navHeaderNotification">
+                <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_q70pch25.json"  background="transparent"  speed="1"  style="width: 31px; height: 31px;"  loop autoplay></lottie-player>
+                <i class="fa-regular fa-bell" style="width: 31px;height: 33px"></i>
+<!--                <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>-->
             </div>
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">

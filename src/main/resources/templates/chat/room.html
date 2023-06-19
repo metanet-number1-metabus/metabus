@@ -3,299 +3,313 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/default_layout">
 <th:block layout:fragment="content">
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<script src="/webjars/sockjs-client/sockjs.min.js"></script>
-<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 
 
-<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">-->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-<div id="layoutSidenav_content" style="background-color: white">
-    <main>
-        <div class="container-fluid px-4">
-<!--<main style="margin-top: 100px; margin-left: 300px;display: flex; flex-direction: row;">-->
-<!--    &lt;!&ndash;채팅방 리스트&ndash;&gt;-->
+    <div id="layoutSidenav_content" style="background-color: white">
+        <main>
+            <div class="container-fluid px-4">
+                <!--<main style="margin-top: 100px; margin-left: 300px;display: flex; flex-direction: row;">-->
+                <!--    &lt;!&ndash;채팅방 리스트&ndash;&gt;-->
 
-            <div class="row" style="height: 100px;"></div>
-            <div class="row">
-<div class="col-4 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
+                <div class="row" style="height: 100px;"></div>
+                <div class="row">
+                    <div class="col-4 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
         border-radius: 5px;height: 700px;max-width: 250px">
 
-<!--    <div class="text-center" style="background-color: white">-->
-<!--        <h3 style="color: black">채팅 방 목록</h3>-->
-<!--    </div>-->
+                        <!--    <div class="text-center" style="background-color: white">-->
+                        <!--        <h3 style="color: black">채팅 방 목록</h3>-->
+                        <!--    </div>-->
 
-    <!-- 방 만들기 모달 창 -->
-    <div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form id = "myForm">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">방 제목</span>
+                        <!-- 방 만들기 모달 창 -->
+                        <div class="modal fade" id="roomModal" tabindex="-1" role="dialog"
+                             aria-labelledby="roomModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <form id="myForm">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">방 제목</span>
+                                                    </div>
+                                                    <input name="name" id="nameId" class="form-control"
+                                                           style="border-radius: 0;" placeholder="제목을 입력하세요">
+                                                    <input type="submit" value="방 만들기" class="btn btn-primary">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <input name="name" id="nameId" class="form-control" style="border-radius: 0;" placeholder="제목을 입력하세요">
-                                <input type="submit" value="방 만들기" class="btn btn-primary" >
                             </div>
                         </div>
-                    </form>
+
+
+                        <div class="container overflow-auto">
+                            <div class="row">
+                                <table id="roomTable"
+                                       style="border-collapse: separate; border-spacing: 10px; border-radius: 10px; white-space: nowrap;margin-left: auto;margin-right: auto">
+                                    <tr th:each="room : ${roomList}" class="room-row">
+                                        <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; text-align: center;margin-left: auto;margin-right: auto">
+                                            <div th:if="${room.getCompleteYN().equals('미완료')}">
+
+                                                <div th:if="${room.getName().contains('!')}">
+                                                    <a th:href="@{/{roomId}(roomId=${room.getId()})}"
+                                                       th:text="${room.getName()}"
+                                                       style="color: red; font-size: large;"></a>
+                                                </div>
+
+                                                <div th:if="${!room.getName().contains('!')}">
+                                                    <a th:href="@{/{roomId}(roomId=${room.getId()})}"
+                                                       th:text="${room.getName()}"
+                                                       style="color: dodgerblue; font-size: medium;"></a>
+                                                </div>
+
+                                            </div>
+
+                                            <div th:if="${room.getCompleteYN().equals('완료')}">
+                                                <b th:text="${#strings.replace(room.getName(), '!', '') + ' ' + room.getCompleteYN()}"
+                                                   style="color: #aaaaaa"></b>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div th:if="${session.loginMember.getRole().name().equals('USER')}">
+                            <div style="margin-left: auto;margin-right: auto">
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-2"></div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <div class="text-center">
+                                            <button class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#roomModal">방 만들기
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-0 col-md-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="overflow-x: auto;margin-left: auto;margin-right: auto;margin-top: 5px;margin-left: 5px">
+                            <div class="pagination-container text-center" style="text-align: center">
+                                <ul class="pagination" id="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous" id="previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8" style="">
+                        <div th:if="${chatList}">
+                            <div class="chat-container" style="margin-left: 0">
+                                <div style="height: 60px; font-size: larger; display: flex;align-items: center;">
+                                    <h1 style="text-align: center; flex: 1; margin-top: 10px;" th:text="${title}">
+                                        Chatting</h1>
+                                    <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
+                                       th:href="@{/complete/{roomId}(roomId=${roomId})}"
+                                       class="btn btn-sm btn-outline-secondary" style="margin-right: 5px">완료 하기</a>
+                                </div>
+                                <div class="chat-bubbles" id="chatting" style="overflow-y: auto;">
+                                </div>
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input type="hidden" id="sender" class="form-control"
+                                               placeholder="Your name here..."
+                                               th:value="${session.loginMember.getRole().name() == 'ADMIN' ? '운영자' : session.loginMember.getName()}">
+                                    </div>
+                                    <div class="container overflow-hidden">
+                                        <div class="row">
+                                            <div class="col-1 col-md-1"></div>
+                                            <div class="col-12 col-md-12">
+                                                <div class="form-group"
+                                                     style="display: flex; justify-content: center; align-items: center;">
+
+                                                    <input type="text" id="message" class="form-control"
+                                                           style="float: left;flex-basis: 85%;"
+                                                           placeholder="메시지를 입력해주세요">
+
+                                                    <button id="send" class="btn btn-primary" type="submit"
+                                                            style="height: 40px;flex-basis: 15%;">보내기
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                    <!-- 채팅방 -->
+                    <!-- 채팅방 chatList에 값이 들어가 있을때만 보이게 if문으로 덮음 -->
+
+                    <!--</div>-->
+                    <!--</main>-->
             </div>
-        </div>
+        </main>
     </div>
+        <script th:inline="javascript">
 
+            var stompClient = null;
+            var roomId = [[${roomId}]];
+            var chatList = [[${chatList}]];
 
-    <div class="container overflow-auto">
-        <div class="row">
-        <table id="roomTable" style="border-collapse: separate; border-spacing: 10px; border-radius: 10px; white-space: nowrap;margin-left: auto;margin-right: auto">
-            <tr th:each="room : ${roomList}" class="room-row">
-                <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; text-align: center;margin-left: auto;margin-right: auto">
-                    <div th:if="${room.getCompleteYN().equals('미완료')}">
+            function scrollToBottom() {
+                var chatContainer = document.getElementById("chatting");
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
 
-                    <div th:if="${room.getName().contains('!')}">
-                        <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: red; font-size: large;"></a>
-                    </div>
+            function setConnected(connected) {
+                $("#connect").prop("disabled", connected);
+                $("#disconnect").prop("disabled", !connected);
+                if (connected) {
+                    $("#conversation").show();
+                } else {
+                    $("#conversation").hide();
+                }
+                $("#chatting").html("");
+            }
 
-                    <div th:if="${!room.getName().contains('!')}">
-                        <a th:href="@{/{roomId}(roomId=${room.getId()})}" th:text="${room.getName()}" style="color: dodgerblue; font-size: medium;"></a>
-                    </div>
+            function connect() {
+                var socket = new SockJS('/ws-stomp');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function (frame) {
+                    setConnected(true);
+                    console.log('Connected: ' + frame);
+                    loadChat(chatList)  //저장된 채팅 불러오기
 
-                    </div>
+                    //구독
+                    stompClient.subscribe('/room/' + roomId, function (chatMessage) {
+                        showChat(JSON.parse(chatMessage.body));
+                    });
+                });
+            }
 
-                    <div th:if="${room.getCompleteYN().equals('완료')}">
-                        <b th:text="${#strings.replace(room.getName(), '!', '') + ' ' + room.getCompleteYN()}" style="color: #aaaaaa"></b>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        </div>
-    </div>
+            function disconnect() {
+                if (stompClient !== null) {
+                    stompClient.disconnect();
+                }
+                setConnected(false);
+                console.log("Disconnected");
+            }
 
-    <div th:if="${session.loginMember.getRole().name().equals('USER')}">
-        <div style="margin-left: auto;margin-right: auto">
-            <div class="row">
-                <div class="col-lg-5 col-md-2"></div>
-                <div class="col-lg-7 col-md-8">
-    <div class="text-center" >
-        <button class="btn btn-primary" data-toggle="modal" data-target="#roomModal">방 만들기</button>
-    </div>
-                </div>
-                    <div class="col-lg-0 col-md-2"></div>
-            </div>
-        </div>
-    </div>
-    <div style="overflow-x: auto;margin-left: auto;margin-right: auto;margin-top: 5px;margin-left: 5px">
-    <div class="pagination-container text-center" style="text-align: center">
-        <ul class="pagination" id="pagination">
-            <li class="page-item">
-<!--                <a class="page-link" href="#" aria-label="Previous" id="previous">-->
-<!--&lt;!&ndash;                    <span aria-hidden="true">&laquo;</span>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <span class="sr-only">Previous</span>&ndash;&gt;-->
-<!--                </a>-->
-            </li>
-        </ul>
-    </div>
-    </div>
-</div>
+            //html 에서 입력값, roomId 를 받아서 Controller 로 전달
+            function sendChat() {
 
-<!-- 채팅방 -->
-<!-- 채팅방 chatList에 값이 들어가 있을때만 보이게 if문으로 덮음 -->
-               <div class="col-8" style="">
-<div th:if="${chatList}">
-    <div class="chat-container" style="margin-left: 0">
-        <div style="height: 60px; font-size: larger; display: flex;align-items: center;">
-            <h1 style="text-align: center; flex: 1; margin-top: 10px;" th:text="${title}">Chatting</h1>
-            <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
-               th:href="@{/complete/{roomId}(roomId=${roomId})}" class="btn btn-sm btn-outline-secondary" style="margin-right: 5px" >완료 하기</a>
-        </div>
-        <div class="chat-bubbles" id="chatting" style="overflow-y: auto;">
-        </div>
-        <form class="form-inline" >
-            <div class="form-group">
-                <input type="hidden" id="sender" class="form-control" placeholder="Your name here..."
-                       th:value="${session.loginMember.getRole().name() == 'ADMIN' ? '운영자' : session.loginMember.getName()}">
-            </div>
-            <div class="container overflow-hidden">
-            <div class="row">
-            <div class="col-1 col-md-1">
-            </div>
-            <div class="col-12 col-md-12">
-            <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
-
-                <input type="text" id="message" class="form-control" style="float: left;flex-basis: 85%;" placeholder="메시지를 입력해주세요">
-
-                <button id="send" class="btn btn-primary" type="submit" style="height: 40px;flex-basis: 15%;">보내기</button>
-
-            </div>
-            </div>
-
-            <div>
-            </div>
-        </form>
-    </div>
-</div>
-               </div>
-<!--</div>-->
-<!--</main>-->
-        </div>
-        </div>
-    </main>
-<script th:inline="javascript">
-
-    var stompClient = null;
-    var roomId = [[${roomId}]];
-    var chatList = [[${chatList}]];
-
-    function scrollToBottom() {
-        var chatContainer = document.getElementById("chatting");
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-    function setConnected(connected) {
-        $("#connect").prop("disabled", connected);
-        $("#disconnect").prop("disabled", !connected);
-        if (connected) {
-            $("#conversation").show();
-        }
-        else {
-            $("#conversation").hide();
-        }
-        $("#chatting").html("");
-    }
-
-    function connect() {
-        var socket = new SockJS('/ws-stomp');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            setConnected(true);
-            console.log('Connected: ' + frame);
-            loadChat(chatList)  //저장된 채팅 불러오기
-
-            //구독
-            stompClient.subscribe('/room/'+roomId, function (chatMessage) {
-                showChat(JSON.parse(chatMessage.body));
-            });
-        });
-    }
-
-    function disconnect() {
-        if (stompClient !== null) {
-            stompClient.disconnect();
-        }
-        setConnected(false);
-        console.log("Disconnected");
-    }
-
-    //html 에서 입력값, roomId 를 받아서 Controller 로 전달
-    function sendChat() {
-
-        if($("#message").val()!=""){
-            stompClient.send("/send/"+roomId, {},
-                JSON.stringify({
-                    'sender': $("#sender").val(),
-                    'message' : $("#message").val()
-                }));
-        }else{
-            alert("메세지를 입력해주세요")
-        }
-
-        var messageInput = document.getElementById('message');
-        messageInput.value = '';
-    }
-
-    //저장된 채팅 불러오기
-    function loadChat(chatList) {
-        if (chatList != null) {
-            for (chat in chatList) {
-                if(chatList[chat].sender=="운영자"){
-                    $("#chatting").append(
-                        "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;'>"+
-                        "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
-                        "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
-                        "<div class='message' style=\"color: skyblue; font-size: x-large;\">" + chatList[chat].message + "</div>" +
-                        "<div class='triangle'></div>" +
-                        "</div>"
-
-                    );
-                }else{
-                    $("#chatting").append(
-                        "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>"+
-                        "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
-                        "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
-                        "<div class='message' style=\"color: white; font-size: x-large;\">" + chatList[chat].message + "</div>" +
-                        "<div class='triangle'></div>" +
-                        "</div>"
-
-                    );
+                if ($("#message").val() != "") {
+                    stompClient.send("/send/" + roomId, {},
+                        JSON.stringify({
+                            'sender': $("#sender").val(),
+                            'message': $("#message").val()
+                        }));
+                } else {
+                    alert("메세지를 입력해주세요")
                 }
 
+                var messageInput = document.getElementById('message');
+                messageInput.value = '';
             }
-        }
-    }
 
-    //보낸 채팅 보기
-    function showChat(chatMessage) {
-        if(chatMessage.sender=="운영자"){
-            $("#chatting").append(
-                "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;''>"+
-                "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
-                "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
-                "<div class='message' style=\"color: skyblue;font-size: x-large;\">" + chatMessage.message + "</div>" +
-                "<div class='triangle'></div>" +
-                "</div>"+
-                "</div>"
-            );
-            scrollToBottom();
-        }else{
-            $("#chatting").append(
-                "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>"+
-                "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
-                "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
-                "<div class='message' style=\"color: white;font-size: x-large;\">" + chatMessage.message + "</div>" +
-                "<div class='triangle'></div>" +
-                "</div>"+
-                "</div>"
-            );
-            scrollToBottom();
-        }
-    }
+            //저장된 채팅 불러오기
+            function loadChat(chatList) {
+                if (chatList != null) {
+                    for (chat in chatList) {
+                        if (chatList[chat].sender == "운영자") {
+                            $("#chatting").append(
+                                "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;'>" +
+                                "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
+                                "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
+                                "<div class='message' style=\"color: skyblue; font-size: x-large;\">" + chatList[chat].message + "</div>" +
+                                "<div class='triangle'></div>" +
+                                "</div>"
+                            );
+                        } else {
+                            $("#chatting").append(
+                                "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>" +
+                                "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
+                                "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
+                                "<div class='message' style=\"color: white; font-size: x-large;\">" + chatList[chat].message + "</div>" +
+                                "<div class='triangle'></div>" +
+                                "</div>"
+                            );
+                        }
 
-    $(function roomCreate() {
-        $("#myForm").on('submit', function (e) {
-            e.preventDefault();
-            $(document).ready(function() {
+                    }
+                }
+            }
+
+            //보낸 채팅 보기
+            function showChat(chatMessage) {
+                if (chatMessage.sender == "운영자") {
+                    $("#chatting").append(
+                        "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;''>" +
+                        "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
+                        "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
+                        "<div class='message' style=\"color: skyblue;font-size: x-large;\">" + chatMessage.message + "</div>" +
+                        "<div class='triangle'></div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                    scrollToBottom();
+                } else {
+                    $("#chatting").append(
+                        "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>" +
+                        "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
+                        "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
+                        "<div class='message' style=\"color: white;font-size: x-large;\">" + chatMessage.message + "</div>" +
+                        "<div class='triangle'></div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                    scrollToBottom();
+                }
+            }
+
+            $(function roomCreate() {
+                $("#myForm").on('submit', function (e) {
+                    e.preventDefault();
+                    $(document).ready(function () {
 
 
-                    // 폼 데이터를 직렬화하여 AJAX 요청의 데이터로 사용합니다.
-                    var name = $("#nameId");
+                        // 폼 데이터를 직렬화하여 AJAX 요청의 데이터로 사용합니다.
+                        var name = $("#nameId");
 
                         $.ajax({
                             type: 'POST',
                             url: '/chat/room',
                             data: name,
-                            success: function(response) {
+                            success: function (response) {
                                 // AJAX 요청이 성공하면 실행할 코드를 작성합니다.
                                 console.log('Success:', response);
 
-                                if(response==-1){
+                                if (response == -1) {
                                     alert("제목을 입력하세요");
                                 }
 
-                                var redirectUrl = '/'+-1;
+                                var redirectUrl = '/' + -1;
                                 // 리디렉션할 페이지의 URL로 변경해야 합니다.
                                 // 페이지 리디렉션을 수행합니다.
                                 window.location.href = redirectUrl;
 
 
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 // AJAX 요청이 실패하면 실행할 코드를 작성합니다.
                                 console.log('Error:', error);
                                 alert("제목이 너무 깁니다");
-                                var redirectUrl = '/'+-1;
+                                var redirectUrl = '/' + -1;
                                 // 리디렉션할 페이지의 URL로 변경해야 합니다.
                                 // 페이지 리디렉션을 수행합니다.
                                 window.location.href = redirectUrl;
@@ -303,90 +317,96 @@
                             }
                         });
 
+                    });
+                });
             });
-        });
-    });
-    $(function () {
-        $("form").on('submit', function (e) {
-            e.preventDefault();
-        });
-        $( "#connect" ).click(function() { connect(); });
-        $( "#disconnect" ).click(function() { disconnect(); });
-        $( "#send" ).click(function() { sendChat(); });
-    });
+            $(function () {
+                $("form").on('submit', function (e) {
+                    e.preventDefault();
+                });
+                $("#connect").click(function () {
+                    connect();
+                });
+                $("#disconnect").click(function () {
+                    disconnect();
+                });
+                $("#send").click(function () {
+                    sendChat();
+                });
+            });
 
-</script>
-<script>
-    //창 키면 바로 연결
-    window.onload = function (){
-        connect();
-    }
-
-    window.BeforeUnloadEvent = function (){
-        disconnect();
-    }
-</script>
-
-<script>
-    $(document).ready(function () {
-        // Number of items per page
-        var perPage = 10;
-
-        // Hide all rows initially
-        $(".room-row").hide();
-
-        // Show the first page
-        $(".room-row").slice(0, perPage).show();
-
-        // Get the total number of pages
-        var numPages = Math.ceil($(".room-row").length / perPage);
-
-        // Generate pagination links
-        for (var i = 1; i <= numPages; i++) {
-            $("#pagination").append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
-        }
-
-        // Add click event to pagination links
-        $("#pagination li").on('click', function (e) {
-            e.preventDefault();
-
-            // Get the selected page number
-            var page = $(this).text();
-
-            // Calculate the start and end index of the items to show
-            var start = (page - 1) * perPage;
-            var end = start + perPage;
-
-            // Hide all rows and show the selected page
-            $(".room-row").hide().slice(start, end).show();
-        });
-
-        // Add click event to previous and next links
-        $("#previous").on('click', function (e) {
-            e.preventDefault();
-
-            // Get the currently active page
-            var activePage = $("#pagination li.active").index();
-
-            // Show the previous page if available
-            if (activePage > 0) {
-                $("#pagination li").eq(activePage - 1).trigger('click');
+        </script>
+        <script>
+            //창 키면 바로 연결
+            window.onload = function () {
+                connect();
             }
-        });
 
-        $("#next").on('click', function (e) {
-            e.preventDefault();
-
-            // Get the currently active page
-            var activePage = $("#pagination li.active").index();
-
-            // Show the next page if available
-            if (activePage < numPages - 1) {
-                $("#pagination li").eq(activePage + 1).trigger('click');
+            window.BeforeUnloadEvent = function () {
+                disconnect();
             }
-        });
-    });
-</script>
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                // Number of items per page
+                var perPage = 10;
+
+                // Hide all rows initially
+                $(".room-row").hide();
+
+                // Show the first page
+                $(".room-row").slice(0, perPage).show();
+
+                // Get the total number of pages
+                var numPages = Math.ceil($(".room-row").length / perPage);
+
+                // Generate pagination links
+                for (var i = 1; i <= numPages; i++) {
+                    $("#pagination").append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
+                }
+
+                // Add click event to pagination links
+                $("#pagination li").on('click', function (e) {
+                    e.preventDefault();
+
+                    // Get the selected page number
+                    var page = $(this).text();
+
+                    // Calculate the start and end index of the items to show
+                    var start = (page - 1) * perPage;
+                    var end = start + perPage;
+
+                    // Hide all rows and show the selected page
+                    $(".room-row").hide().slice(start, end).show();
+                });
+
+                // Add click event to previous and next links
+                $("#previous").on('click', function (e) {
+                    e.preventDefault();
+
+                    // Get the currently active page
+                    var activePage = $("#pagination li.active").index();
+
+                    // Show the previous page if available
+                    if (activePage > 0) {
+                        $("#pagination li").eq(activePage - 1).trigger('click');
+                    }
+                });
+
+                $("#next").on('click', function (e) {
+                    e.preventDefault();
+
+                    // Get the currently active page
+                    var activePage = $("#pagination li.active").index();
+
+                    // Show the next page if available
+                    if (activePage < numPages - 1) {
+                        $("#pagination li").eq(activePage + 1).trigger('click');
+                    }
+                });
+            });
+        </script>
 </th:block>
 </html>
 <style>
@@ -437,7 +457,6 @@
         border-width: 0 10px 10px 10px;
         border-color: transparent transparent #f1f1f1 transparent;
     }
-
 
 
 </style>
