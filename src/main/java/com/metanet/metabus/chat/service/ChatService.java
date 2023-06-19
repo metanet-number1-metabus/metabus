@@ -24,7 +24,7 @@ public class ChatService {
 
 
     public List<RoomDto> findAllRoom() {
-        List<Room> rooms = roomRepository.findAllByDeletedDateIsNull();
+        List<Room> rooms = roomRepository.findAllByDeletedDateIsNullOrderByIdDesc();
         return rooms.stream()
                 .map(RoomDto::of)
                 .collect(Collectors.toList());

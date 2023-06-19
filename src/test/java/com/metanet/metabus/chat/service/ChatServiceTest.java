@@ -36,7 +36,7 @@ class ChatServiceTest {
         Room room2 = new Room(2L, "Room 2", 1L, "왼료");
         List<Room> fakeRooms = Arrays.asList(room1, room2);
 
-        when(roomRepository.findAllByDeletedDateIsNull()).thenReturn(fakeRooms);
+        when(roomRepository.findAllByDeletedDateIsNullOrderByIdDesc()).thenReturn(fakeRooms);
 
 
         List<RoomDto> expectedRoomDtos = Arrays.asList(
