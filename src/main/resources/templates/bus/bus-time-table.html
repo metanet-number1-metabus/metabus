@@ -14,13 +14,15 @@
                 </ol> -->
                 <div class="content">
 
-                    <h1 class="mt-4 m-3 mb-0">버스 시간표</h1>
-                    <ol class="breadcrumb mb-4 m-3 mt-0 ">
-                        <li class="breadcrumb-item"><a href="/">홈</a></li>
-                        <li class="breadcrumb-item active">버스 시간표</li>
-                    </ol>
 
                     <div class="container">
+
+                        <h1 class="mt-4">버스 시간표</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">홈</a></li>
+                            <li class="breadcrumb-item active">버스 시간표</li>
+                        </ol>
+
                         <h2 class="mb-5"># [[${departureHome}]] --> [[${destinationHome}]]</h2>
 
                         <div class="table-responsive custom-table-responsive">
@@ -110,32 +112,34 @@
                                                 <div class="row">
                                                     <img src="/assets/img/busfront.jpg" style=" width: 100%;">
                                                 </div>
-                                                <div class="container-fluid" id="seatContainer" style="width:400px">
-                                                    <!--                                                    <div class="row">-->
-                                                    <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">A</div></div>-->
-                                                    <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">B</div></div>-->
-                                                    <!--                                                        <div class="col-xl-3"></div>-->
-                                                    <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">C</div></div>-->
-                                                    <!--                                                    </div>-->
-                                                    <!--                                                    <div class="row">-->
-                                                    <!--                                                        <div class="col-xl-3">-->
-                                                    <!--                                                            <div class="seat1">-->
-                                                    <!--                                                                <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
-                                                    <!--                                                                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
-                                                    <!--                                                                </svg>-->
-                                                    <!--                                                            </div>-->
-                                                    <!--                                                        </div>-->
-                                                    <!--                                                        <div class="col-xl-3"><svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
-                                                    <!--                                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
-                                                    <!--                                                        </svg></div>-->
-                                                    <!--                                                        <div class="col-xl-3"></div>-->
-                                                    <!--                                                        <div class="col-xl-3"><svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
-                                                    <!--                                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
-                                                    <!--                                                        </svg></div>-->
-                                                    <!--                                                    </div>-->
-                                                    <!--                                                    <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
-                                                    <!--                                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
-                                                    <!--                                                    </svg>-->
+                                                <div class="overflow-scroll table-responsive">
+                                                    <div class="container-fluid" id="seatContainer" style="width:400px">
+                                                        <!--                                                    <div class="row">-->
+                                                        <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">A</div></div>-->
+                                                        <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">B</div></div>-->
+                                                        <!--                                                        <div class="col-xl-3"></div>-->
+                                                        <!--                                                        <div class="col-xl-3 d-flex"><div class="justify-content-center">C</div></div>-->
+                                                        <!--                                                    </div>-->
+                                                        <!--                                                    <div class="row">-->
+                                                        <!--                                                        <div class="col-xl-3">-->
+                                                        <!--                                                            <div class="seat1">-->
+                                                        <!--                                                                <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                        <!--                                                                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                        <!--                                                                </svg>-->
+                                                        <!--                                                            </div>-->
+                                                        <!--                                                        </div>-->
+                                                        <!--                                                        <div class="col-xl-3"><svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                        <!--                                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                        <!--                                                        </svg></div>-->
+                                                        <!--                                                        <div class="col-xl-3"></div>-->
+                                                        <!--                                                        <div class="col-xl-3"><svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                        <!--                                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                        <!--                                                        </svg></div>-->
+                                                        <!--                                                    </div>-->
+                                                        <!--                                                    <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="80%" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16">-->
+                                                        <!--                                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>-->
+                                                        <!--                                                    </svg>-->
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <img src="/assets/img/busback.jpg" style=" width: 100%;">
@@ -249,6 +253,12 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">예매 취소
                                     </button>
                                     <button type="submit" class="btn btn-primary">예매</button>
+                                </div>
+                                </th:block>
+                                <th:block th:if="${memberDto == null}">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">예매 취소
+                                    </button>
                                 </div>
                                 </th:block>
                             </div>
@@ -847,6 +857,26 @@
 
     .cstrexpr {
         background-color: rgba(200, 200, 200, 0.7);
+    }
+
+    .table-responsive {
+        overflow: scroll;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background-color: rgba(240, 241, 242, 1);
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background-color: rgba(136, 136, 136, 0.5);
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 33, 248, 0.7);
     }
 </style>
 
