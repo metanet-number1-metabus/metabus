@@ -88,6 +88,8 @@
                                         background-color: skyblue; margin-bottom:15px; border-radius: 5px;width:40px;text-align:center;">[[${session.loginMember.getRole()}]]</b>
                                             <b th:if="${session.loginMember.getRole().name() == 'ADMIN'}" style="font-size: small; display: inline-block; vertical-align: middle; color: white;
                                         background-color: skyblue; margin-bottom:15px; border-radius: 5px;width:50px;text-align:center;">[[${session.loginMember.getRole()}]]</b>
+                                            <b th:if="${session.loginMember.getRole().name() == 'GUEST'}" style="font-size: small; display: inline-block; vertical-align: middle; color: white;
+                                        background-color: skyblue; margin-bottom:15px; border-radius: 5px;width:60px;text-align:center;">[[${session.loginMember.getRole()}]]</b>
                                             <button type="button" onclick="location.href='/member/check/info'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
                                                 <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/edit.png" style="width: 27px; height: 20px; margin-bottom: 13px;" alt="Edit">
                                             </button>
@@ -118,11 +120,11 @@
 
                                         </div>
                                         <div class="row" style="height: 50px;"></div>
-                                        <form class="form-signup" th:action="@{/member/delete}" method="post" novalidate style="text-align: right;">
-                                            <input type="submit" style="color: #aaaaaa; background-color: transparent; border: none; cursor: pointer;" value="회원탈퇴" onclick="return confirm('정말로 회원탈퇴하시겠습니까?')">
-                                        </form>
-
-
+<!--                                        <p style="font-size: small;color: #aaaaaa;margin: 0">회원 탈퇴</p>-->
+                                        <button type="button" onclick="location.href='/member/check/delete'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">회원 탈퇴</button>
+<!--                                        <form class="form-signup" th:action="@{/member/delete}" method="post" novalidate style="text-align: right;">-->
+<!--                                            <input type="submit" style="color: #aaaaaa; background-color: transparent; border: none; cursor: pointer;" value="회원탈퇴" onclick="return confirm('정말로 회원탈퇴하시겠습니까?')">-->
+<!--                                        </form>-->
                                     </div>
                                 </div>
                             </div>
