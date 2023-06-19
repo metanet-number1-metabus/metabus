@@ -149,6 +149,7 @@ class ReservationServiceTest {
             .reservationStatus(ReservationStatus.UNPAID)
             .busType("일반")
             .busId(bus.getId())
+            .usedMileage(0L)
             .build();
 
     /* ========== 버스 예약 ========== */
@@ -594,6 +595,17 @@ class ReservationServiceTest {
     }
 
     @Test
+    @DisplayName("실 결제금 구하기 성공")
+    void get_real_payment_sum_success() {
+
+        when(reservationRepository.findByIdAndDeletedDateIsNull(reservation.getId())).thenReturn(reservation);
+
+        Long realPaymentSum = reservationService.getRealPaymentSum(reservationIds);
+        assertEquals(reservation.getPayment() - reservation.getUsedMileage(), realPaymentSum);
+
+    }
+
+    @Test
     @DisplayName("주문번호 문자열로 구하기 성공")
     void get_str_reservation_id_success() {
 
@@ -615,6 +627,19 @@ class ReservationServiceTest {
         Member result = reservationService.getMember(reservationIds);
 
         assertEquals(member, result);
+
+    }
+
+    @Test
+    @DisplayName("마일리지 구하기 성공")
+    void get_mileage_success() {
+
+        when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
+
+        Long mileage = reservationService.getMileage(memberDto);
+        Long result = member.getMileage();
+
+        assertEquals(mileage, result);
 
     }
 
