@@ -54,7 +54,7 @@ public class MemberService {
                 .id(member.getId())
                 .name(member.getName())
                 .email(memberLoginRequest.getEmail())
-                .password(memberLoginRequest.getPassword())
+                .password(member.getPassword())
                 .role(member.getRole())
                 .mileage(member.getMileage())
                 .grade(member.getGrade())
@@ -64,12 +64,11 @@ public class MemberService {
 
     @Transactional
     public MemberDto editInfo(MemberEditInfoRequest memberEditInfoRequest, MemberDto memberDto) { //이미 비밀번호 확인하고 들어가서 체크x
-        String encoded = passwordEncoder.encode(memberDto.getPassword());
 
         Member member = Member.builder()
                 .id(memberDto.getId())
                 .email(memberEditInfoRequest.getEmail())
-                .password(encoded)
+                .password(memberDto.getPassword())
                 .name(memberEditInfoRequest.getName())
                 .role(memberDto.getRole())
                 .mileage(memberDto.getMileage())

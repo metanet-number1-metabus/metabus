@@ -145,6 +145,8 @@ public class MemberController {
             HttpSession httpSession = httpServletRequest.getSession(false);
 
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+            System.out.println("memberLoginRequest 비밀번호: "+ memberLoginRequest.getPassword());
+            System.out.println("memberDto 비밀번호: "+ memberDto.getPassword());
             memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/info";

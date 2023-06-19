@@ -63,6 +63,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
         MemberDto memberDto = MemberDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())
+                .password(member.getPassword())
                 .name(member.getName())
                 .role(member.getRole())
                 .mileage(member.getMileage())
