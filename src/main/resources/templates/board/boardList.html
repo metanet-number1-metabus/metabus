@@ -80,7 +80,7 @@
                                                 <strong class="page-link" id="nowPages" style="color: red;" th:text="${page}"></strong>
                                             </th:block>
                                         </li>
-                                        <li class="page-item"><a class="page-link" onclick="nextPage()">다음</a></li>
+                                        <li class="page-item" th:if="${endPage >= 2}"><a class="page-link" onclick="nextPage()">다음</a></li>
                                     </ul>
                                 </nav>
                             </div>
