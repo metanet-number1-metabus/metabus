@@ -137,6 +137,7 @@
             left: 25%
         }
     }</style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js"></script>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
     <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
@@ -154,8 +155,23 @@
                 <div class="panel-body p-3">
                     <form id = "form" class="form-signup" th:action="@{/member/register}" method="post" th:object="${memberRegisterRequest}" novalidate>
                         <div class="form-group py-2">
-                            <div class="input-field"> <span class="fa-regular fa-envelope p-2"></span> <input type="text" id="email" th:value="${memberRegisterRequest.email}"  name="email" class="form-control" placeholder="이메일 *" required autofocus> </div>
-                            <span th:text="${valid_email}" style="color: red"></span>
+                            <div class="input-field" style="width: 85%; float:left;">
+                                <span class="fa-regular fa-envelope p-2"></span>
+                                <input type="text" id="email" th:value="${memberRegisterRequest.email}"  name="email" class="form-control" placeholder="이메일 *" required autofocus>
+                            </div>
+<!--                            <div style="float:left;width: 3%;height: 20px"></div>-->
+                            <button class="opacity-0" style="border:none; outline:none; width: 10%; height: 50px; margin-left: 13px" onclick="emailIsRealCheck(event)" id="sendBtnId"><i class="fa-regular fa-paper-plane fa-xl mt-3" style="color: blue; cursor:pointer"></i></button>
+                            <span id="email_result" th:text="${valid_email}" style="color: red"></span>
+                        </div>
+                        <div class="form-group py-2 d-none" id="codeCheckDiv">
+                            <div class="input-field" style="width: 65%; float:left;">
+                                <span class="fa-solid fa-key p-2"></span>
+                                <input type="text" id="codeId" class="form-control" placeholder="인증번호 *" required autofocus>
+                            </div>
+                            <div style="float:left; width: 6%;height: 20px"></div>
+                            <button id="okBtnId" class="opacity-0" style="margin-right: 10px; border:none; outline:none; width: 10%; height: 50px" onclick="emailCodeCheck(event)"><i class="fa-solid fa-check fa-xl" style="color: green"></i></button>
+                            <button id="reBtnId" class="opacity-0" style="border:none; outline:none; width: 10%; height: 50px;" onclick="emailReCheck(event)"><i class="fa-solid fa-rotate-left fa-xl mt-2" style="color: red"></i></button>
+                            <span id="au_result" style="color: red"></span>
                         </div>
                         <div class="form-group py-2">
                             <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" id="name" th:value="${memberRegisterRequest.name}" name="name" class="form-control" placeholder="이름 *" required autofocus> </div>
@@ -193,10 +209,21 @@
     </div>
 </div>
 <script type='text/javascript'>
+
+    var emailStatus = false;
+
     $(document).ready(function(){
         $("#submit").click(function(e){
+            console.log(!emailStatus)
+            console.log(!compare_result)
             if(!compare_result){
                 alert('*는 필수 입력 항목입니다.');
+                e.preventDefault();
+                return;
+            }
+
+            if(!emailStatus){
+                alert('이메일을 인증해 주세요.');
                 e.preventDefault();
                 return;
             }
@@ -221,6 +248,87 @@
         compare_result = false;
         $s_result.text("비밀번호가 일치하지 않습니다.");
         $s_result.attr("style","color: red");
+    }
+
+    const generateRandomString = (num) => {
+        const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < num; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
+
+    var tempCode = generateRandomString(10);
+
+    function emailCodeCheck(e) {
+        e.preventDefault();
+        console.log(tempCode);
+        console.log($("#codeId").val());
+        if(tempCode == $("#codeId").val()){
+            $("#au_result").text("인증번호가 일치합니다.");
+            $("#au_result").attr("style","color: green");
+            emailStatus = true
+            $("#email").attr("readonly",true);
+            $("#codeId").attr("readonly",true);
+            $("#okBtnId").attr("disabled", true);
+            $("#reBtnId").attr("disabled", true);
+            return;
+        }
+        $("#au_result").text("인증번호가 일치하지 않습니다.");
+        $("#au_result").attr("style","color: red");
+    }
+    function emailReCheck(e) {
+        e.preventDefault();
+        $("#email_result").text("인증번호 발송중...");
+        $("#email_result").attr("style","color: green");
+        tempCode = generateRandomString(10);
+        $("#codeCheckDiv").addClass("d-none");
+        $("#sendBtnId").attr("disabled", false);
+
+        var templateParams = {
+            //각 요소는 emailJS에서 설정한 템플릿과 동일한 명으로 작성!
+            email : $('input[name=email]').val(),
+            message : tempCode
+        };
+
+        emailjs.send('service_4rgbe2c', 'template_hery4n9', templateParams, "VhsMHcWdf20i-ymIn")
+            //emailjs.send('service ID', 'template ID', 보낼 내용이 담긴 객체)
+            .then(function(response) {
+                $("#codeCheckDiv").removeClass("d-none");
+                $("#sendBtnId").attr("disabled", true);
+                $("#email_result").text("인증번호가 발송되었습니다.");
+                $("#email_result").attr("style","color: green");
+            }, function(error) {
+                $("#email_result").text("인증번호 발송이 실패했습니다.");
+                $("#email_result").attr("style","color: red");
+            });
+
+    }
+
+    function emailIsRealCheck(e) {
+        e.preventDefault();
+        $("#email_result").text("인증번호 발송중...");
+        $("#email_result").attr("style","color: green");
+        var templateParams = {
+            //각 요소는 emailJS에서 설정한 템플릿과 동일한 명으로 작성!
+            email : $('input[name=email]').val(),
+            message : tempCode
+        };
+
+        emailjs.send('service_4rgbe2c', 'template_hery4n9', templateParams, "VhsMHcWdf20i-ymIn")
+            //emailjs.send('service ID', 'template ID', 보낼 내용이 담긴 객체)
+            .then(function(response) {
+                $("#codeCheckDiv").removeClass("d-none");
+                $("#sendBtnId").attr("disabled", true);
+                $("#email_result").text("인증번호가 발송되었습니다.");
+                $("#email_result").attr("style","color: green");
+            }, function(error) {
+                $("#email_result").text("인증번호 발송이 실패했습니다.");
+                $("#email_result").attr("style","color: red");
+            });
     }
 
 </script>
