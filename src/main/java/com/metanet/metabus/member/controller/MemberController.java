@@ -46,11 +46,11 @@ public class MemberController {
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "log/register";
-        } else if (memberService.emailCheck(memberRegisterRequest.getEmail())){
+        } else if (memberService.emailCheck(memberRegisterRequest.getEmail())) {
             bindingResult.rejectValue("email", "중복된 이메일 입니다.");
             model.addAttribute("valid_email", "중복된 이메일 입니다.");
             return "log/register";
-        }else {
+        } else {
             memberService.register(memberRegisterRequest);
             return "redirect:/";
         }
@@ -131,12 +131,12 @@ public class MemberController {
 
             return "log/check_password_pwd";
 
-        } else if(url.equals("delete")){
+        } else if (url.equals("delete")) {
             model.addAttribute("memberLoginRequest", new MemberLoginRequest());
             model.addAttribute("original", memberDto);
 
             return "log/check_password_delete";
-        }else {
+        } else {
             return "/error/404";
         }
 
@@ -157,9 +157,7 @@ public class MemberController {
             model.addAttribute("valid_password", "비밀번호가 다릅니다.");
             return "log/check_password_info";
         } else {
-//            HttpSession httpSession = httpServletRequest.getSession(false);
-//            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-//
+
             return "redirect:/member/edit/info";
         }
     }
@@ -181,10 +179,6 @@ public class MemberController {
             model.addAttribute("valid_password", "비밀번호가 다릅니다.");
             return "log/check_password_pwd";
         } else {
-//            HttpSession httpSession = httpServletRequest.getSession(false);
-//            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-//
-//            memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/pwd";
         }
@@ -207,10 +201,6 @@ public class MemberController {
             model.addAttribute("valid_password", "비밀번호가 다릅니다.");
             return "log/check_password_delete";
         } else {
-//            HttpSession httpSession = httpServletRequest.getSession(false);
-//            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-//
-//            memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "forward:/member/delete";
         }
