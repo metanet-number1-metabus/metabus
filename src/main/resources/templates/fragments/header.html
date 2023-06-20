@@ -2,6 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="headerFragment">
+    <th:block th:if="${memberDto != null}">
+    <script>
+        document.addEventListener('DOMContentLoaded', navHeaderNotificationAjax);
+    </script>
+</th:block>
     <!--    header1-->
     <nav class="sb-topnav navbar navbar-expand" style="background-color: white">
         <!-- Navbar Brand-->
@@ -32,9 +37,9 @@
         </ul>
         </th:block>
         <th:block th:unless="${memberDto == null}">
-            <div class="header_columns_column" style="cursor: pointer;" onclick="navHeaderNotification()" id="navHeaderNotification">
-                <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_q70pch25.json"  background="transparent"  speed="1"  style="width: 31px; height: 31px;"  loop autoplay></lottie-player>
-                <i class="fa-regular fa-bell" style="width: 31px;height: 33px"></i>
+            <div class="header_columns_column" style="cursor: pointer;" onclick="window.location.href='/bus/reservation?specialValue=결제대기';" id="navHeaderNotification">
+<!--                <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_q70pch25.json"  background="transparent"  speed="1"  style="width: 31px; height: 31px;"  loop autoplay></lottie-player>-->
+<!--                <i class="fa-regular fa-bell" style="width: 31px;height: 33px"></i>-->
 <!--                <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>-->
             </div>
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">

@@ -86,7 +86,9 @@ function mobileReact() {
 
   function navHeaderNotificationAjax() {
       var divElement = document.getElementById('navHeaderNotification');
-      divElement.innerHTML = "";
+      if (divElement){
+          divElement.innerHTML = "";
+      }
 
       $.ajax({
           // /bus
@@ -106,29 +108,28 @@ function mobileReact() {
                   lottiePlayer.autoplay = true;
                   divElement.appendChild(lottiePlayer);
               } else {
-                  var iElement = document.createElement('i');
-                  iElement.className = 'fa-regular fa-bell';
-                  iElement.style.width = '26px';
-                  iElement.style.height = '28px';
-                  divElement.appendChild(iElement);
+                  // var iElement = document.createElement('i');
+                  // iElement.className = 'fa-regular fa-bell';
+                  // iElement.style.width = '26px';
+                  // iElement.style.height = '28px';
+                  // divElement.appendChild(iElement);
               }
           },
           error: function() {
-              var iElement = document.createElement('i');
-              iElement.className = 'fa-regular fa-bell';
-              iElement.style.width = '26px';
-              iElement.style.height = '28px';
-              divElement.appendChild(iElement);
+              // var iElement = document.createElement('i');
+              // iElement.className = 'fa-regular fa-bell';
+              // iElement.style.width = '26px';
+              // iElement.style.height = '28px';
+              // divElement.appendChild(iElement);
           }
       });
   }
 
-document.addEventListener('DOMContentLoaded', navHeaderNotificationAjax);
-
   // 브라우저가 로딩되고 실행
 document.addEventListener('DOMContentLoaded', mobileReact);
-  
-  function navHeaderNotification() {
-      window.location.href("/bus/reservation?specialValue=결제대기");
-  }
 
+var mainElements = document.getElementsByTagName('main');
+for (var i = 0; i < mainElements.length; i++) {
+    mainElements[i].style.boxShadow = '1px 0px 5px 0px gray inset';
+    mainElements[i].style.height = '100%';
+}
