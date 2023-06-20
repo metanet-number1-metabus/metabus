@@ -77,6 +77,10 @@ public class MemberController {
             }
             return "log/login";
         } else if (memberService.memberCheck(memberLoginRequest)) {
+            bindingResult.rejectValue("email", "해당하는 유저가 없습니다.");
+            model.addAttribute("valid_email", "이메일을 잘못 입력했습니다.");
+            return "log/login";
+        } else if (memberService.deleteMemberCheck(memberLoginRequest)) {
             bindingResult.rejectValue("email", "탈퇴한 유저입니다.");
             model.addAttribute("valid_email", "이미 탈퇴한 유저입니다. 관리자에게 문의하세요.");
             return "log/login";

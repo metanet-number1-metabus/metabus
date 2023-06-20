@@ -211,7 +211,7 @@ class MemberControllerTest {
     @DisplayName("로그인 POST 실패(2) - 탈퇴한 회원(2)")
     void post_login_fail2() throws Exception {
 
-        given(memberService.memberCheck(any(MemberLoginRequest.class))).willReturn(true);
+        given(memberService.deleteMemberCheck(any(MemberLoginRequest.class))).willReturn(true);
 
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "12345678");
 
@@ -223,7 +223,7 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("log/login"));
 
-        verify(memberService).memberCheck(any(MemberLoginRequest.class));
+        verify(memberService).deleteMemberCheck(any(MemberLoginRequest.class));
     }
 
     @Test
