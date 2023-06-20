@@ -60,6 +60,12 @@ function mobileReact() {
 
         const divElementHeader = document.getElementById('headerLoginMobile');
 
+        const reservatinTableMobile = document.getElementById('reservatinTableMobile');
+
+        const paymentTicketMobile = document.getElementById('paymentTicketMobile');
+
+        const reservationTicketMobile = document.getElementById('reservationTicketMobile');
+
         // 모바일접근시
         const elements = document.getElementsByClassName('mobile-font-header');
 
@@ -74,12 +80,24 @@ function mobileReact() {
             divElementHeader.classList.add('d-none');
         }
 
+        if (paymentTicketMobile){
+            paymentTicketMobile.classList.add('p-0');
+        }
+
+        if (reservatinTableMobile){
+            reservatinTableMobile.classList.add('p-0');
+        }
+
         if (carouselExampleDark){
             carouselExampleDark.classList.remove('m-5');
         }
 
         if (containerElement){
             containerElement.style.width = '260px';
+        }
+
+        if (reservationTicketMobile){
+            reservationTicketMobile.style.height = '711px';
         }
 
         // user님 환영합니다. <-- 사이즈 깨짐으로 조절

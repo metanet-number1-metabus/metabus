@@ -21,7 +21,7 @@
                         <div class="row mt-5" style="width:100%">
 <!--                            표 ajax-->
                             <div class="col-12 col-lg-4 d-flex justify-content-center mb-5">
-                                <div class="rounded shadow-lg bg-white" style="height:687px">
+                                <div class="rounded shadow-lg bg-white" style="height:687px" id="reservationTicketMobile">
                                     <div class="container-fluid rounded shadow-lg" style="width:295px" id="ticketctn">
 
                                         <div class="row">
@@ -176,15 +176,15 @@
                                                         </nav>
                                                     </div>
                                                     <th:block th:if="${checkButton == '결제대기'}">
-                                                        <div class="row pb-2" style="max-width: 520px;">
-                                                            <div class="card mb-0 bg-danger" style="max-width: 100%;">
+                                                        <div class="row pb-3 d-flex justify-content-center" style="width: 520px;">
+                                                            <div class="card mb-0 bg-danger" style="width: 520px;">
                                                                 <div class="card-body">
                                                                     <span class="card-text" style="color: white"><i class="fa-solid fa-triangle-exclamation fa-shake"></i> 승차권은 10분 이내에 결제하지 않으시면 자동으로 취소됩니다.</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </th:block>
-                                                    <div id="tableRow" style="height:408px;width:925px" class="row overflow-scroll">
+                                                    <div id="tableRow" style="width:925px;max-height:408px;" class="row overflow-scroll">
 
                                                         <table class="table custom-table" id="busTable">
                                                             <thead>
