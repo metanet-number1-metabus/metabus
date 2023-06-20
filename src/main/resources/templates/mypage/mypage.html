@@ -97,7 +97,7 @@
 
                                             <button type="button" onclick="location.href='/member/check/info'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
                                                 <div class="rounded shadow-sm">
-                                                    <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/edit.png" style="width: 27px; height: 20px; margin-bottom: 3px;" alt="Edit"><span style="font-size: 17px;color: #5c636a">정보수정</span>
+                                                    <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/edit.png" style="width: 27px; height: 20px; margin-bottom: 3px;" alt="Edit"><span style="font-size: 17px;color: #5c636a">정보수정</span>
                                                 </div>
                                             </button>
                                             <br>
@@ -106,19 +106,20 @@
                                         <div style="">
                                         <p style="font-size: small;color: #aaaaaa;margin: 0">이메일</p>
                                             <div style="height: 30px">
-                                                <span class="fa-regular fa-envelope p-2"></span><b th:text="${session.loginMember.getEmail()}" style="font-size: large;position: relative;top:-10px;"></b><br>
+                                                <span class="fa-regular fa-envelope p-2"></span><b th:text="${session.loginMember.getEmail()}" style="position: relative;top:-10px;"></b><br>
                                             </div>
                                             <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
 
                                             <p style="font-size: small;color: #aaaaaa;margin: 0">전화번호</p>
                                             <div style="height: 30px">
-                                                <span class="fa fa-phone p-2"></span> <b th:text="${session.loginMember.getPhoneNum()}" style="font-size: large;position: relative;top:-10px;"></b><br>
+                                                <span class="fa fa-phone p-2"></span><b th:text="${session.loginMember.getPhoneNum()}" style="font-size: large;position: relative;top:-10px;"></b><br>
                                             </div>
                                             <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
 
                                             <p style="font-size: small;color: #aaaaaa;margin: 0">가입 일자</p>
-                                        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/date.png" style="width:27px;height: 22px;margin-right:5px;margin-bottom:3px">
-                                        <b th:text="${dates}" style="font-size: large"></b>
+                                            <div style="height: 30px">
+                                                <span class="fa-solid fa-calendar-days p-2"></span><b th:text="${dates}" style="font-size: large;position: relative;top:-10px;"></b><br>
+                                            </div>
                                             <hr style="border: none; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); margin-top: 0; margin-bottom: 5px;border-color: black">
 
                                             <p style="font-size: small;color: #aaaaaa;margin: 0">비밀번호</p>
@@ -128,7 +129,7 @@
                                                     <span class="fas fa-lock px-2"></span><b th:if="${session.loginMember.getPassword()}" style="font-size: large;position: relative;top:7px;">********</b>
                                                     <button type="button" onclick="location.href='/member/check/pwd'" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
                                                         <div class="rounded shadow-sm">
-                                                            <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/edit.png" style="width: 27px; height: 20px; margin-bottom: 3px;" alt="Edit"><span style="font-size: 17px;color: #5c636a">비밀번호 변경</span>
+                                                            <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/edit.png" style="width: 27px; height: 20px; margin-bottom: 3px;" alt="Edit"><span style="font-size: 17px;color: #5c636a">비밀번호 변경</span>
                                                         </div>
                                                     </button>
                                                 </div>

@@ -111,7 +111,12 @@
 <!--                <div class="small">Logged in as:</div>-->
 <!--                Start Bootstrap-->
                 <th:block th:unless="${memberDto == null}">
-                    <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>
+                    <div class="small">로그인 됨:</div>
+                    <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span>
+                </th:block>
+                <th:block th:unless="${memberDto != null}">
+                    <div class="small">로그인 필요:</div>
+                    <span class="mobile-font-header" style="font-weight: bold;">로그인 해주세요.</span>
                 </th:block>
             </div>
         </nav>

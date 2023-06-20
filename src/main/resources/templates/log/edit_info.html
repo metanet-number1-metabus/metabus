@@ -142,7 +142,7 @@
     <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
 </head>
 <body oncontextmenu='return false' class='snippet-body'>
-<div style="height: 100px; margin-top: 100px" class="d-flex justify-content-center"><a href="/"><img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/logoImage.png" style="height: 100px; width: 300px"></a></div>
+<div style="height: 100px; margin-top: 100px" class="d-flex justify-content-center"><a href="/"><img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/logoImage.png" style="height: 100px; width: 300px"></a></div>
 <div class="container">
     <div class="row">
         <div class="col-lg-4 col-md-3 col-sm-2"></div>
@@ -165,7 +165,7 @@
                                 <span th:text="${valid_name}" style="color: red"></span>
                             </div>
                             <div class="form-group py-2">
-                                <div class="input-field"> <span class="fa fa-phone p-2"></span> <input type="text" id="phoneNum" th:field="${memberEditInfoRequest.phoneNum}" th:classappend="${#fields.hasErrors('phoneNum')} ? 'is-invalid'" name="phoneNum" class="form-control" placeholder="전화번호" required autofocus> </div>
+                                <div class="input-field"> <span class="fa fa-phone p-2"></span> <input type="text" id="phoneNum" th:field="${memberEditInfoRequest.phoneNum}"  name="phoneNum" class="form-control" placeholder="전화번호" required autofocus> </div>
                                 <span th:text="${valid_phoneNum}" style="color: red"></span>
                             </div>
                             <button class="btn btn-primary btn-block mt-3" type="submit">수정</button>
@@ -180,7 +180,7 @@
                                 <span th:text="${valid_name}" style="color: red"></span>
                             </div>
                             <div class="form-group py-2">
-                                <div class="input-field"> <span class="fa fa-phone p-2"></span> <input type="text" id="phoneNum" th:field="${original.phoneNum}" th:classappend="${#fields.hasErrors('phoneNum')} ? 'is-invalid'" name="phoneNum" class="form-control" placeholder="전화번호" required autofocus> </div>
+                                <div class="input-field"> <span class="fa fa-phone p-2"></span> <input type="text" id="phoneNum" th:field="${original.phoneNum}" name="phoneNum" class="form-control" placeholder="전화번호" required autofocus> </div>
                                 <span th:text="${valid_phoneNum}" style="color: red"></span>
                             </div>
                             <button class="btn btn-primary btn-block mt-3" type="submit">수정하기</button>

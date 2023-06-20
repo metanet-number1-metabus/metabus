@@ -46,12 +46,15 @@ public class MemberController {
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "log/register";
+        } else if (memberService.emailCheck(memberRegisterRequest.getEmail())) {
+            bindingResult.rejectValue("email", "중복된 이메일 입니다.");
+            model.addAttribute("valid_email", "중복된 이메일 입니다.");
+            return "log/register";
         } else {
             memberService.register(memberRegisterRequest);
             return "redirect:/";
         }
     }
-
 
     /**
      * 로그인
@@ -72,6 +75,14 @@ public class MemberController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
+            return "log/login";
+        } else if (memberService.memberCheck(memberLoginRequest)) {
+            bindingResult.rejectValue("email", "탈퇴한 유저입니다.");
+            model.addAttribute("valid_email", "이미 탈퇴한 유저입니다. 관리자에게 문의하세요.");
+            return "log/login";
+        } else if (memberService.passwordCheck(memberLoginRequest)) {
+            bindingResult.rejectValue("password", "비밀번호가 다릅니다.");
+            model.addAttribute("valid_password", "비밀번호가 다릅니다.");
             return "log/login";
         } else {
             MemberDto loginMember = memberService.login(memberLoginRequest);
@@ -120,12 +131,12 @@ public class MemberController {
 
             return "log/check_password_pwd";
 
-        } else if(url.equals("delete")){
+        } else if (url.equals("delete")) {
             model.addAttribute("memberLoginRequest", new MemberLoginRequest());
             model.addAttribute("original", memberDto);
 
             return "log/check_password_delete";
-        }else {
+        } else {
             return "/error/404";
         }
 
@@ -141,12 +152,11 @@ public class MemberController {
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "log/check_password_info";
+        } else if (memberService.passwordCheck(memberLoginRequest)) {
+            bindingResult.rejectValue("password", "비밀번호가 다릅니다.");
+            model.addAttribute("valid_password", "비밀번호가 다릅니다.");
+            return "log/check_password_info";
         } else {
-            HttpSession httpSession = httpServletRequest.getSession(false);
-
-            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-
-            memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/info";
         }
@@ -164,11 +174,11 @@ public class MemberController {
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "log/check_password_pwd";
+        } else if (memberService.passwordCheck(memberLoginRequest)) {
+            bindingResult.rejectValue("password", "비밀번호가 다릅니다.");
+            model.addAttribute("valid_password", "비밀번호가 다릅니다.");
+            return "log/check_password_pwd";
         } else {
-            HttpSession httpSession = httpServletRequest.getSession(false);
-            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-
-            memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/pwd";
         }
@@ -186,11 +196,11 @@ public class MemberController {
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "log/check_password_delete";
+        } else if (memberService.passwordCheck(memberLoginRequest)) {
+            bindingResult.rejectValue("password", "비밀번호가 다릅니다.");
+            model.addAttribute("valid_password", "비밀번호가 다릅니다.");
+            return "log/check_password_delete";
         } else {
-            HttpSession httpSession = httpServletRequest.getSession(false);
-            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-
-            memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "forward:/member/delete";
         }

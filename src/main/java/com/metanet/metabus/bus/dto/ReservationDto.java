@@ -24,4 +24,5 @@ public class ReservationDto {
     private LocalDate createdDate;
     private Long payment;
     private String impUid;
+    private Long usedMileage;
 }

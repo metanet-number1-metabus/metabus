@@ -57,6 +57,15 @@ function mobileReact() {
     const isMobile = window.matchMedia("(max-width: 576px)").matches;
 
     if (isMobile) {
+
+        const divElementHeader = document.getElementById('headerLoginMobile');
+
+        const reservatinTableMobile = document.getElementById('reservatinTableMobile');
+
+        const paymentTicketMobile = document.getElementById('paymentTicketMobile');
+
+        const reservationTicketMobile = document.getElementById('reservationTicketMobile');
+
         // 모바일접근시
         const elements = document.getElementsByClassName('mobile-font-header');
 
@@ -66,12 +75,29 @@ function mobileReact() {
         // container-fluid rounded shadow-lg 클래스인 요소의 width를 260px로 설정
         const containerElement = document.querySelector('.container-fluid.rounded.shadow-lg');
 
+
+        if (divElementHeader){
+            divElementHeader.classList.add('d-none');
+        }
+
+        if (paymentTicketMobile){
+            paymentTicketMobile.classList.add('p-0');
+        }
+
+        if (reservatinTableMobile){
+            reservatinTableMobile.classList.add('p-0');
+        }
+
         if (carouselExampleDark){
             carouselExampleDark.classList.remove('m-5');
         }
 
         if (containerElement){
             containerElement.style.width = '260px';
+        }
+
+        if (reservationTicketMobile){
+            reservationTicketMobile.style.height = '711px';
         }
 
         // user님 환영합니다. <-- 사이즈 깨짐으로 조절
@@ -127,9 +153,20 @@ function mobileReact() {
 
   // 브라우저가 로딩되고 실행
 document.addEventListener('DOMContentLoaded', mobileReact);
+document.addEventListener('DOMContentLoaded', mainShadow);
 
 var mainElements = document.getElementsByTagName('main');
-for (var i = 0; i < mainElements.length; i++) {
-    mainElements[i].style.boxShadow = '1px 0px 5px 0px gray inset';
-    mainElements[i].style.height = '100%';
+if (mainElements){
+    for (var i = 0; i < mainElements.length; i++) {
+        mainElements[i].style.boxShadow = '1px 0px 5px 0px gray inset';
+        mainElements[i].style.height = '100%';
+    }
 }
+
+  function mainShadow() {
+      var mainElements = document.getElementsByTagName('main');
+      for (var i = 0; i < mainElements.length; i++) {
+          mainElements[i].style.boxShadow = '1px 0px 5px 0px gray inset';
+          mainElements[i].style.height = '100%';
+      }
+  }

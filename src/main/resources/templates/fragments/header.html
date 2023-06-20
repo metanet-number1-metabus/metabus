@@ -12,7 +12,7 @@
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="/">
             <b>
-                <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/logoImage.png" style="width: 120px; height: 40px;margin-bottom: 4px">
+                <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/logoImage.png" style="width: 120px; height: 40px;margin-bottom: 4px">
             </b>
         </a>
         <!-- Sidebar Toggle-->
@@ -28,8 +28,8 @@
         <th:block th:if="${memberDto == null}">
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown2">
                     <li><a class="dropdown-item" th:href="@{/member/login}">로그인</a></li>
                     <li><a class="dropdown-item" th:href="@{/member/register}">회원가입</a></li>
                 </ul>
@@ -41,6 +41,9 @@
 <!--                <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_q70pch25.json"  background="transparent"  speed="1"  style="width: 31px; height: 31px;"  loop autoplay></lottie-player>-->
 <!--                <i class="fa-regular fa-bell" style="width: 31px;height: 33px"></i>-->
 <!--                <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>-->
+            </div>
+            <div class="header_columns_column" id="headerLoginMobile">
+                <span class="mobile-font-header" th:text="${memberDto.name}" style="font-weight: bold;"></span><span class="mobile-font-header">님 환영합니다.</span>
             </div>
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">

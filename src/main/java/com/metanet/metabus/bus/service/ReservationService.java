@@ -87,7 +87,7 @@ public class ReservationService {
                     }
                 }
 
-                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], reservationStatus, bus.getId());
+                Reservation reservation = reservationInfoRequest.toEntity(member, departureTime, arrivalTime, departureDate, payment, seat, passengerType[i], reservationStatus, bus.getId(), 0L);
                 Reservation savedReservation = reservationRepository.save(reservation);
                 reservationIdList.add(savedReservation.getId());
             }
@@ -158,6 +158,7 @@ public class ReservationService {
                 .createdDate(createdDate)
                 .payment(reservation.getPayment())
                 .impUid(reservation.getImpUid())
+                .usedMileage(reservation.getUsedMileage())
                 .build();
     }
 

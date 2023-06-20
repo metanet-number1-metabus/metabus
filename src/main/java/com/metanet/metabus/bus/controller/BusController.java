@@ -34,6 +34,10 @@ public class BusController {
             @RequestParam(value = "roundtrip", defaultValue = "off") String roundTrip, HttpSession session, Model model
     ) {
 
+        if ((departureDate.equals("")) || (destinationHome.equals("")) || (departureHome.equals(""))) {
+            return "error/404";
+        }
+
         model.addAttribute("departureHome", departureHome);
         model.addAttribute("destinationHome", destinationHome);
         model.addAttribute("departureDate", departureDate);
@@ -114,6 +118,7 @@ public class BusController {
         String impUid = paymentService.getImpUid(reservationIds);
 
         model.addAttribute("memberDto", memberDto);
+        model.addAttribute("reservationListSize", reservationList.size());
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
         model.addAttribute("usedMileageSum", usedMileageSum);
