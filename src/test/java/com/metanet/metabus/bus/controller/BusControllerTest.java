@@ -285,7 +285,7 @@ class BusControllerTest {
         reservationList.add(reservationDto);
 
         given(reservationService.readByReservationId(reservationIds)).willReturn(reservationList);
-        given(reservationService.getRealPaymentSum(reservationIds)).willReturn(10000L);
+        given(reservationService.getPaymentSum(reservationIds)).willReturn(10000L);
         given(reservationService.getStrReservationIds(reservationIds)).willReturn("1");
         given(paymentService.getImpUid(reservationIds)).willReturn("imp_111111111111");
 

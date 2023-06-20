@@ -141,22 +141,32 @@ class MileageServiceTest {
     @DisplayName("누적 마일리지 조회 성공")
     void find_all_mileage_success() {
 
-        List<Mileage> mileages = new ArrayList<>();
+        List<Mileage> savedMileages = new ArrayList<>();
+        List<Mileage> canceledMileages = new ArrayList<>();
 
-        Mileage mileage = Mileage.builder()
+        Mileage savedMileage = Mileage.builder()
                 .member(member)
                 .point(1000L)
                 .saveStatus(SaveStatus.UP)
                 .build();
 
-        mileages.add(mileage);
+        Mileage canceledMileage = Mileage.builder()
+                .member(member)
+                .point(1000L)
+                .saveStatus(SaveStatus.CANCEL)
+                .build();
+
+        savedMileages.add(savedMileage);
+        canceledMileages.add(canceledMileage);
+
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(mileageRepository.findByMemberAndSaveStatus(member, mileage.getSaveStatus())).thenReturn(mileages);
+        when(mileageRepository.findByMemberAndSaveStatus(member, savedMileage.getSaveStatus())).thenReturn(savedMileages);
+        when(mileageRepository.findByMemberAndSaveStatus(member, canceledMileage.getSaveStatus())).thenReturn(canceledMileages);
 
         Long expected = mileageService.findAllMileage(memberDto);
 
-        assertEquals(expected, mileage.getPoint());
+        assertEquals(expected, savedMileage.getPoint() + canceledMileage.getPoint());
     }
 
     @Test
@@ -231,15 +241,23 @@ class MileageServiceTest {
                 .build();
         usedMileage.setCreatedDate(createdDate);
 
+        Mileage canceledMileage = Mileage.builder()
+                .member(member)
+                .point(1000L)
+                .saveStatus(SaveStatus.CANCEL)
+                .build();
+        canceledMileage.setCreatedDate(createdDate);
+
         mileageList.add(savedMileage);
         mileageList.add(usedMileage);
+        mileageList.add(canceledMileage);
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
-        when(mileageRepository.findByMember(member)).thenReturn(mileageList);
+        when(mileageRepository.findByMemberOrderByCreatedDateDesc(member)).thenReturn(mileageList);
 
         List<MileageDto> result = mileageService.findMileageByMember(memberDto);
 
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
 
         MileageDto savedMileageDto = result.get(0);
         assertEquals("name", savedMileageDto.getName());
@@ -252,6 +270,12 @@ class MileageServiceTest {
         assertEquals(1000L, usedMileageDto.getPoint());
         assertEquals("사용", usedMileageDto.getSaveStatus());
         assertEquals(createdDate.toLocalDate(), usedMileageDto.getCreatedDate());
+
+        MileageDto canceledMileageDto = result.get(2);
+        assertEquals("name", canceledMileageDto.getName());
+        assertEquals(1000L, canceledMileageDto.getPoint());
+        assertEquals("사용 취소", canceledMileageDto.getSaveStatus());
+        assertEquals(createdDate.toLocalDate(), canceledMileageDto.getCreatedDate());
 
     }
 

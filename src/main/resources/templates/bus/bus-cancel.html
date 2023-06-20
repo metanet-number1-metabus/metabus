@@ -12,11 +12,11 @@
 
                     <div class="container-fluid">
 
-                        <h1 class="mt-4">결제</h1>
+                        <h1 class="mt-4">결제 취소</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/">홈</a></li>
                             <li class="breadcrumb-item"><a href="/bus/reservation">승차권 보기</a></li>
-                            <li class="breadcrumb-item active">결제</li>
+                            <li class="breadcrumb-item active">결제 취소</li>
                         </ol>
 
                         <div class="row">
@@ -49,7 +49,7 @@
                                                     <div class="col-12">
 
                                                         <div class="card mb-3" style="width: 100%;height: 100%">
-                                                            <div class="card-header">결제 정보</div>
+                                                            <div class="card-header">결제 취소 정보</div>
                                                             <div class="card-body">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
@@ -196,7 +196,7 @@
                                                                                 <input class="form-control h5" id="bookedDate" th:value="${reservation.createdDate}" readonly>
                                                                             </div>
                                                                             <div class="col-12 col-lg-9">
-                                                                                <p class="card-text">총 결제 금액</p>
+                                                                                <p class="card-text">총 취소 금액</p>
                                                                                 <input class="form-control h5" id="totalCost" th:value="${reservation.payment}" readonly>
                                                                             </div>
 
@@ -240,7 +240,7 @@
                             <form class="needs-validation">
                                 <div class="card-body col-12 mt-2">
                                     <div class="card text-bg-light mb-3" style="width: 100%;height: 250px">
-                                        <div class="card-header">결제 약관</div>
+                                        <div class="card-header">취소 약관</div>
                                         <div class="card-body overflow-scroll">
                                             <h5 class="card-title">제 1 장 총 칙</h5>
                                             <br>
@@ -286,42 +286,58 @@
                                     <div class="col-12" style="height: 10px"></div>
                                     <div class="col-12">
                                         <input type="checkbox" class="form-check-input" required id="checkField">
-                                        <label class="form-check-label" for="checkField" id="checkFieldMobile">결제 정보와 약관에 대하여 확인했습니다.</label>
+                                        <label class="form-check-label" for="checkField" id="checkFieldMobile">결제 취소 정보와 약관에 대하여 확인했습니다.</label>
                                         <div class="invalid-feedback">
-                                            결제 정보와 약관 확인 여부에 체크해주세요!
+                                            결제 취소 정보와 약관 확인 여부에 체크해주세요!
                                         </div>
                                     </div>
-                                    <div class="col-12 d-flex justify-content-end mt-2">
-                                        <p class="card-text me-2" style="float: left">보유 마일리지</p>
-                                        <h2 style="float: left"><span th:text="${paymentSum}" id="haveMileage"></span></h2>
-                                        <span>Point</span>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-end mt-2">
-                                        <h2 style="float: left"><span><i class="fa-solid fa-triangle-exclamation"></i>:</span></h2>
-                                        <p class="card-text me-2" style="float: left" id="mileageConditionMobile">마일리지는 1000원 단위로 사용하실 수 있습니다.</p>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-end mb-4">
-                                        <div class="input-group me-3" style="max-height: 38px;float: left;width: auto">
-                                            <span class="input-group-text"><i class="fa-solid fa-coins"></i></span>
-                                            <input type="text" id="mileageInput" value="0" placeholder="1000원 단위">
-                                        </div>
-                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)">적용</button>
-                                    </div>
                                     <div class="col-12 d-flex justify-content-end">
-                                        <p class="card-text me-2" style="float: left">적용 마일리지</p>
-                                        <h2 style="float: left"><span id="useMileage">0</span></h2>
-                                        <span class="me-3" style="float: left">Point</span>
-                                        <button class="btn btn-danger" style="max-height: 29px" onclick="mileageUndo(event)"><i class="fa-solid fa-rotate-left"></i></button>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <p class="card-text me-2">총 결제 금액</p>
-                                        <h2><span th:text="${paymentSum}"></span></h2>
+                                        <p class="card-text me-2">총 취소 금액</p>
+                                        <span th:text="${paymentSum}"></span>
                                         <span>원</span>
                                     </div>
-                                    <div class="col-12" style="height: 10px"></div>
                                     <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary">결제</button>
+                                        <p class="card-text me-2">마일리지 환불</p>
+                                        <span>(</span>
+                                        <span th:text="${usedMileageSum}"></span>
+                                        <span>원)</span>
                                     </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button id="iamportCancel" type="submit" class="btn btn-primary">
+                                            취소
+                                        </button>
+                                    </div>
+<!--                                    <div class="col-12 d-flex justify-content-end mt-2">-->
+<!--                                        <p class="card-text me-2" style="float: left">보유 마일리지</p>-->
+<!--                                        <h2 style="float: left"><span th:text="${paymentSum}" id="haveMileage"></span></h2>-->
+<!--                                        <span>Point</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-12 d-flex justify-content-end mt-2">-->
+<!--                                        <h2 style="float: left"><span><i class="fa-solid fa-triangle-exclamation"></i>:</span></h2>-->
+<!--                                        <p class="card-text me-2" style="float: left" id="mileageConditionMobile">마일리지는 1000원 단위로 사용하실 수 있습니다.</p>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-12 d-flex justify-content-end mb-4">-->
+<!--                                        <div class="input-group me-3" style="max-height: 38px;float: left;width: auto">-->
+<!--                                            <span class="input-group-text"><i class="fa-solid fa-coins"></i></span>-->
+<!--                                            <input type="text" id="mileageInput" value="0" placeholder="1000원 단위">-->
+<!--                                        </div>-->
+<!--                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)">적용</button>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-12 d-flex justify-content-end">-->
+<!--                                        <p class="card-text me-2" style="float: left">적용 마일리지</p>-->
+<!--                                        <h2 style="float: left"><span id="useMileage">0</span></h2>-->
+<!--                                        <span class="me-3" style="float: left">Point</span>-->
+<!--                                        <button class="btn btn-danger" style="max-height: 29px" onclick="mileageUndo(event)"><i class="fa-solid fa-rotate-left"></i></button>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-12 d-flex justify-content-end">-->
+<!--                                        <p class="card-text me-2">총 결제 금액</p>-->
+<!--                                        <h2><span th:text="${paymentSum}"></span></h2>-->
+<!--                                        <span>원</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-12" style="height: 10px"></div>-->
+<!--                                    <div class="col-12 d-flex justify-content-end">-->
+<!--                                        <button type="submit" class="btn btn-primary">결제</button>-->
+<!--                                    </div>-->
                                 </div>
                             </form>
                         </div>
@@ -363,13 +379,10 @@
                             event.stopPropagation()
                         } else {
                             event.preventDefault()
-
-                            //성공시 모달창 열기 / 결제 api 호출 코드
-                            $(document).ready(function () {
-                                $("#iamportCancel").click(function () {
-                                    cancelPayments();
-                                });
-                            })
+                            var confirmation = confirm("결제 취소를 하시겠습니까?\n취소 시 해당 티켓은 복구할 수 없습니다.");
+                            if (confirmation) {
+                                cancelPayments();
+                            }
 
                         }
 
@@ -394,8 +407,8 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     alert("결제금액 환불완료");
-                    //self.close();//팝업창닫기
-                    //결제 취소화면으로 이동해주기.
+                    window.location.href = '/bus/reservation';
+
                 },
                 error: function (result) {
                     alert("결제금액 환불못함. 이유: " + result.responseText);

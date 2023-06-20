@@ -63,4 +63,8 @@ public class Reservation extends BaseEntity {
     public void updateUsedMileage(Long usedMileage) {
         this.usedMileage = usedMileage;
     }
+
+    public void updatePayment(Long payment) {
+        this.payment = payment;
+    }
 }
