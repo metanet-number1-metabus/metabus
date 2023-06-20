@@ -47,7 +47,7 @@
                                             <td>
                                                 <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
                                             </td>
-                                            <td th:text="${board.createDate}">1</td>
+                                            <td th:text="${#strings.substring(board.createDate, 0, 10)}"></td>
                                         </tr>
                                         </tbody>
                                     </table>
