@@ -178,4 +178,20 @@ public class MemberService {
         }
         return validatorResult;
     }
+
+    public boolean emailCheck(String email){
+        //이메일 중복
+        return memberRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean passwordCheck(MemberLoginRequest memberLoginRequest){
+        Member member = memberRepository.findByEmail(memberLoginRequest.getEmail()).orElseThrow(MemberNotFoundException::new);
+        //비밀번호 불일치
+        return !passwordEncoder.matches(memberLoginRequest.getPassword(), member.getPassword());
+    }
+
+    public boolean memberCheck(MemberLoginRequest memberLoginRequest){
+        //탈퇴한 회원
+        return memberRepository.findByEmailAndDeletedDateIsNotNull(memberLoginRequest.getEmail()).isPresent();
+    }
 }
