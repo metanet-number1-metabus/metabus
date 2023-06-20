@@ -129,6 +129,14 @@ function mobileReact() {
 document.addEventListener('DOMContentLoaded', mobileReact);
 document.addEventListener('DOMContentLoaded', mainShadow);
 
+var mainElements = document.getElementsByTagName('main');
+if (mainElements){
+    for (var i = 0; i < mainElements.length; i++) {
+        mainElements[i].style.boxShadow = '1px 0px 5px 0px gray inset';
+        mainElements[i].style.height = '100%';
+    }
+}
+
   function mainShadow() {
       var mainElements = document.getElementsByTagName('main');
       for (var i = 0; i < mainElements.length; i++) {
