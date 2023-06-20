@@ -137,9 +137,9 @@
                                     <div class="card-header">
                                         <i class="fa-solid fa-table"></i> 승차권 목록
                                     </div>
-                                    <div class="card-body overflow-hidden d-flex justify-content-center" style="background-color: rgb(255 255 255);">
+                                    <div class="card-body overflow-scroll" style="background-color: rgb(255 255 255);">
                                         <!--테이블-->
-                                        <div class="row">
+                                        <div class="row p-5">
 
                                             <div class="col-12" style="max-width: 1230px"> <!--테이블 col-->
                                                 <form class="needs">
@@ -149,7 +149,7 @@
                                                     <div class="row">
                                                         <!--                    분류-->
                                                         <nav aria-label="...">
-                                                            <ul class="pagination">
+                                                            <ul class="pagination" style="width:555px">
                                                                 <li class="page-item"
                                                                     th:classappend="${checkButton == '전체' ? 'active' : ''}">
                                                                     <a class="page-link" href="/bus/reservation?specialValue=전체">전체</a>
@@ -445,11 +445,11 @@
                                                 <div class="col-9 d-flex justify-content-end"><p id="memberName">정봉경</p></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-3"><p>P.H</p></div>
+                                                <div class="col-3"><p>연락처</p></div>
                                                 <div class="col-9 d-flex justify-content-end"><p id="memberPhoneNum">010-7477-4744</p></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-3"><p>Email</p></div>
+                                                <div class="col-3"><p>이메일</p></div>
                                                 <div class="col-9 d-flex justify-content-end"><p id="memberEmail">bongazd@wdawd.dwd</p></div>
                                             </div>
                                             <div class="row">
@@ -466,8 +466,8 @@
                                     <div class="row d-flex justify-content-center">
                                         <div class="col-12" style="width: 75%">
                                             <div class="row">
-                                                <div class="col-6"><h4>ITEM</h4></div>
-                                                <div class="col-6 d-flex justify-content-end"><h4>PRICE</h4></div>
+                                                <div class="col-6"><h4>항목</h4></div>
+                                                <div class="col-6 d-flex justify-content-end"><h4>가격</h4></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-6"><span>시외버스표*n</span></div>
@@ -483,15 +483,15 @@
                                     <div class="row d-flex justify-content-center">
                                         <div class="col-12" style="width: 65%">
                                             <div class="row">
-                                                <div class="col-6"><h5>SubTotal:</h5></div>
+                                                <div class="col-6"><h5>결제액:</h5></div>
                                                 <div class="col-6 d-flex justify-content-end"><h5 style="float:left" id="payment2">30000</h5><h5>원</h5></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-6"><h5>Tax:</h5></div>
-                                                <div class="col-6 d-flex justify-content-end"><h5 style="float:left" >0</h5><h5>원</h5></div>
+                                                <div class="col-6"><h5>마일리지:</h5></div>
+                                                <div class="col-6 d-flex justify-content-end"><h5 style="float:left" id="usedMileage">30000</h5><h5>원</h5></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-6"><h5>Total:</h5></div>
+                                                <div class="col-6"><h5>총액:</h5></div>
                                                 <div class="col-6 d-flex justify-content-end"><h5 style="float:left" id="payment3">30000</h5><h5>원</h5></div>
                                             </div>
                                         </div>
@@ -504,11 +504,11 @@
                                     <div class="row d-flex justify-content-center">
                                         <div class="col-12" style="width: 80%">
                                             <div class="row">
-                                                <div class="col-6"><span>Card Corp.</span></div>
+                                                <div class="col-6"><span>카드사.</span></div>
                                                 <div class="col-6 d-flex justify-content-end"><span id="cardName">국민카드</span></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-6"><span>Card #</span></div>
+                                                <div class="col-6"><span>카드번호 #</span></div>
                                                 <div class="col-6 d-flex justify-content-end"><span id="cardNum">xxxx-xxxx-xxxx-xxxx</span></div>
                                             </div>
                                         </div>
@@ -520,7 +520,7 @@
                                     </div>
                                     <div class="row d-flex justify-content-center">
                                         <div class="col-12 d-flex justify-content-center" style="width: 60%">
-                                            <h5>THANK YOU FOR CHOOSING US!</h5>
+                                            <h5>이용해 주셔서 감사합니다!</h5>
                                         </div>
                                         <div class="col-12 d-flex justify-content-center" style="width: 60%">
                                             <p>www.metabus.site</p>
@@ -648,8 +648,10 @@
                     $("#payment").append(paymentDataList.payment);
                     $("#payment2").empty();
                     $("#payment2").append(paymentDataList.payment);
+                    $("#usedMileage").empty();
+                    $("#usedMileage").append(paymentDataList.usedMileage);
                     $("#payment3").empty();
-                    $("#payment3").append(paymentDataList.payment);
+                    $("#payment3").append(paymentDataList.payment + paymentDataList.usedMileage);
                     $("#payMethod").empty();
                     $("#payMethod").append(paymentDataList.payMethod);
                     $("#merchantName").empty();
@@ -796,6 +798,26 @@
 
     .clickable-icon {
         cursor: pointer;
+    }
+
+    .card-body.overflow-scroll {
+        overflow-y: scroll;
+    }
+
+    .card-body.overflow-scroll::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    .card-body.overflow-scroll::-webkit-scrollbar-track {
+        background-color: #ffffff;
+    }
+
+    .card-body.overflow-scroll::-webkit-scrollbar-thumb {
+        background-color: rgba(136, 136, 136, 0.5);
+    }
+
+    .card-body.overflow-scroll::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 33, 248, 0.7);
     }
 </style>
 

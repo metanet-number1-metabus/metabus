@@ -83,21 +83,21 @@ public class BusController {
     @PostMapping("/bus/payment")
     public String getPaymentList(@RequestParam("data") Long[] reservationIds, HttpSession session, Model model) {
 
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
         String strReservationIds = reservationService.getStrReservationIds(reservationIds);
-
         Member member = reservationService.getMember(reservationIds);
+        Long mileage = reservationService.getMileage(memberDto);
 
+        model.addAttribute("memberDto", memberDto);
         model.addAttribute("reservationListSize", reservationList.size());
-
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
         model.addAttribute("strReservationIds", strReservationIds);
         model.addAttribute("member", member);
-
-        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
-        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("mileage", mileage);
 
         return "bus/bus-payment";
     }
@@ -105,18 +105,20 @@ public class BusController {
     @PostMapping("/bus/cancel")
     public String getCancelList(@RequestParam("data") Long[] reservationIds, HttpSession session, Model model) {
 
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
+        Long usedMileageSum = reservationService.getUsedMileageSum(reservationIds);
         String strReservationIds = reservationService.getStrReservationIds(reservationIds);
         String impUid = paymentService.getImpUid(reservationIds);
 
+        model.addAttribute("memberDto", memberDto);
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
+        model.addAttribute("usedMileageSum", usedMileageSum);
         model.addAttribute("strReservationIds", strReservationIds);
         model.addAttribute("impUid", impUid);
-
-        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
-        model.addAttribute("memberDto", memberDto);
 
         return "bus/bus-cancel";
     }
@@ -130,4 +132,5 @@ public class BusController {
 
         return "bus/receipt";
     }
+
 }

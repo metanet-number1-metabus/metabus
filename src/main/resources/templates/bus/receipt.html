@@ -86,12 +86,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3"><p>P.H</p></div>
+                    <div class="col-3"><p>연락처</p></div>
                     <div class="col-9 d-flex justify-content-end"><p th:text="${receiptResponse.memberPhoneNum}">
                         010-7477-4744</p></div>
                 </div>
                 <div class="row">
-                    <div class="col-3"><p>Email</p></div>
+                    <div class="col-3"><p>이메일</p></div>
                     <div class="col-9 d-flex justify-content-end"><p th:text="${receiptResponse.memberEmail}">
                         bongazd@wdawd.dwd</p></div>
                 </div>
@@ -110,8 +110,8 @@
         <div class="row d-flex justify-content-center">
             <div class="col-12" style="width: 75%">
                 <div class="row">
-                    <div class="col-6"><h4>ITEM</h4></div>
-                    <div class="col-6 d-flex justify-content-end"><h4>PRICE</h4></div>
+                    <div class="col-6"><h4>항목</h4></div>
+                    <div class="col-6 d-flex justify-content-end"><h4>가격</h4></div>
                 </div>
                 <div class="row">
                     <div class="col-6"><span>시외버스표*n</span></div>
@@ -129,20 +129,18 @@
         <div class="row d-flex justify-content-center">
             <div class="col-12" style="width: 65%">
                 <div class="row">
-                    <div class="col-6"><h5>SubTotal:</h5></div>
-                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left"
-                                                                      th:text="${receiptResponse.payment}">30000</h5>
+                    <div class="col-6"><h5>결제액:</h5></div>
+                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left" th:text="${receiptResponse.payment}">30000</h5>
                         <h5>
                             원</h5></div>
                 </div>
                 <div class="row">
-                    <div class="col-6"><h5>Tax:</h5></div>
-                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left">0</h5><h5>원</h5></div>
+                    <div class="col-6"><h5>마일리지:</h5></div>
+                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left" th:text="${receiptResponse.usedMileage}">30000</h5>
                 </div>
                 <div class="row">
-                    <div class="col-6"><h5>Total:</h5></div>
-                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left"
-                                                                      th:text="${receiptResponse.payment}">30000</h5>
+                    <div class="col-6"><h5>총액:</h5></div>
+                    <div class="col-6 d-flex justify-content-end"><h5 style="float:left" th:text="${receiptResponse.payment + receiptResponse.usedMileage}">30000</h5>
                         <h5>
                             원</h5></div>
                 </div>
@@ -156,12 +154,12 @@
         <div class="row d-flex justify-content-center">
             <div class="col-12" style="width: 80%">
                 <div class="row">
-                    <div class="col-6"><span>Card Corp.</span></div>
+                    <div class="col-6"><span>카드사.</span></div>
                     <div class="col-6 d-flex justify-content-end"><span
                             th:text="${receiptResponse.cardName}">국민카드</span></div>
                 </div>
                 <div class="row">
-                    <div class="col-6"><span>Card #</span></div>
+                    <div class="col-6"><span>카드번호 #</span></div>
                     <div class="col-6 d-flex justify-content-end"><span th:text="${receiptResponse.cardNum}">xxxx-xxxx-xxxx-xxxx</span>
                     </div>
                 </div>
@@ -174,7 +172,7 @@
         </div>
         <div class="row d-flex justify-content-center">
             <div class="col-12 d-flex justify-content-center" style="width: 60%">
-                <h5>THANK YOU FOR CHOOSING US!</h5>
+                <h5>이용해 주셔서 감사합니다!</h5>
             </div>
             <div class="col-12 d-flex justify-content-center" style="width: 60%">
                 <p>www.metabus.site</p>

@@ -22,9 +22,14 @@
 
                                         <form action="/board/writepro" name="myForm" onsubmit="return validateForm()" method="post" enctype="multipart/form-data" style="margin-left: 50px;margin-right: 50px">
                                             <h5 style="margin-top: 5px">제목</h5>
-                                                <input type="text" name="title"  placeholder="글 제목을 입력해주세요."/>
+                                                <input type="text" name="title"  placeholder="[분실물 종류]: [분실 일자], [분실 장소]" style="width:100%"/>
                                                 <h5 style="margin-top: 10px;margin-bottom: 0">본문</h5>
-                                                <textarea name="content" placeholder="본문내용을 입력해주세요."></textarea>
+                                                <textarea name="content" placeholder="본문:
+분실물의 상세한 특징 및 특이사항을 작성합니다.
+분실물의 색상, 크기, 브랜드, 식별 가능한 특징 등을 명시합니다.
+분실 시간, 장소, 주변 환경 등의 정보를 제공합니다.
+
+연락처 : 연락 가능한 정보(이메일 주소, 전화번호 등)를 작성합니다."></textarea>
                                             <input type="file" class="inputwrite" name="file" multiple>
                                             <div id="preview"></div>
                                             <button type="submit" style="margin-top: 5px;margin-bottom: 5px; background-color: dodgerblue;color: white;border-color: dodgerblue">작성</button>
@@ -72,7 +77,13 @@
             alert("제목과 내용을 모두 입력해주세요.");
             return false;
         }
+
+        content = document.forms["myForm"]["content"].value;
+        content = content.replace(/\r?\n/g, "<br>");
+        document.forms["myForm"]["content"].value = content;
+        return true;
     }
+
 </script>
 </th:block>
 </html>

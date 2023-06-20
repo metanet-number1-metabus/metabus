@@ -1,6 +1,7 @@
 package com.metanet.metabus.bus.controller;
 
 import com.metanet.metabus.bus.dto.*;
+import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.service.PaymentService;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.bus.service.SeatService;
@@ -51,13 +52,20 @@ public class BusRestController {
         String reservationIds = cancelDto.getReservationIds();
         String amount = cancelDto.getPaymentSum();
 
-        paymentService.paymentCancel(accessToken, impUid, amount);
-
-        paymentService.paymentCancel(impUid, reservationIds);
+        paymentService.paymentCancelApi(accessToken, impUid, amount);
+        paymentService.paymentCancelDb(reservationIds);
     }
 
     @GetMapping("/bus/receipt/{impUid}")
     public ReceiptResponse makeReceipt(@PathVariable String impUid) {
         return paymentService.makeReceipt(impUid);
+    }
+
+    @GetMapping("/bus/reservation/unpaid")
+    public int getUnpaidReservationNum(HttpSession session) {
+        MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        List<Reservation> unpaidReservation = reservationService.readUnpaidReservation(memberDto);
+
+        return unpaidReservation.size();
     }
 }

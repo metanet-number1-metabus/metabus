@@ -55,7 +55,7 @@
                                                             <div class="card-body">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
-                                                                        <div class="col-md-6 col-12">
+                                                                        <div class="col-md-6 col-12 mb-5">
 
                                                                             <div class="container-fluid rounded shadow-lg" style="width:295px">
                                                                                 <!--                    티켓-->
@@ -238,7 +238,7 @@
                             <!--              col-->
 
                         </div>
-                        <div class="card row m-5 mt-2">
+                        <div class="card row m-5 mt-2" id="payInfoMobile">
                             <form class="needs-validation">
                                 <div class="card-body col-12 mt-2">
                                     <div class="card text-bg-light mb-3" style="width: 100%;height: 250px">
@@ -247,7 +247,7 @@
                                             <h5 class="card-title">제 1 장 총 칙</h5>
                                             <br>
                                             <h5 class="card-title">제 1 조 (목적)</h5>
-                                            <p class="card-text">이 약관은 {COMPANY_NAME}(이하 "사이트"라 합니다)에서 제공하는 인터넷서비스(이하 "서비스"라 합니다)의 이용 조건 및 절차에 관한 기본적인 사항을 규정함을 목적으로 합니다.</p>
+                                            <p class="card-text">이 약관은 MetaBus(이하 "사이트"라 합니다)에서 제공하는 인터넷서비스(이하 "서비스"라 합니다)의 이용 조건 및 절차에 관한 기본적인 사항을 규정함을 목적으로 합니다.</p>
                                             <br>
                                             <h5 class="card-title">제 2 조 (약관의 효력 및 변경)</h5>
                                             <p class="card-text">① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다.<br>
@@ -288,14 +288,39 @@
                                     <div class="col-12" style="height: 10px"></div>
                                     <div class="col-12">
                                         <input type="checkbox" class="form-check-input" required id="checkField">
-                                        <label class="form-check-label" for="checkField">결제 정보와 약관에 대하여 확인했습니다.</label>
+                                        <label class="form-check-label" for="checkField" id="checkFieldMobile">결제 정보와 약관에 대하여 확인했습니다.</label>
                                         <div class="invalid-feedback">
                                             결제 정보와 약관 확인 여부에 체크해주세요!
                                         </div>
                                     </div>
+                                    <div class="col-12 d-flex justify-content-end mt-2">
+                                        <p class="card-text me-2" style="float: left">보유 마일리지</p>
+                                        <h2 style="float: left"><span th:text="${mileage}" id="haveMileage"></span></h2>
+                                        <span>Point</span>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end mt-2">
+                                        <h2 style="float: left"><span><i class="fa-solid fa-triangle-exclamation"></i>:</span></h2>
+                                        <p class="card-text" style="float: left" id="mileageConditionMobile">마일리지는 1,000원 단위로 사용 가능합니다.</p>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <p class="card-text mb-2" style="float: left" id="mileageConditionMobile2">(결제 금액 10,000원 이상부터 결제 금액의 최대 90%까지 사용 가능)</p>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end mb-4">
+                                        <div class="input-group me-3" style="max-height: 38px;float: left;width: auto">
+                                            <span class="input-group-text"><i class="fa-solid fa-coins"></i></span>
+                                            <input type="text" id="mileageInput" value="0" placeholder="1,000원 단위">
+                                        </div>
+                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)">적용</button>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <p class="card-text me-2" style="float: left">적용 마일리지</p>
+                                        <h2 style="float: left"><span id="useMileage"></span></h2>
+                                        <span class="me-3" style="float: left">Point</span>
+                                        <button class="btn btn-danger" style="max-height: 29px" onclick="mileageUndo(event)"><i class="fa-solid fa-rotate-left"></i></button>
+                                    </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <p class="card-text me-2">총 결제 금액</p>
-                                        <h2><span th:text="${paymentSum}"></span></h2>
+                                        <h2><span th:text="${paymentSum}" id="realPaymentSum"></span></h2>
                                         <span>원</span>
                                     </div>
                                     <div class="col-12" style="height: 10px"></div>
@@ -308,6 +333,34 @@
                         <!--            row-->
 
 
+<!--                        토스트-->
+
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <i class="fa-solid fa-triangle-exclamation fa-shake"></i>
+                                    <strong class="me-auto">경고</strong>
+                                    <small>Now</small>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    마일리지 사용 조건이 충족되지 않았습니다!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div id="liveToast2" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <i class="fa-solid fa-thumbs-up fa-shake"></i>
+                                    <strong class="me-auto">성공</strong>
+                                    <small>Now</small>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    마일리지 적용 완료!
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!--                    모달창 html-->
@@ -325,6 +378,11 @@
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
     <!--            본문-->
     <script th:inline="javascript">
+
+
+
+        var toastLiveExample = document.getElementById('liveToast');
+        var toastLiveExample2 = document.getElementById('liveToast2');
 
         // 폼 함수
         (function () {
@@ -360,7 +418,7 @@
                 pg: 'html5_inicis.INIpayTest',
                 pay_method: 'card',
                 name: '메타버스',
-                amount: [[${paymentSum}]],
+                amount: [[${paymentSum}]] - mileageInput.value,
                 buyer_email: [[${member.email}]],
                 buyer_name: [[${member.name}]],
                 buyer_tel: [[${member.phoneNum}]],
@@ -379,11 +437,12 @@
                             "merchantName": rsp.name,
                             "payment": rsp.paid_amount,
                             "payMethod": rsp.pay_method,
-                            "reservationIds": strReservationIds
+                            "reservationIds": strReservationIds,
+                            "usedMileage":mileageInput.value
                         }),
                         contentType: 'application/json',
                         success: function (response) {
-                            window.location.href = '/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
+                            window.location.href = '/bus/reservation';
                         },
                         error: function (xhr, status, error) {
                             alert("실패: " + status + " / " + error);
@@ -394,6 +453,97 @@
                 }
             })
         }
+
+
+
+        // input창에 문자 입력 불가, 1000원 단위 입력, 보유 마일리지보다 큰 값 입력 불가
+        const mileageInput = document.getElementById('mileageInput');
+        const haveMileage = document.getElementById('haveMileage');
+        const useMileage = document.getElementById('useMileage');
+        const realPaymentSum = document.getElementById('realPaymentSum');
+        mileageInput.value = "";
+
+        mileageInput.addEventListener('input', function(e) {
+            const inputValue = e.target.value;
+            const numericValue = inputValue.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+            e.target.value = numericValue;
+        });
+
+        function mileageUndo(e) {
+            e.preventDefault();
+
+            useMileage.innerHTML = 0;
+            mileageInput.value = "";
+            realPaymentSum.innerHTML = [[${paymentSum}]];
+        }
+
+        function mileageClk(e) {
+            e.preventDefault();
+            const parsedValue = parseInt(mileageInput.value);
+            const realPaymentSumValue = [[${paymentSum}]];
+            if (mileageInput.value == NaN || mileageInput.value == "NaN") {
+                parsedValue=0;
+            }
+            console.log(parsedValue);
+
+            if (parsedValue % 1000 === 0 && parsedValue > 0 && parsedValue <= parseInt(haveMileage.innerHTML) && realPaymentSumValue >= 10000 && parsedValue <= realPaymentSumValue*0.9) {
+                //모든 검증 완료된 마일리지 사용값
+                useMileage.innerHTML = parsedValue;
+                realPaymentSum.innerHTML = realPaymentSumValue - parsedValue;
+
+                const toast = new bootstrap.Toast(toastLiveExample2);
+
+                toast.show()
+
+            } else {
+                //검증 실패
+                const toast = new bootstrap.Toast(toastLiveExample);
+
+                toast.show()
+                mileageInput.value = "";
+
+            }
+
+        }
+
+        function mobileReactForPayment() {
+
+            const isMobile = window.matchMedia("(max-width: 576px)").matches;
+
+            if (isMobile) {
+                // 모바일접근시
+
+                // payInfoMobile 요소의 m-5 클래스 제거
+                const payInfoMobile = document.getElementById('payInfoMobile');
+                payInfoMobile.classList.remove('m-5');
+
+                // checkFieldMobile 요소의 font-size를 12px로 설정
+                const checkFieldMobile = document.getElementById('checkFieldMobile');
+                checkFieldMobile.style.fontSize = '12px';
+
+                // mileageConditionMobile 요소의 font-size를 11px로 설정
+                const mileageConditionMobile = document.getElementById('mileageConditionMobile');
+                mileageConditionMobile.style.fontSize = '11px';
+                const mileageConditionMobile2 = document.getElementById('mileageConditionMobile2');
+                mileageConditionMobile2.style.fontSize = '10px';
+
+                // applyBtnMobile 요소의 font-size를 10px로 설정
+                const applyBtnMobile = document.getElementById('applyBtnMobile');
+                applyBtnMobile.style.fontSize = '10px';
+
+                // mileageInput 요소의 width를 90px로 설정
+                const mileageInput = document.getElementById('mileageInput');
+                mileageInput.style.width = '90px';
+
+            } else {
+                //웹접근시
+            }
+        }
+
+        // 브라우저가 로딩되고 실행
+        document.addEventListener('DOMContentLoaded', mobileReactForPayment);
+
+
 
 
 

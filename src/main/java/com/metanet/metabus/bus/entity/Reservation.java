@@ -49,13 +49,22 @@ public class Reservation extends BaseEntity {
 
     private Long busId;
 
+    private Long usedMileage;
+
     public void updatePaymentStatus(String impUid) {
         this.reservationStatus = ReservationStatus.PAID;
         this.impUid = impUid;
     }
 
-    public void updateExpiredStatus(ReservationStatus reservationStatus) {
+    public void updateExpiredStatus() {
         this.reservationStatus = ReservationStatus.EXPIRED;
     }
 
+    public void updateUsedMileage(Long usedMileage) {
+        this.usedMileage = usedMileage;
+    }
+
+    public void updatePayment(Long payment) {
+        this.payment = payment;
+    }
 }

@@ -54,8 +54,13 @@ public class MileageService {
 
         Member member = getMember(memberDto);
 
-        List<Mileage> allMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.UP);
-        for (Mileage mileage : allMileageList) {
+        List<Mileage> upMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.UP);
+        for (Mileage mileage : upMileageList) {
+            allMileage += mileage.getPoint();
+        }
+
+        List<Mileage> cancelMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.CANCEL);
+        for (Mileage mileage : cancelMileageList) {
             allMileage += mileage.getPoint();
         }
 
@@ -98,7 +103,7 @@ public class MileageService {
         String memberName = member.getName();
 
         String mileageSaveStatus = null;
-        List<Mileage> mileageList = mileageRepository.findByMember(member);
+        List<Mileage> mileageList = mileageRepository.findByMemberOrderByCreatedDateDesc(member);
 
         for (Mileage mileage : mileageList) {
             Long point = mileage.getPoint();
@@ -108,6 +113,8 @@ public class MileageService {
                 mileageSaveStatus = "적립";
             } else if (saveStatus == SaveStatus.DOWN) {
                 mileageSaveStatus = "사용";
+            } else if (saveStatus == SaveStatus.CANCEL) {
+                mileageSaveStatus = "사용 취소";
             }
 
             LocalDate createdDate = mileage.getCreatedDate().toLocalDate();

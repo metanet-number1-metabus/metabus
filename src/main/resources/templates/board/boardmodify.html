@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
-
 <style>
     .layout{
     width : 500px;
@@ -23,11 +22,9 @@
     textarea{
     height : 300px;
     }
+
 </style>
 <body>
-
-
-
 
     <div class="container-fluid px-4" style="margin-top: 100px">
       <div class="container overflow-auto">
@@ -40,7 +37,12 @@
         <h5 style="margin-top: 5px">제목</h5>
         <input type="text" name="title"  placeholder="글 제목을 입력해주세요." th:value="${board.title}"/>
         <h5 style="margin-top: 10px;margin-bottom: 0">본문</h5>
-        <textarea name="content" placeholder="본문내용을 입력해주세요."></textarea>
+          <textarea name="content" placeholder="본문:
+분실물의 상세한 특징 및 특이사항을 작성합니다.
+분실물의 색상, 크기, 브랜드, 식별 가능한 특징 등을 명시합니다.
+분실 시간, 장소, 주변 환경 등의 정보를 제공합니다.
+
+"></textarea>
         <input type="file" class="inputwrite" name="file" multiple>
         <div id="preview"></div>
         <button type="submit" style="margin-top: 5px;margin-bottom: 5px; background-color: dodgerblue;color: white;border-color: dodgerblue">수정</button>
@@ -86,6 +88,11 @@
       alert("제목과 내용을 모두 입력해주세요.");
       return false;
     }
+
+      content = document.forms["myForm"]["content"].value;
+      content = content.replace(/\r?\n/g, "<br>");
+      document.forms["myForm"]["content"].value = content;
+      return true;
   }
 </script>
 </body>

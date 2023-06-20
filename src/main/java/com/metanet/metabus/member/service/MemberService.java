@@ -6,6 +6,7 @@ import com.metanet.metabus.common.exception.not_found.MemberNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
 import com.metanet.metabus.member.entity.Member;
+import com.metanet.metabus.member.entity.Role;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,7 +54,7 @@ public class MemberService {
                 .id(member.getId())
                 .name(member.getName())
                 .email(memberLoginRequest.getEmail())
-                .password(memberLoginRequest.getPassword())
+                .password(member.getPassword())
                 .role(member.getRole())
                 .mileage(member.getMileage())
                 .grade(member.getGrade())
@@ -63,12 +64,11 @@ public class MemberService {
 
     @Transactional
     public MemberDto editInfo(MemberEditInfoRequest memberEditInfoRequest, MemberDto memberDto) { //이미 비밀번호 확인하고 들어가서 체크x
-        String encoded = passwordEncoder.encode(memberDto.getPassword());
 
         Member member = Member.builder()
                 .id(memberDto.getId())
                 .email(memberEditInfoRequest.getEmail())
-                .password(encoded)
+                .password(memberDto.getPassword())
                 .name(memberEditInfoRequest.getName())
                 .role(memberDto.getRole())
                 .mileage(memberDto.getMileage())
@@ -130,7 +130,7 @@ public class MemberService {
                 .email(memberDto.getEmail())
                 .password(encoded)
                 .name(memberDto.getName())
-                .role(memberDto.getRole())
+                .role(Role.USER)
                 .mileage(memberDto.getMileage())
                 .grade(memberDto.getGrade())
                 .phoneNum(memberDto.getPhoneNum())

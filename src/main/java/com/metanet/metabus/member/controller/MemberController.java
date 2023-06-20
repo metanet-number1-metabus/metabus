@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +120,12 @@ public class MemberController {
 
             return "log/check_password_pwd";
 
-        } else {
+        } else if(url.equals("delete")){
+            model.addAttribute("memberLoginRequest", new MemberLoginRequest());
+            model.addAttribute("original", memberDto);
+
+            return "log/check_password_delete";
+        }else {
             return "/error/404";
         }
 
@@ -141,6 +145,7 @@ public class MemberController {
             HttpSession httpSession = httpServletRequest.getSession(false);
 
             MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+
             memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/info";
@@ -166,6 +171,28 @@ public class MemberController {
             memberService.checkPwd(memberLoginRequest, memberDto);
 
             return "redirect:/member/edit/pwd";
+        }
+    }
+
+    @PostMapping("/check/delete")
+    public String checkPwdDelete(@Valid MemberLoginRequest memberLoginRequest, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) {
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("memberEditPasswordRequest", memberLoginRequest);
+
+            Map<String, String> validatorResult = memberService.validateHandling(bindingResult);
+
+            for (String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            }
+            return "log/check_password_delete";
+        } else {
+            HttpSession httpSession = httpServletRequest.getSession(false);
+            MemberDto memberDto = (MemberDto) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+
+            memberService.checkPwd(memberLoginRequest, memberDto);
+
+            return "forward:/member/delete";
         }
     }
 
@@ -228,7 +255,7 @@ public class MemberController {
 
             httpSession.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-            return "redirect:/";
+            return "redirect:/member/mypage";
         }
     }
 

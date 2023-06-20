@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    @Query("SELECT r FROM Room r WHERE r.memId = :id AND r.deletedDate IS NULL")
+    @Query("SELECT r FROM Room r WHERE r.memId = :id AND r.deletedDate IS NULL ORDER BY r.id DESC")
     List<Room> findUser(Long id);
 
 
-    List<Room> findAllByDeletedDateIsNull();
+    List<Room> findAllByDeletedDateIsNullOrderByIdDesc();
 }
