@@ -190,8 +190,13 @@ public class MemberService {
         return !passwordEncoder.matches(memberLoginRequest.getPassword(), member.getPassword());
     }
 
-    public boolean memberCheck(MemberLoginRequest memberLoginRequest){
+    public boolean deleteMemberCheck(MemberLoginRequest memberLoginRequest){
         //탈퇴한 회원
         return memberRepository.findByEmailAndDeletedDateIsNotNull(memberLoginRequest.getEmail()).isPresent();
+    }
+
+    public boolean memberCheck(MemberLoginRequest memberLoginRequest){
+
+        return memberRepository.findByEmail(memberLoginRequest.getEmail()).isEmpty();
     }
 }
