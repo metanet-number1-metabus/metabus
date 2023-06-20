@@ -108,13 +108,15 @@ public class BusController {
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
 
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
-        Long paymentSum = reservationService.getRealPaymentSum(reservationIds);
+        Long paymentSum = reservationService.getPaymentSum(reservationIds);
+        Long usedMileageSum = reservationService.getUsedMileageSum(reservationIds);
         String strReservationIds = reservationService.getStrReservationIds(reservationIds);
         String impUid = paymentService.getImpUid(reservationIds);
 
         model.addAttribute("memberDto", memberDto);
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("paymentSum", paymentSum);
+        model.addAttribute("usedMileageSum", usedMileageSum);
         model.addAttribute("strReservationIds", strReservationIds);
         model.addAttribute("impUid", impUid);
 
