@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>404 Error - SB Admin</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <div id="layoutError">
-            <div id="layoutError_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="text-center mt-4">
-                                    <h1 class="display-1">401</h1>
-                                    <p class="lead">Unauthorized</p>
-                                    <p>Access to this resource is denied.</p>
-                                    <a href="index.html">
-                                        <i class="fas fa-arrow-left me-1"></i>
-                                        Return to Dashboard
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-            <div id="layoutError_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title> Error Page </title>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+
+<body>
+
+<div style="height:1080px;background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1)), url(https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/errorBackground.png);
+    background-size: cover;background-position: center;">
+
+    <div class="row" style="height: 100px"></div>
+
+    <div class="row d-flex justify-content-center">
+        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/401.png" style="width: auto">
+    </div>
+
+    <div class="row d-flex justify-content-center" style="width: 100%">
+        <div style="width: 24px"></div>
+        <div style="width: auto">
+            <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_fhDEnUbRA1.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop autoplay></lottie-player>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <img src="https://metabustest.s3.ap-northeast-2.amazonaws.com/assets/errorMessage.png" style="width: 900px">
+    </div>
+
+    <div class="row text-center d-flex justify-content-center">
+        <div class="row d-flex justify-content-center" style="width: 100%">
+            <button type="button" class="btn btn-link" style="width: 100px" onclick="window.location.href = '/'">홈으로</button>
+            <div style="width: 45px"></div>
+            <button type="button" class="btn btn-link" style="width: 100px" onclick="window.history.back()">뒤로가기</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
 </html>
