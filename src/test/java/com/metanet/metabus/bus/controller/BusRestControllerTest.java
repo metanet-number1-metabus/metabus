@@ -2,6 +2,10 @@ package com.metanet.metabus.bus.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metanet.metabus.bus.dto.*;
+import com.metanet.metabus.bus.entity.Bus;
+import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.entity.ReservationStatus;
+import com.metanet.metabus.bus.entity.Seat;
 import com.metanet.metabus.bus.service.PaymentService;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.bus.service.SeatService;
@@ -246,6 +250,63 @@ class BusRestControllerTest {
                 .andExpect(jsonPath("$.usedMileage").value(receiptResponse.getUsedMileage()))
                 .andReturn();
 
+    }
+
+    @Test
+    @DisplayName("결제 대기 리스트 GET 성공")
+    void get_unpaid_reservation_success() throws Exception {
+
+        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
+
+        Long busNum = 10000L;
+        LocalDate departureDate = LocalDate.now().plusDays(30);
+
+        Member member = Member.builder()
+                .id(1L)
+                .build();
+
+        Bus bus = Bus.builder()
+                .id(1L)
+                .busNum(busNum)
+                .departureDate(departureDate)
+                .build();
+
+        Seat seat = Seat.builder()
+                .id(1L)
+                .seatNum(1L)
+                .bus(bus)
+                .build();
+
+        Reservation reservation = Reservation.builder()
+                .id(1L)
+                .member(member)
+                .departure("간성")
+                .destination("동서울")
+                .departureTime("12:30")
+                .arrivalTime("16:01")
+                .departureDate(departureDate)
+                .payment(21100L)
+                .seatId(seat)
+                .passengerType("성인")
+                .reservationStatus(ReservationStatus.UNPAID)
+                .busType("일반")
+                .busId(bus.getId())
+                .usedMileage(0L)
+                .build();
+
+        List<Reservation> reservationList = new ArrayList<>();
+        reservationList.add(reservation);
+
+        when(reservationService.readUnpaidReservation(any(MemberDto.class))).thenReturn(reservationList);
+
+        mockMvc.perform(get("/bus/reservation/unpaid")
+                        .session(mockHttpSession)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
 

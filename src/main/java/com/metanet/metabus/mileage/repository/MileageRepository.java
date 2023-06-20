@@ -11,6 +11,6 @@ public interface MileageRepository extends JpaRepository<Mileage, Long> {
 
     List<Mileage> findByMemberAndSaveStatus(Member member, SaveStatus saveStatus);
 
-    List<Mileage> findByMember(Member member);
+    List<Mileage> findByMemberOrderByCreatedDateDesc(Member member);
 
 }

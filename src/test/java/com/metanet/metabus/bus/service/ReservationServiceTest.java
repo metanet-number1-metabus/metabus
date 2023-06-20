@@ -595,13 +595,13 @@ class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("실 결제금 구하기 성공")
-    void get_real_payment_sum_success() {
+    @DisplayName("결제 시 사용한 마일리지 구하기 성공")
+    void get_used_mileage_sum_success() {
 
         when(reservationRepository.findByIdAndDeletedDateIsNull(reservation.getId())).thenReturn(reservation);
 
-        Long realPaymentSum = reservationService.getRealPaymentSum(reservationIds);
-        assertEquals(reservation.getPayment() - reservation.getUsedMileage(), realPaymentSum);
+        Long usedMileageSum = reservationService.getUsedMileageSum(reservationIds);
+        assertEquals(reservation.getUsedMileage(), usedMileageSum);
 
     }
 

@@ -295,29 +295,32 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-end mt-2">
                                         <p class="card-text me-2" style="float: left">보유 마일리지</p>
-                                        <h2 style="float: left"><span th:text="${paymentSum}" id="haveMileage"></span></h2>
+                                        <h2 style="float: left"><span th:text="${mileage}" id="haveMileage"></span></h2>
                                         <span>Point</span>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end mt-2">
                                         <h2 style="float: left"><span><i class="fa-solid fa-triangle-exclamation"></i>:</span></h2>
-                                        <p class="card-text me-2" style="float: left" id="mileageConditionMobile">마일리지는 1000원 단위로 사용하실 수 있습니다.</p>
+                                        <p class="card-text" style="float: left" id="mileageConditionMobile">마일리지는 1,000원 단위로 사용 가능합니다.</p>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <p class="card-text mb-2" style="float: left" id="mileageConditionMobile2">(결제 금액 10,000원 이상부터 결제 금액의 최대 90%까지 사용 가능)</p>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end mb-4">
                                         <div class="input-group me-3" style="max-height: 38px;float: left;width: auto">
                                             <span class="input-group-text"><i class="fa-solid fa-coins"></i></span>
-                                            <input type="text" id="mileageInput" value="0" placeholder="1000원 단위">
+                                            <input type="text" id="mileageInput" value="0" placeholder="1,000원 단위">
                                         </div>
                                         <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)">적용</button>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <p class="card-text me-2" style="float: left">적용 마일리지</p>
-                                        <h2 style="float: left"><span id="useMileage">0</span></h2>
+                                        <h2 style="float: left"><span id="useMileage"></span></h2>
                                         <span class="me-3" style="float: left">Point</span>
                                         <button class="btn btn-danger" style="max-height: 29px" onclick="mileageUndo(event)"><i class="fa-solid fa-rotate-left"></i></button>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <p class="card-text me-2">총 결제 금액</p>
-                                        <h2><span th:text="${paymentSum}"></span></h2>
+                                        <h2><span th:text="${paymentSum}" id="realPaymentSum"></span></h2>
                                         <span>원</span>
                                     </div>
                                     <div class="col-12" style="height: 10px"></div>
@@ -376,6 +379,8 @@
     <!--            본문-->
     <script th:inline="javascript">
 
+
+
         var toastLiveExample = document.getElementById('liveToast');
         var toastLiveExample2 = document.getElementById('liveToast2');
 
@@ -413,7 +418,7 @@
                 pg: 'html5_inicis.INIpayTest',
                 pay_method: 'card',
                 name: '메타버스',
-                amount: [[${paymentSum}]],
+                amount: [[${paymentSum}]] - mileageInput.value,
                 buyer_email: [[${member.email}]],
                 buyer_name: [[${member.name}]],
                 buyer_tel: [[${member.phoneNum}]],
@@ -432,11 +437,12 @@
                             "merchantName": rsp.name,
                             "payment": rsp.paid_amount,
                             "payMethod": rsp.pay_method,
-                            "reservationIds": strReservationIds
+                            "reservationIds": strReservationIds,
+                            "usedMileage":mileageInput.value
                         }),
                         contentType: 'application/json',
                         success: function (response) {
-                            window.location.href = '/bus/reservation?specialValue=%EA%B2%B0%EC%A0%9C%EC%99%84%EB%A3%8C';
+                            window.location.href = '/bus/reservation';
                         },
                         error: function (xhr, status, error) {
                             alert("실패: " + status + " / " + error);
@@ -454,6 +460,8 @@
         const mileageInput = document.getElementById('mileageInput');
         const haveMileage = document.getElementById('haveMileage');
         const useMileage = document.getElementById('useMileage');
+        const realPaymentSum = document.getElementById('realPaymentSum');
+        mileageInput.value = "";
 
         mileageInput.addEventListener('input', function(e) {
             const inputValue = e.target.value;
@@ -465,16 +473,23 @@
             e.preventDefault();
 
             useMileage.innerHTML = 0;
-            mileageInput.value = 0;
+            mileageInput.value = "";
+            realPaymentSum.innerHTML = [[${paymentSum}]];
         }
 
         function mileageClk(e) {
             e.preventDefault();
             const parsedValue = parseInt(mileageInput.value);
+            const realPaymentSumValue = [[${paymentSum}]];
+            if (mileageInput.value == NaN || mileageInput.value == "NaN") {
+                parsedValue=0;
+            }
+            console.log(parsedValue);
 
-            if (parsedValue % 1000 === 0 && parsedValue > 0 && parsedValue <= parseInt(haveMileage.innerHTML)) {
+            if (parsedValue % 1000 === 0 && parsedValue > 0 && parsedValue <= parseInt(haveMileage.innerHTML) && realPaymentSumValue >= 10000 && parsedValue <= realPaymentSumValue*0.9) {
                 //모든 검증 완료된 마일리지 사용값
                 useMileage.innerHTML = parsedValue;
+                realPaymentSum.innerHTML = realPaymentSumValue - parsedValue;
 
                 const toast = new bootstrap.Toast(toastLiveExample2);
 
@@ -485,7 +500,7 @@
                 const toast = new bootstrap.Toast(toastLiveExample);
 
                 toast.show()
-                mileageInput.value = 0;
+                mileageInput.value = "";
 
             }
 
@@ -509,6 +524,8 @@
                 // mileageConditionMobile 요소의 font-size를 11px로 설정
                 const mileageConditionMobile = document.getElementById('mileageConditionMobile');
                 mileageConditionMobile.style.fontSize = '11px';
+                const mileageConditionMobile2 = document.getElementById('mileageConditionMobile2');
+                mileageConditionMobile2.style.fontSize = '10px';
 
                 // applyBtnMobile 요소의 font-size를 10px로 설정
                 const applyBtnMobile = document.getElementById('applyBtnMobile');

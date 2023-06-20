@@ -274,4 +274,47 @@ class MemberServiceTest {
         assertEquals("이메일을 입력해주세요.", validatorResult.get("valid_email"));
         assertEquals("이름을 입력해주세요.", validatorResult.get("valid_name"));
     }
+
+    @Test
+    @DisplayName("이메일 중복 체크 성공")
+    void emailCheck_success() {
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+
+        when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
+
+        Assertions.assertDoesNotThrow(() -> memberService.emailCheck(member.getEmail()));
+    }
+
+    @Test
+    @DisplayName("비밀번호 중복 체크 성공")
+    void passwordCheck_success() {
+
+        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
+            memberService.passwordCheck(new MemberLoginRequest("test2@test.com", "12345678"));
+        });
+
+        assertEquals(ErrorCode.MEMBER_NOT_FOUND, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("비밀번호 중복 체크 성공(2)")
+    void passwordCheck_success2() {
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+
+        when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
+        when(passwordEncoder.matches(member.getPassword(), "12345678")).thenReturn(true);
+
+        Assertions.assertDoesNotThrow(() -> memberService.passwordCheck(new MemberLoginRequest(member.getEmail(), member.getPassword())));
+    }
+
+    @Test
+    @DisplayName("탈퇴한 회원 체크 성공")
+    void memberCheck_success() {
+        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+
+        when(memberRepository.findByEmailAndDeletedDateIsNotNull(member.getEmail())).thenReturn(Optional.of(member));
+
+        Assertions.assertDoesNotThrow(() -> memberService.memberCheck(new MemberLoginRequest(member.getEmail(), member.getPassword())));
+
+    }
 }

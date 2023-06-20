@@ -487,8 +487,8 @@
                                                 <div class="col-6 d-flex justify-content-end"><h5 style="float:left" id="payment2">30000</h5><h5>원</h5></div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-6"><h5>부가세:</h5></div>
-                                                <div class="col-6 d-flex justify-content-end"><h5 style="float:left" >0</h5><h5>원</h5></div>
+                                                <div class="col-6"><h5>마일리지:</h5></div>
+                                                <div class="col-6 d-flex justify-content-end"><h5 style="float:left" id="usedMileage">30000</h5><h5>원</h5></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-6"><h5>총액:</h5></div>
@@ -648,8 +648,10 @@
                     $("#payment").append(paymentDataList.payment);
                     $("#payment2").empty();
                     $("#payment2").append(paymentDataList.payment);
+                    $("#usedMileage").empty();
+                    $("#usedMileage").append(paymentDataList.usedMileage);
                     $("#payment3").empty();
-                    $("#payment3").append(paymentDataList.payment);
+                    $("#payment3").append(paymentDataList.payment + paymentDataList.usedMileage);
                     $("#payMethod").empty();
                     $("#payMethod").append(paymentDataList.payMethod);
                     $("#merchantName").empty();

@@ -7,7 +7,7 @@
     <main class="container">
         <h1 th:text="${board.title}">제목 입니다.</h1>
         <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" alt="">
-        <p th:text="${board.content}">내용이 들어갈 내용입니다.</p>
+        <p th:utext="${board.content}">내용이 들어갈 내용입니다.</p>
         <div th:if="${session.loginMember!=null}">
         <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
         <div class="button-container">

@@ -124,8 +124,14 @@ public class PaymentService {
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
         String impUid = payRequest.getImpUid();
-
+        Long paymentSum = payRequest.getPayment();
         Long usedMileage = payRequest.getUsedMileage();
+
+        double discountPercentage = 0;
+        if (usedMileage != 0) {
+            discountPercentage = (double) usedMileage / (paymentSum + usedMileage);
+        }
+        System.out.println(discountPercentage);
 
         Payment payment = Payment.builder()
                 .applyNum(payRequest.getApplyNum())
@@ -134,7 +140,7 @@ public class PaymentService {
                 .cardNum(payRequest.getCardNum())
                 .impUid(impUid)
                 .merchantName(payRequest.getMerchantName())
-                .payment(payRequest.getPayment())
+                .payment(paymentSum)
                 .payMethod(payRequest.getPayMethod())
                 .usedMileage(usedMileage)
                 .build();
@@ -158,13 +164,18 @@ public class PaymentService {
             Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationId);
             reservation.updatePaymentStatus(impUid);
 
+            Long reservationPayment = reservation.getPayment();
+
             if (usedMileage != 0) {
+                double each = reservationPayment * discountPercentage;
                 if (i == reservationCount - 1) {
-                    reservation.updateUsedMileage(usedMileage / reservationCount + usedMileage % reservationCount);
+                    reservation.updateUsedMileage((long) (each + usedMileage % reservationCount));
                 } else {
-                    reservation.updateUsedMileage(usedMileage / reservationCount);
+                    reservation.updateUsedMileage((long) each);
                 }
             }
+
+            reservation.updatePayment(reservationPayment - reservation.getUsedMileage());
 
             reservationRepository.save(reservation);
         }
@@ -199,7 +210,7 @@ public class PaymentService {
             Mileage mileage = Mileage.builder()
                     .member(member)
                     .point(usedMileage)
-                    .saveStatus(SaveStatus.UP)
+                    .saveStatus(SaveStatus.CANCEL)
                     .build();
 
             mileageRepository.save(mileage);

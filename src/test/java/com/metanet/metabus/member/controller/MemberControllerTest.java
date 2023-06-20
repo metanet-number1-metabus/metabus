@@ -89,7 +89,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 POST 실패(1) - 중복된 이메일")
+    @DisplayName("회원가입 POST 실패(1) - 중복된 이메일(1)")
     void post_register_fail() throws Exception {
 
         given(memberService.register(any(MemberRegisterRequest.class))).willThrow(new DuplicateEmailException());
@@ -110,8 +110,27 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 POST 실패(2) - 유효성 검사 실패(빈 값 입력)")
+    @DisplayName("회원가입 POST 실패(2) - 중복된 이메일(2)")
     void post_register_fail2() throws Exception {
+
+        given(memberService.emailCheck(any(String.class))).willReturn(true);
+
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "12345678", "010-0000-0000");
+
+        mockMvc.perform(post("/member/register")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberRegisterRequest.getEmail())
+                        .param("name", memberRegisterRequest.getName())
+                        .param("password", memberRegisterRequest.getPassword())
+                        .param("phoneNum", memberRegisterRequest.getPhoneNum())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/register"));
+    }
+
+    @Test
+    @DisplayName("회원가입 POST 실패(3) - 유효성 검사 실패(빈 값 입력)")
+    void post_register_fail3() throws Exception {
 
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -189,8 +208,27 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(2) - 비밀번호 불일치")
+    @DisplayName("로그인 POST 실패(2) - 탈퇴한 회원(2)")
     void post_login_fail2() throws Exception {
+
+        given(memberService.memberCheck(any(MemberLoginRequest.class))).willReturn(true);
+
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "12345678");
+
+        mockMvc.perform(post("/member/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberLoginRequest.getEmail())
+                        .param("password", memberLoginRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/login"));
+
+        verify(memberService).memberCheck(any(MemberLoginRequest.class));
+    }
+
+    @Test
+    @DisplayName("로그인 POST 실패(3) - 비밀번호 불일치")
+    void post_login_fail3() throws Exception {
 
         given(memberService.login(any(MemberLoginRequest.class))).willThrow(new InvalidPasswordException());
 
@@ -208,8 +246,27 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(3) - 유효성 검사 실패(빈 값 입력)")
-    void post_login_fail3() throws Exception {
+    @DisplayName("로그인 POST 실패(4) - 비밀번호 불일치(2)")
+    void post_login_fail4() throws Exception {
+
+        given(memberService.passwordCheck(any(MemberLoginRequest.class))).willReturn(true);
+
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "12345678", "010-0000-0000");
+
+        mockMvc.perform(post("/member/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberRegisterRequest.getEmail())
+                        .param("password", memberRegisterRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/login"));
+
+        verify(memberService).passwordCheck(any(MemberLoginRequest.class));
+    }
+
+    @Test
+    @DisplayName("로그인 POST 실패(5) - 유효성 검사 실패(빈 값 입력)")
+    void post_login_fail5() throws Exception {
 
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -417,6 +474,25 @@ class MemberControllerTest {
     }
 
     @Test
+    @DisplayName("비밀번호 체크(info) POST 실패(2) - 잘못된 password")
+    void post_checkPwdInfo_fail2() throws Exception {
+
+        given(memberService.passwordCheck(any(MemberLoginRequest.class))).willReturn(true);
+
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "12345678");
+
+        mockMvc.perform(post("/member/check/info")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberLoginRequest.getEmail())
+                        .param("password", memberLoginRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/check_password_info"));
+
+        verify(memberService).passwordCheck(any(MemberLoginRequest.class));
+    }
+
+    @Test
     @DisplayName("비밀번호 체크(pwd) POST 성공 - 유효성 검사 통과")
     void post_checkPwdPwd() throws Exception {
 
@@ -460,6 +536,25 @@ class MemberControllerTest {
     }
 
     @Test
+    @DisplayName("비밀번호 체크(pwd) POST 실패(2) - 잘못된 password")
+    void post_checkPwdPwd_fail2() throws Exception {
+
+        given(memberService.passwordCheck(any(MemberLoginRequest.class))).willReturn(true);
+
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "12345678");
+
+        mockMvc.perform(post("/member/check/pwd")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberLoginRequest.getEmail())
+                        .param("password", memberLoginRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/check_password_pwd"));
+
+        verify(memberService).passwordCheck(any(MemberLoginRequest.class));
+    }
+
+    @Test
     @DisplayName("비밀번호 체크(delete) POST 성공 - 유효성 검사 통과")
     void post_checkPwdDelete() throws Exception {
 
@@ -500,6 +595,25 @@ class MemberControllerTest {
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("log/check_password_delete"));
+    }
+
+    @Test
+    @DisplayName("비밀번호 체크(delete) POST 실패(2) - 잘못된 password")
+    void post_checkPwdDelete_fail2() throws Exception {
+
+        given(memberService.passwordCheck(any(MemberLoginRequest.class))).willReturn(true);
+
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "12345678");
+
+        mockMvc.perform(post("/member/check/delete")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberLoginRequest.getEmail())
+                        .param("password", memberLoginRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/check_password_delete"));
+
+        verify(memberService).passwordCheck(any(MemberLoginRequest.class));
     }
 
     /**
