@@ -28,7 +28,7 @@ public class ReservationInfoRequest {
     private int[] passengerType;
     private String busType;
 
-    public Reservation toEntity(Member member, String departureTime, String arrivalTime, LocalDate departureDate, Long payment, Seat seat, String passengerType, ReservationStatus reservationStatus, Long busId) {
+    public Reservation toEntity(Member member, String departureTime, String arrivalTime, LocalDate departureDate, Long payment, Seat seat, String passengerType, ReservationStatus reservationStatus, Long busId, Long usedMileage) {
         return Reservation.builder()
                 .member(member)
                 .departure(departure)
@@ -42,6 +42,7 @@ public class ReservationInfoRequest {
                 .reservationStatus(reservationStatus)
                 .busType(busType)
                 .busId(busId)
+                .usedMileage(usedMileage)
                 .build();
     }
 }
