@@ -21,6 +21,7 @@ public class MemberRegisterRequest {
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
 
+
     @NotBlank(message = "패스워드를 입력해주세요.")
     @Size(min = 8, message = "최소 8자리 이상의 패스워드를 입력해 주세요.")
     private String password;
