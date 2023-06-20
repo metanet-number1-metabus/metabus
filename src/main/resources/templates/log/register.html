@@ -160,7 +160,7 @@
                                 <input type="text" id="email" th:value="${memberRegisterRequest.email}"  name="email" class="form-control" placeholder="이메일 *" required autofocus>
                             </div>
 <!--                            <div style="float:left;width: 3%;height: 20px"></div>-->
-                            <button class="opacity-0" style="border:none; outline:none; width: 10%; height: 50px; margin-left: 13px" onclick="emailIsRealCheck(event)" id="sendBtnId"><i class="fa-regular fa-paper-plane fa-xl mt-3" style="color: blue; cursor:pointer"></i></button>
+                            <button class="bg-white" style="border:none; outline:none; width: 10%; height: 50px; margin-left: 13px" onclick="emailIsRealCheck(event)" id="sendBtnId"><i class="fa-regular fa-paper-plane fa-xl mt-3" style="color: blue; cursor:pointer"></i></button>
                             <span id="email_result" th:text="${valid_email}" style="color: red"></span>
                         </div>
                         <div class="form-group py-2 d-none" id="codeCheckDiv">
@@ -169,8 +169,8 @@
                                 <input type="text" id="codeId" class="form-control" placeholder="인증번호 *" required autofocus>
                             </div>
                             <div style="float:left; width: 6%;height: 20px"></div>
-                            <button id="okBtnId" class="opacity-0" style="margin-right: 10px; border:none; outline:none; width: 10%; height: 50px" onclick="emailCodeCheck(event)"><i class="fa-solid fa-check fa-xl" style="color: green"></i></button>
-                            <button id="reBtnId" class="opacity-0" style="border:none; outline:none; width: 10%; height: 50px;" onclick="emailReCheck(event)"><i class="fa-solid fa-rotate-left fa-xl mt-2" style="color: red"></i></button>
+                            <button id="okBtnId" class="bg-white" style="margin-right: 10px; border:none; outline:none; width: 10%; height: 50px" onclick="emailCodeCheck(event)"><i class="fa-solid fa-check fa-xl" style="color: green"></i></button>
+                            <button id="reBtnId" class="bg-white" style="border:none; outline:none; width: 10%; height: 50px;" onclick="emailReCheck(event)"><i class="fa-solid fa-rotate-left fa-xl mt-2" style="color: red"></i></button>
                             <span id="au_result" style="color: red"></span>
                         </div>
                         <div class="form-group py-2">
