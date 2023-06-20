@@ -57,6 +57,9 @@ function mobileReact() {
     const isMobile = window.matchMedia("(max-width: 576px)").matches;
 
     if (isMobile) {
+
+        const divElementHeader = document.getElementById('headerLoginMobile');
+
         // 모바일접근시
         const elements = document.getElementsByClassName('mobile-font-header');
 
@@ -65,6 +68,11 @@ function mobileReact() {
 
         // container-fluid rounded shadow-lg 클래스인 요소의 width를 260px로 설정
         const containerElement = document.querySelector('.container-fluid.rounded.shadow-lg');
+
+
+        if (divElementHeader){
+            divElementHeader.classList.add('d-none');
+        }
 
         if (carouselExampleDark){
             carouselExampleDark.classList.remove('m-5');
