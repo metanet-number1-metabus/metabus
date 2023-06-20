@@ -7,7 +7,7 @@
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">-->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     <div id="layoutSidenav_content" style="background-color: white">
@@ -31,7 +31,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body">
-                                        <form id="myForm">
+                                        <form id="myForm" class="custom-form-bin">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -121,7 +121,7 @@
                                 </div>
                                 <div class="chat-bubbles" id="chatting" style="overflow-y: auto;">
                                 </div>
-                                <form class="form-inline">
+                                <form class="form-inline custom-form-bin">
                                     <div class="form-group">
                                         <input type="hidden" id="sender" class="form-control"
                                                placeholder="Your name here..."
@@ -321,7 +321,7 @@
                 });
             });
             $(function () {
-                $("form").on('submit', function (e) {
+                $(".custom-form-bin").on('submit', function (e) {
                     e.preventDefault();
                 });
                 $("#connect").click(function () {
@@ -405,6 +405,11 @@
                         $("#pagination li").eq(activePage + 1).trigger('click');
                     }
                 });
+            });
+
+            document.getElementById('previous').addEventListener('click', function(e) {
+                e.preventDefault();
+                location.reload();
             });
         </script>
 </th:block>
