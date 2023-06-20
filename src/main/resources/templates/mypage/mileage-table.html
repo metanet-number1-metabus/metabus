@@ -11,7 +11,6 @@
 
 
                     <div class="container-fluid">
-가
                         <!--            내용-->
 
                         <h1 class="mt-4">마일리지</h1>
@@ -174,7 +173,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                                마일리지 적립/사용 내역
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -193,7 +192,11 @@
                                         <!--                  TODO: 리스팅할 데이터 따로 페이징 로직없이 모든 데이터 for문 돌리시면 됩니다 (페이징은 자바스크립트에서 처리)-->
                                         <tr>
                                             <td th:text="${mileageList.name}"></td>
-                                            <td th:text="${mileageList.point}"></td>
+                                            <td>
+                                            <span
+                                                    th:text="${mileageList.saveStatus == '사용' ? '- ' + mileageList.point : '+ ' + mileageList.point}" th:style="${mileageList.saveStatus == '사용' ? 'color:red' : 'color:#00cdd1'}">
+                                            </span>
+                                            </td>
                                             <td th:text="${mileageList.saveStatus}"></td>
                                             <td th:text="${mileageList.createdDate}"></td>
                                         </tr>
