@@ -553,10 +553,10 @@
                         row.attr("meta", index);
                         if (isTimeExpired(bus.departure_time)) {
                             // 지남
-                            $("<td>").html("<i class=\"fa-regular fa-calendar-xmark\" style=\"width:25px;height:25px;position:relative;left:23px\"></i>").appendTo(row);
+                            $("<td>").html("<i class=\"fa-regular fa-calendar-xmark\" style=\"width:25px;height:25px;position:relative;left:23px;color: lightgray\"></i>").appendTo(row);
                         } else {
                             //안 지남
-                            $("<td>").html("<i class=\"fa-regular fa-calendar fa-fade\" style=\"width:25px;height:25px;position:relative;left:23px\"></i>").appendTo(row);
+                            $("<td>").html("<i class=\"fa-regular fa-calendar fa-fade\" style=\"width:25px;height:25px;position:relative;left:23px;color: green\"></i>").appendTo(row);
                         }
                         $("<td>").text(bus.bus_id).appendTo(row);
                         $("<td>").text(bus.departure_time).appendTo(row);
