@@ -54,7 +54,7 @@ class BusControllerTest {
 
     @Test
     @DisplayName("버스 시간표 GET 성공")
-    void get_searchBus() throws Exception {
+    void get_search_bus_success() throws Exception {
 
         String departureHome = "간성";
         String destinationHome = "동서울";
@@ -72,6 +72,24 @@ class BusControllerTest {
                 .andExpect(model().attribute("destinationHome", destinationHome))
                 .andExpect(model().attribute("departureDate", departureDate))
                 .andExpect(model().attribute("roundTrip", roundTrip));
+    }
+
+    @Test
+    @DisplayName("버스 시간표 GET 실패")
+    void get_search_bus_fail() throws Exception {
+
+        String departureHome = "";
+        String destinationHome = "";
+        String departureDate = "";
+        String roundTrip = "";
+
+        mockMvc.perform(get("/bus/timetable")
+                        .param("departurehome", departureHome)
+                        .param("destinationhome", destinationHome)
+                        .param("departuredate", departureDate)
+                        .param("roundtrip", roundTrip))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error/404"));
     }
 
     @Test
@@ -277,6 +295,8 @@ class BusControllerTest {
                 .seatNum(1L)
                 .createdDate(LocalDateTime.now().toLocalDate())
                 .payment(21100L)
+                .impUid("imp_111111111111")
+                .usedMileage(1000L)
                 .build();
 
         Long[] reservationIds = {1L};
@@ -286,6 +306,7 @@ class BusControllerTest {
 
         given(reservationService.readByReservationId(reservationIds)).willReturn(reservationList);
         given(reservationService.getPaymentSum(reservationIds)).willReturn(10000L);
+        given(reservationService.getUsedMileageSum(reservationIds)).willReturn(1000L);
         given(reservationService.getStrReservationIds(reservationIds)).willReturn("1");
         given(paymentService.getImpUid(reservationIds)).willReturn("imp_111111111111");
 
@@ -295,8 +316,10 @@ class BusControllerTest {
                         .param("data", "1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("bus/bus-cancel"))
+                .andExpect(model().attribute("reservationListSize", reservationList.size()))
                 .andExpect(model().attribute("reservationList", reservationList))
                 .andExpect(model().attribute("paymentSum", 10000L))
+                .andExpect(model().attribute("usedMileageSum", 1000L))
                 .andExpect(model().attribute("strReservationIds", "1"))
                 .andExpect(model().attribute("impUid", "imp_111111111111"));
     }
