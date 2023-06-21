@@ -1,15 +1,377 @@
 <!DOCTYPE html>
-<html lang="ko">
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="|${pageName}|"></title>
-</head>
-<body>
-<div>
-    <h1><a th:href="|/${loginType}|">[[${pageName}]]</a></h1> <hr/>
-        <h2>관리자 페이지</h2>
-        <h3>인가에 성공하였습니다!</h3>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+    <!--            본문-->
+    <div id="layoutSidenav_content" class="bg-white">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="content">
+
+
+                    <div class="container-fluid">
+                        <!--            내용-->
+
+                        <h1 class="mt-4">관리자</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">홈</a></li>
+                            <li class="breadcrumb-item active">관리자</li>
+                        </ol>
+                        <div class="row">
+
+                            <div class="col-lg-12 d-flex justify-content-center mb-4 bg-white">
+                                <div style="width: 600px;height: 380px" class="mt-2 mb-5">
+<!--                                <div style="width: 300px;height: auto" class="m-5">-->
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!--            <div class="card mb-4">-->
+                        <!--              <div class="card-header">-->
+                        <!--                <i class="fas fa-chart-area me-1"></i>-->
+                        <!--                Area Chart Example-->
+                        <!--              </div>-->
+                        <!--              <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>-->
+                        <!--              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+                        <!--            </div>-->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                MetaBus 사용자들의 승차권 예약 후 결제까지 연결되는 현황을 차트를 통해 알 수 있습니다.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fa-solid fa-ticket me-1"></i>
+                                        사용자 예매 현황
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatablesSimpleReservation">
+                                            <thead>
+                                                <tr>
+    <!--                                                RESERVATION 테이블-->
+    <!--                                            구분: 만료(검정)/결제대기(빨강)/결제완료(초록)/예약취소(회색)-->
+    <!--                                                비교방법(예시): reservation.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID-->
+    <!--                                                1. reservationStatus가 UNPAID면서 DELETED_DATE이 null이 아니면 예약취소(회색) 상태-->
+    <!--                                                2. reservationStatus가 UNPAID면서 DELETED_DATE이 null이면 결제대기(빨강) 상태-->
+    <!--                                                3. reservationStatus가 PAID면 결제완료(초록)-->
+    <!--                                                4. reservationStatus가 EXPIRED면 만료(검정)-->
+                                                    <th>구분</th>
+    <!--                                                예매자ID: MEMBER_ID-->
+                                                    <th>예매자ID</th>
+    <!--                                                예매일: CREATED_DATE-->
+                                                    <th>예매일</th>
+    <!--                                                출발일: DEPARTURE_DATE-->
+                                                    <th>출발일</th>
+    <!--                                                가격: PAYMENT-->
+                                                    <th>가격</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <th:block th:each="reservationList:${reservationList}">
+                                                    <tr>
+                                                        <td>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID} and ${reservationList.deletedDate != null}" th:text='예약취소' th:style="${'color:grey'}"></span>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID} and ${reservationList.deletedDate == null}" th:text='결제대기' th:style="${'color:red'}"></span>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).PAID}" th:text='결제완료' th:style="${'color:green'}"></span>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).EXPIRED}" th:text='만료' th:style="${'color:black'}"></span>
+                                                        </td>
+                                                        <td th:text="${reservationList.memberId}"></td>
+                                                        <td th:text="${reservationList.createdDate}"></td>
+                                                        <td th:text="${reservationList.departureDate}"></td>
+                                                        <td th:text="${reservationList.payment}"></td>
+                                                    </tr>
+                                                </th:block>
+<!--                                            위의 조건대로 <td>만들면 댐-->
+                                            <!--                  타임리프-->
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                    <div class="card-footer small text-muted"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fa-solid fa-bus me-1"></i>
+                                        실시간 인기 노선
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatablesSimpleBus">
+                                            <thead>
+                                            <tr>
+<!--                                            BUS, SEAT 테이블-->
+<!--                                            버스번호: BUS_NUM-->
+                                                <th>버스번호</th>
+<!--                                            출발일: DEPARTURE_DATE (DEPARTURE_DATE가 오늘기준 이전꺼는 출력X)-->
+                                                <th>출발일</th>
+<!--                                            예매된 좌석 수: SEAT_NUM-->
+                                                <th>예매된 좌석 수</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <th:block th:each="busList:${busList}">
+                                                    <tr>
+                                                        <td th:text="${busList.busNum}"></td>
+                                                        <td th:text="${busList.departureDate}"></td>
+                                                        <td th:text="${busList.seatNum}"></td>
+                                                    </tr>
+                                                </th:block>
+                                            <!--                  타임리프-->
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                    <div class="card-footer small text-muted"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--            데이터 테이블-->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                사용자 가입 현황
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                    <tr>
+<!--                                        MEMBER 테이블-->
+<!--                                        ID-->
+                                        <th>사용자 ID</th>
+<!--                                        CREATED_DATE-->
+                                        <th>가입일</th>
+<!--                                        DELETED_DATE-->
+                                        <th>탈퇴일</th>
+<!--                                        EMAIL-->
+                                        <th>이메일</th>
+<!--                                        GRADE-->
+                                        <th>등급</th>
+<!--                                        NAME-->
+                                        <th>사용자명</th>
+<!--                                        PHONE_NUM-->
+                                        <th>연락처</th>
+<!--                                        ROLE-->
+                                        <th>역할</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <th:block th:each="memberList:${memberList}">
+                                            <tr>
+                                                <td th:text="${memberList.memberId}"></td>
+                                                <td th:text="${memberList.createdDate}"></td>
+                                                <td>
+                                                    <span th:if="${memberList.deletedDate == null}" th:text='x'></span>
+                                                    <span th:unless="${memberList.deletedDate == null}" th:text='${memberList.deletedDate}'></span>
+                                                </td>
+                                                <td th:text="${memberList.email}"></td>
+                                                <td th:text="${memberList.grade}"></td>
+                                                <td th:text="${memberList.name}"></td>
+                                                <td th:text="${memberList.phoneNum}"></td>
+                                                <td th:text="${memberList.role}"></td>
+                                            </tr>
+                                        </th:block>
+                                    <!--                  타임리프-->
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <!--            내용-->
+                    </div>
+                    <!-- Vertically centered scrollable modal -->
+                    <div class="modal" tabindex="-1" id="myModal">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">회원등급</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>- ALPHA</h3><br>
+                                    <p>혜택 1.</p>
+                                    <h5>시외버스 예약시 마일리지 3% 적립</h5><br>
+                                    <p>혜택 2.</p>
+                                    <h5>MetaBus 각종 이벤트 참여자격</h5><br>
+                                    <h3>- META</h3><br>
+                                    <p>혜택 1.</p>
+                                    <h5>시외버스 예약시 마일리지 5% 적립</h5><br>
+                                    <p>혜택 2.</p>
+                                    <h5>MetaBus 각종 프리미엄 이벤트 참여자격</h5><br>
+                                    <p>혜택 3.</p>
+                                    <h5>시외버스 예매취소 수수료 무료</h5><br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </main>
+
     </div>
-</body>
+    <!--            본문-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script th:inline="javascript"
+            src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        // 1. 오늘포함 6~7일 까지의 날짜 => dates,
+        // 2. 각 일에 맞는 결제대기+예약취소 데이터 COUNT (RESERVATION테이블) => reservations
+        // 3. 각 일에 맞는 결제완료+만료 데이터 COUNT (RESERVATION테이블) => bookings
+        // 자바스크립트로 서버데이터 쓰는 방법은 봉경에게 문의 (th:block)은 여기서 사용 못해용
+        function dateFormat(value){
+            const year = value.getFullYear();
+            const month = value.getMonth() + 1;
+            const date = value.getDate();
+            return year + '-' + month + '-' + date;
+        }
+        const date = new Date();
+        const today = new Date();
+        let date1 = new Date(date.setDate(date.getDate() - 1));
+        let date2 = new Date(date.setDate(date.getDate() - 1));
+        let date3 = new Date(date.setDate(date.getDate() - 1));
+        let date4 = new Date(date.setDate(date.getDate() - 1));
+        let date5 = new Date(date.setDate(date.getDate() - 1));
+        let dates = [dateFormat(date5) , dateFormat(date4), dateFormat(date3), dateFormat(date2), dateFormat(date1), dateFormat(today)]; // 일별 날짜 배열
+
+        const reservations = [[${countUnpaidList}]]; // 승차권 예약 수 배열
+        const bookings = [[${countPaidList}]]; // 승차권 예매 수 배열
+
+        // 애니매이션
+        const counter = ($counter, max) => {
+            let now = max;
+            const handle = setInterval(() => {
+                $counter.innerHTML = Math.ceil(max - now);
+                // 목표수치에 도달하면 정지
+                if (now < 1) {
+                    clearInterval(handle);
+                }
+                // 증가되는 값이 계속하여 작아짐
+                const step = now / 10;
+                // 값을 적용시키면서 다음 차례에 영향을 끼침
+                now -= step;
+            }, 50);
+        }
+
+        window.onload = () => {
+            // 카운트를 적용시킬 요소
+            const $counters = Array.from(document.getElementsByClassName("count"));
+            console.log($counters);
+            //비동기방식으로 메서드 호출 필요
+            //forEach() 메서드를 사용하여 $counters 배열의 각 요소에 대해 개별적으로 호출됨. 이렇게 하면 각 요소에 대해 개별적인 카운터가 시작
+            $counters.forEach(($counter) => {
+                // 목표 수치
+                const max = parseInt($counter.getAttribute("meta"));
+                setTimeout(() => counter($counter, max), 600);
+            });
+        }
+
+
+        // 데이터 테이블1
+        $(document).ready(function () {
+            let myTable = new simpleDatatables.DataTable("#datatablesSimpleReservation", {
+                fixedColumns: false,
+                fixedHeight: false,
+                perPage: 5,
+                perPageSelect: [5],
+                searchable: true,
+                sortable: true
+            });
+
+        });
+        // 데이터 테이블2
+        $(document).ready(function () {
+            let myTable = new simpleDatatables.DataTable("#datatablesSimpleBus", {
+                fixedColumns: false,
+                fixedHeight: false,
+                perPage: 5,
+                perPageSelect: [5],
+                searchable: true,
+                sortable: true
+            });
+
+        });
+        // 데이터 테이블3
+        $(document).ready(function () {
+            let myTable = new simpleDatatables.DataTable("#datatablesSimple", {
+                fixedColumns: false,
+                fixedHeight: false,
+                perPage: 10,
+                perPageSelect: [5, 10],
+                searchable: true,
+                sortable: true
+            });
+
+        });
+
+
+        // 모달
+        function gradeFunc() {
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
+        }
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: '승차권 예약 수',
+                        data: reservations,
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        fill: false,
+                    },
+                    {
+                        label: '승차권 예매 수',
+                        data: bookings,
+                        borderColor: 'red',
+                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                        fill: '-1',
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '수',
+                        },
+                    },
+                },
+                plugins: {
+                    filler: {
+                        propagate: false, // 채우기 옵션을 적용할 데이터셋 이후에는 채우지 않음
+                    },
+                },
+            },
+        });
+
+
+    </script>
+</th:block>
+
 </html>
+<style>
+    /*.cs-div-bong {*/
+    /*    box-shadow: 1px 1px 2px 6px grey;*/
+    /*}*/
+</style>

@@ -68,20 +68,19 @@ public class BoardController {
         String fileName = uuid + ".png";
 
         if (file != null) {
-            boolean check = false;
+
             for (MultipartFile uploadedFile : file) {
                 if (
                         ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
-                    check = true;
+
                 } else {
-                    check = false;
-                    break;
+
+                    return "redirect:/board/list";
                 }
             }
-            if (check == true) {
                 File mergedImageFile = ImageUtils.mergeImagesVertically(file);
                 awsS3.upload(mergedImageFile, "upload", fileName);
-            }
+
         }
         boardService.write(board, fileName, memberDto.getId());
 
@@ -91,7 +90,7 @@ public class BoardController {
 
     @GetMapping("/board/list")
     public String boardList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model,
-                            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                            @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             String searchKeyword) {
 
 

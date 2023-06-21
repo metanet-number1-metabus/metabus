@@ -207,6 +207,15 @@ class ChatServiceTest {
         Assertions.assertEquals("제목", title);
     }
 
+    @Test
+    @DisplayName("유저 방만들기")
+    public void testCreateUserRoom() {
+        Long id = 1L;
+        String name = "John";
+
+        chatService.createUserRoom(id, name);
+
+    }
 
 
 }

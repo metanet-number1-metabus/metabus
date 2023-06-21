@@ -21,6 +21,9 @@ public class LostBoardDto {
     private String filename;//파일이름
     private String filepath;//파일경로
 
+    private String departure;
+    private String distination;
+
     public LostBoardDto(Long id,String title,String content,LocalDateTime createDate){
         super();
         this.id = id;
@@ -40,6 +43,8 @@ public class LostBoardDto {
                 .deleteDate(lostBoard.getDeletedDate())
                 .filename(lostBoard.getFilename())
                 .filepath(lostBoard.getFilepath())
+                .departure(lostBoard.getDeparture())
+                .distination(lostBoard.getDistination())
                 .build();
     }
 

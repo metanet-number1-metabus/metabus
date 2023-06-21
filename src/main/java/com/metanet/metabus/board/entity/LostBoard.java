@@ -30,16 +30,20 @@ public class LostBoard extends BaseEntity {
 
     private String filepath;//파일경로
 
+    private String departure;
+
+    private String distination;
 
 
-
-    public LostBoard(String title, String content, String filename, String filepath, LocalDateTime now,Long memberId) {
+    public LostBoard(String title, String content, String filename, String filepath, LocalDateTime now,Long memberId, String departure, String distination) {
         super();
         this.title = title;
         this.content = content;
         this.filename = filename;
         this.filepath = filepath;
         this.memberId = memberId;
+        this.departure=departure;
+        this.distination=distination;
 
     }
 
@@ -62,5 +66,6 @@ public class LostBoard extends BaseEntity {
         this.delete();
         this.memberId= memberId;
     }
+
 
 }
