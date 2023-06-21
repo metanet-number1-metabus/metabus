@@ -366,16 +366,7 @@ public class MemberController {
      * 관리자 페이지
      */
     @GetMapping("/admin")
-    public String admin(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model) {
-        if (memberDto == null) {
-            return "redirect:/member/login";
-        }
-
-        if (!memberDto.getRole().equals(Role.ADMIN)) {
-            return "redirect:/member/login";
-        }
-
-        model.addAttribute("member", memberDto);
+    public String admin(Model model) {
         return "mypage/admin";
     }
 }
