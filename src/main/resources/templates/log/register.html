@@ -119,6 +119,12 @@
         padding: 0px 8px
     }
 
+    .tooltip-inner{
+        background-color: #6c757d;
+        max-width: none;
+        /*color: blue;*/
+    }
+
     @media(max-width: 360px) {
         #forgot {
             margin-left: 0;
@@ -178,7 +184,7 @@
                             <span th:text="${valid_name}" style="color: red"></span>
                         </div>
                         <div class="form-group py-1 pb-2">
-                            <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" id="member_pwd1" th:value="${memberRegisterRequest.password}"  name="password" class="form-control" placeholder="비밀번호 *" required autofocus></div>
+                            <div class="input-field" data-toggle="tooltip" data-placement="bottom" title="영문 숫자 조합 8자리 이상 입력해 주세요."> <span class="fas fa-lock px-2"></span> <input type="password" id="member_pwd1" th:value="${memberRegisterRequest.password}"  name="password" class="form-control"  placeholder="비밀번호 *" required autofocus></div>
                             <span th:text="${valid_password}" style="color: red"></span>
                         </div>
                         <div class="form-group py-1 pb-2">
@@ -210,12 +216,12 @@
 </div>
 <script type='text/javascript'>
 
+    $("[data-toggle='tooltip']").tooltip();
+
     var emailStatus = false;
 
     $(document).ready(function(){
         $("#submit").click(function(e){
-            console.log(!emailStatus)
-            console.log(!compare_result)
             if(!compare_result){
                 alert('*는 필수 입력 항목입니다.');
                 e.preventDefault();
@@ -265,8 +271,6 @@
 
     function emailCodeCheck(e) {
         e.preventDefault();
-        console.log(tempCode);
-        console.log($("#codeId").val());
         if(tempCode == $("#codeId").val()){
             $("#au_result").text("인증번호가 일치합니다.");
             $("#au_result").attr("style","color: green");

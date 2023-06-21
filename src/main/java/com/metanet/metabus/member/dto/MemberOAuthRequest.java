@@ -5,6 +5,7 @@ import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ public class MemberOAuthRequest {
     private String email;
 
     @NotBlank(message = "이름을 입력해주세요.")
+    @Size(max = 10, message = "10글자 이내로 입력해 주세요.")
     private String name;
 
     @NotBlank(message = "패스워드를 입력해주세요.")
