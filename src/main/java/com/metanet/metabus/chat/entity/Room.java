@@ -15,7 +15,6 @@ import javax.persistence.Id;
 @Builder
 public class Room extends BaseEntity {
     @Id
-    @GeneratedValue
     @Column(name = "ID")
     private Long id;
     @Column(name = "NAME")
@@ -30,6 +29,15 @@ public class Room extends BaseEntity {
 
     public static Room createRoom(String name,Long memId,String completeYN) {
         return Room.builder()
+                .name(name)
+                .memId(memId)
+                .completeYN(completeYN)
+                .build();
+    }
+
+    public static Room createUserRoom(Long id, String name,Long memId,String completeYN) {
+        return Room.builder()
+                .id(id)
                 .name(name)
                 .memId(memId)
                 .completeYN(completeYN)

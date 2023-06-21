@@ -30,7 +30,13 @@
 분실 시간, 장소, 주변 환경 등의 정보를 제공합니다.
 
 연락처 : 연락 가능한 정보(이메일 주소, 전화번호 등)를 작성합니다."></textarea>
-                                            <input type="file" class="inputwrite" name="file" multiple>
+
+                                            <h5 style="margin-top: 5px">출발지</h5>
+                                            <input type="text" name="departure"  placeholder="[출발지]" style="width:100%"/>
+                                            <h5 style="margin-top: 5px">도착지</h5>
+                                            <input type="text" name="distination"  placeholder="[도착지]" style="width:100%"/>
+
+                                            <input type="file" class="inputwrite" name="file" style="margin-top: 10px;" multiple>
                                             <div id="preview"></div>
                                             <button type="submit" style="margin-top: 5px;margin-bottom: 5px; background-color: dodgerblue;color: white;border-color: dodgerblue">작성</button>
                                         </form>
@@ -72,9 +78,27 @@
     function validateForm() {
         var title = document.forms["myForm"]["title"].value;
         var content = document.forms["myForm"]["content"].value;
+        var departure = document.forms["myForm"]["departure"].value;
+        var distination = document.forms["myForm"]["distination"].value;
+        var file = document.forms["myForm"]["file"].value;
+
+        if(title.length>40){
+            alert("제목이 너무 깁니다");
+            return false;
+        }
 
         if (title == "" || content == "") {
             alert("제목과 내용을 모두 입력해주세요.");
+            return false;
+        }
+
+        if (departure==""||distination=="") {
+            alert("출발지와 도착지를 모두 입력해주세요.");
+            return false;
+        }
+
+        if(file==null||file==""){
+            alert("사진을 넣어주세요")
             return false;
         }
 

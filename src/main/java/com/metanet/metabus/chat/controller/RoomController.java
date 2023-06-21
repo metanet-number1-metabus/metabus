@@ -33,6 +33,9 @@ public class RoomController {
             return "redirect:/member/login";
         }
 
+        if(memberDto.getRole().name().equals("USER")){
+            chatService.createUserRoom(memberDto.getId(),memberDto.getName());
+        }
 
         if (roomId != -1) {
             List<ChatDto> chatList = chatService.findAllChatByRoomId(roomId);

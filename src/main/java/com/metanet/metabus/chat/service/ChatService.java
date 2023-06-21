@@ -93,4 +93,7 @@ public class ChatService {
     }
 
 
+    public void createUserRoom(Long id, String name) {
+        roomRepository.save(Room.createUserRoom(id,name,id,"미완료"));
+    }
 }

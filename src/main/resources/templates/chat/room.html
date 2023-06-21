@@ -8,38 +8,204 @@
 
 
 <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">-->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     <div id="layoutSidenav_content" style="background-color: white">
         <main>
             <div class="container-fluid px-4">
                 <!--<main style="margin-top: 100px; margin-left: 300px;display: flex; flex-direction: row;">-->
                 <!--    &lt;!&ndash;채팅방 리스트&ndash;&gt;-->
+                <div class="content">
+                    <div class="container">
+                        <h1 class="mt-4">1 : 1 문의</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">홈</a></li>
+                            <li class="breadcrumb-item active">1 : 1 문의</li>
+                        </ol>
 
-                <div class="row" style="height: 100px;"></div>
-                <div class="row">
-                    <div class="col-4 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
-        border-radius: 5px;height: 700px;max-width: 250px">
+                        <div class="row">
+                            <div class="col-4 overflow-hidden" style=" background-color: white  ;border: 1px solid #e5e5e5;
+        border-radius: 5px;height: 700px;max-width: 250px" th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
 
-                        <!--    <div class="text-center" style="background-color: white">-->
-                        <!--        <h3 style="color: black">채팅 방 목록</h3>-->
-                        <!--    </div>-->
+                                <!--    <div class="text-center" style="background-color: white">-->
+                                <!--        <h3 style="color: black">채팅 방 목록</h3>-->
+                                <!--    </div>-->
 
-                        <!-- 방 만들기 모달 창 -->
-                        <div class="modal fade" id="roomModal" tabindex="-1" role="dialog"
-                             aria-labelledby="roomModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <form id="myForm" class="custom-form-bin">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">방 제목</span>
+                                <!-- 방 만들기 모달 창 -->
+                                <div class="modal fade" id="roomModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="roomModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form id="myForm" class="custom-form-bin">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">방 제목</span>
+                                                            </div>
+                                                            <input name="name" id="nameId" class="form-control"
+                                                                   style="border-radius: 0;" placeholder="제목을 입력하세요">
+                                                            <input type="submit" value="방 만들기" class="btn btn-primary">
+                                                        </div>
                                                     </div>
-                                                    <input name="name" id="nameId" class="form-control"
-                                                           style="border-radius: 0;" placeholder="제목을 입력하세요">
-                                                    <input type="submit" value="방 만들기" class="btn btn-primary">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="container overflow-auto">
+                                    <div class="row">
+                                        <table id="roomTable"
+                                               style="border-collapse: separate; border-spacing: 10px; border-radius: 10px; white-space: nowrap;margin-left: auto;margin-right: auto">
+                                            <tr th:each="room : ${roomList}" class="room-row">
+                                                <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; text-align: center;margin-left: auto;margin-right: auto">
+                                                    <div th:if="${room.getCompleteYN().equals('미완료')}">
+
+                                                        <div th:if="${room.getName().contains('!')}">
+                                                            <a th:href="@{/{roomId}(roomId=${room.getId()})}"
+                                                               th:text="${room.getName()}"
+                                                               style="color: red; font-size: large;"></a>
+                                                        </div>
+
+                                                        <div th:if="${!room.getName().contains('!')}">
+                                                            <a th:href="@{/{roomId}(roomId=${room.getId()})}"
+                                                               th:text="${room.getName()}"
+                                                               style="color: dodgerblue; font-size: medium;"></a>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div th:if="${room.getCompleteYN().equals('완료')}">
+                                                        <b th:text="${#strings.replace(room.getName(), '!', '') + ' ' + room.getCompleteYN()}"
+                                                           style="color: #aaaaaa"></b>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div th:if="${session.loginMember.getRole().name().equals('USER')}">
+                                    <div style="margin-left: auto;margin-right: auto">
+                                        <div class="row">
+                                            <div class="col-lg-5 col-md-2"></div>
+                                            <div class="col-lg-7 col-md-8">
+                                                <div class="text-center">
+                                                    <button class="btn btn-primary" data-toggle="modal"
+                                                            data-target="#roomModal">방 만들기
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-0 col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="overflow-x: auto;margin-left: auto;margin-right: auto;margin-top: 5px;margin-left: 5px">
+                                    <div class="pagination-container text-center" style="text-align: center">
+                                        <ul class="pagination" id="pagination">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous" id="previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2" th:if="${session.loginMember.getRole().name().equals('USER')}"></div>
+                            <div class="col-8" style="">
+                                <div th:if="${chatList}">
+                                    <div class="chat-container" style="margin-left: 0;height:auto">
+                                        <div class="row m-2" >
+                                            <th:block th:if="${!session.loginMember.getRole().name().equals('ADMIN')}">
+                                                <div class="col-12 col-lg-3 bg-white">
+                                                    <div class="row" style="width: 98%">
+                                                        <div class="col-12 m-1 " style="height: 150px;">
+                                                            <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_p5yomfw6.json"  background="transparent"  speed="1"  style="width: 160px; height: 160px;"  loop autoplay></lottie-player>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <p>자주하는 질문</p>
+                                                        </div>
+                                                        <div class="col-12 card m-1 opacity-75" style="height: 125px;background-color: #4942E4">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <span class="cs-room-mobile" style="color: white" >승차권 환불은 어떻게 하나요?</span>
+                                                                    </div>
+                                                                    <div class="col-12 d-flex justify-content-center">
+                                                                        <a href="#" class="btn btn-primary" style="height: 35px" onclick="showChat1()">보내기</a>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 card m-1 opacity-75" style="height: 125px;background-color: #8696FE">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <span class="cs-room-mobile" style="color: white;font-size: 12.5px">버스에 물건을 두고내렸는데 어떻게 하나요?</span>
+
+                                                                    </div>
+                                                                    <div class="col-12 d-flex justify-content-center">
+                                                                        <a href="#" class="btn btn-primary" style="height: 35px" onclick="showChat2()">보내기</a>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 card m-1 opacity-75" style="height: 125px;background-color: #C4B0FF">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <span class="cs-room-mobile" style="color: white">마일리지는 어떻게 사용하나요?</span>
+
+                                                                    </div>
+                                                                    <div class="col-12 d-flex justify-content-center">
+                                                                        <a href="#" class="btn btn-primary" style="height: 35px" onclick="showChat3()">보내기</a>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-9 card">
+                                            </th:block>
+                                            <th:block th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
+                                                <div class="col-12 card">
+                                            </th:block>
+                                            <div style="height: 10px;"></div>
+                                                    <div class="chat-bubbles" id="chatting" style="">
+                                                    </div>
+                                                </div>
+
+                                        </div>
+
+                                        <form class="form-inline custom-form-bin">
+                                            <div class="form-group">
+                                                <input type="hidden" id="sender" class="form-control"
+                                                       placeholder="Your name here..."
+                                                       th:value="${session.loginMember.getRole().name() == 'ADMIN' ? '운영자' : session.loginMember.getName()}">
+                                            </div>
+                                            <div class="container overflow-hidden">
+                                                <div class="row">
+                                                    <div class="col-1 col-md-1"></div>
+                                                    <div class="col-12 col-md-12">
+                                                        <div class="form-group"
+                                                             style="display: flex; justify-content: center; align-items: center;">
+
+                                                            <input type="text" id="message" class="form-control"
+                                                                   style="float: left;flex-basis: 85%;"
+                                                                   placeholder="메시지를 입력해주세요">
+
+                                                            <button id="send" class="btn btn-primary" type="submit"
+                                                                    style="height: 40px;flex-basis: 15%;"><i class="fa-regular fa-paper-plane"></i>
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -47,110 +213,9 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="container overflow-auto">
-                            <div class="row">
-                                <table id="roomTable"
-                                       style="border-collapse: separate; border-spacing: 10px; border-radius: 10px; white-space: nowrap;margin-left: auto;margin-right: auto">
-                                    <tr th:each="room : ${roomList}" class="room-row">
-                                        <td style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; text-align: center;margin-left: auto;margin-right: auto">
-                                            <div th:if="${room.getCompleteYN().equals('미완료')}">
-
-                                                <div th:if="${room.getName().contains('!')}">
-                                                    <a th:href="@{/{roomId}(roomId=${room.getId()})}"
-                                                       th:text="${room.getName()}"
-                                                       style="color: red; font-size: large;"></a>
-                                                </div>
-
-                                                <div th:if="${!room.getName().contains('!')}">
-                                                    <a th:href="@{/{roomId}(roomId=${room.getId()})}"
-                                                       th:text="${room.getName()}"
-                                                       style="color: dodgerblue; font-size: medium;"></a>
-                                                </div>
-
-                                            </div>
-
-                                            <div th:if="${room.getCompleteYN().equals('완료')}">
-                                                <b th:text="${#strings.replace(room.getName(), '!', '') + ' ' + room.getCompleteYN()}"
-                                                   style="color: #aaaaaa"></b>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div th:if="${session.loginMember.getRole().name().equals('USER')}">
-                            <div style="margin-left: auto;margin-right: auto">
-                                <div class="row">
-                                    <div class="col-lg-5 col-md-2"></div>
-                                    <div class="col-lg-7 col-md-8">
-                                        <div class="text-center">
-                                            <button class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#roomModal">방 만들기
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-0 col-md-2"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="overflow-x: auto;margin-left: auto;margin-right: auto;margin-top: 5px;margin-left: 5px">
-                            <div class="pagination-container text-center" style="text-align: center">
-                                <ul class="pagination" id="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous" id="previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8" style="">
-                        <div th:if="${chatList}">
-                            <div class="chat-container" style="margin-left: 0">
-                                <div style="height: 60px; font-size: larger; display: flex;align-items: center;">
-                                    <h1 style="text-align: center; flex: 1; margin-top: 10px;" th:text="${title}">
-                                        Chatting</h1>
-                                    <a th:if="${session.loginMember.getRole().name().equals('ADMIN')}"
-                                       th:href="@{/complete/{roomId}(roomId=${roomId})}"
-                                       class="btn btn-sm btn-outline-secondary" style="margin-right: 5px">완료 하기</a>
-                                </div>
-                                <div class="chat-bubbles" id="chatting" style="overflow-y: auto;">
-                                </div>
-                                <form class="form-inline custom-form-bin">
-                                    <div class="form-group">
-                                        <input type="hidden" id="sender" class="form-control"
-                                               placeholder="Your name here..."
-                                               th:value="${session.loginMember.getRole().name() == 'ADMIN' ? '운영자' : session.loginMember.getName()}">
-                                    </div>
-                                    <div class="container overflow-hidden">
-                                        <div class="row">
-                                            <div class="col-1 col-md-1"></div>
-                                            <div class="col-12 col-md-12">
-                                                <div class="form-group"
-                                                     style="display: flex; justify-content: center; align-items: center;">
-
-                                                    <input type="text" id="message" class="form-control"
-                                                           style="float: left;flex-basis: 85%;"
-                                                           placeholder="메시지를 입력해주세요">
-
-                                                    <button id="send" class="btn btn-primary" type="submit"
-                                                            style="height: 40px;flex-basis: 15%;">보내기
-                                                    </button>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
 
                     <!-- 채팅방 -->
                     <!-- 채팅방 chatList에 값이 들어가 있을때만 보이게 if문으로 덮음 -->
@@ -230,17 +295,17 @@
                             $("#chatting").append(
                                 "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;'>" +
                                 "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
-                                "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
-                                "<div class='message' style=\"color: skyblue; font-size: x-large;\">" + chatList[chat].message + "</div>" +
+                                "<div class='chat-bubble' style=\"background-color: white;border: 1px solid #3e73ff;\">" +
+                                "<div class='message' style=\"color: #3e73ff; font-size: medium;\">" + chatList[chat].message + "</div>" +
                                 "<div class='triangle'></div>" +
                                 "</div>"
                             );
                         } else {
                             $("#chatting").append(
-                                "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>" +
+                                "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                                 "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
-                                "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
-                                "<div class='message' style=\"color: white; font-size: x-large;\">" + chatList[chat].message + "</div>" +
+                                "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                                "<div class='message' style=\"color: white; font-size: medium;\">" + chatList[chat].message + "</div>" +
                                 "<div class='triangle'></div>" +
                                 "</div>"
                             );
@@ -256,8 +321,8 @@
                     $("#chatting").append(
                         "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;''>" +
                         "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
-                        "<div class='chat-bubble' style=\"background-color: white;border: 1px solid skyblue;\">" +
-                        "<div class='message' style=\"color: skyblue;font-size: x-large;\">" + chatMessage.message + "</div>" +
+                        "<div class='chat-bubble' style=\"background-color: white;border: 1px solid #3e73ff;\">" +
+                        "<div class='message' style=\"color: #3e73ff;font-size: medium;\">" + chatMessage.message + "</div>" +
                         "<div class='triangle'></div>" +
                         "</div>" +
                         "</div>"
@@ -265,10 +330,10 @@
                     scrollToBottom();
                 } else {
                     $("#chatting").append(
-                        "<div style='margin-left: 75%;max-width: 250px; word-wrap: break-word;'>" +
+                        "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                         "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
-                        "<div class='chat-bubble' style=\"background-color: skyblue;\">" +
-                        "<div class='message' style=\"color: white;font-size: x-large;\">" + chatMessage.message + "</div>" +
+                        "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                        "<div class='message' style=\"color: white;font-size: medium;\">" + chatMessage.message + "</div>" +
                         "<div class='triangle'></div>" +
                         "</div>" +
                         "</div>"
@@ -276,6 +341,91 @@
                     scrollToBottom();
                 }
             }
+
+            function showChat1() {
+                $("#chatting").append(
+                    "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
+                    "<div class='sender' style=\"color: black;font-size: medium;\">"+"<b th:text='${session.loginMember.getName()}'></b>"+ "</div>" +
+                    "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                    "<div class='message' style=\"color: white;font-size: medium;\">" + "승차권 환불 어떻게 하나요?" + "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>" +
+                    "</div>"
+                )
+                $("#chatting").append(
+                    "<div style='max-width: 250px; word-wrap: break-word; margin-left: 15px;'>" +
+                    "<div class='sender' style='color: black; font-size: medium;'>" + "운영자" + "</div>" +
+                    "<div class='chat-bubble' style='background-color: white; border: 1px solid #3e73ff;'>" +
+                    "<div class='message' style='color: #3e73ff; font-size: medium;'>" +
+                    "문의 주셔서 감사합니다.<br>" +
+                    "승차권 환불은 만료되지 않은 승차권에 한에 환불 기능을 제공하고 있습니다.<br>" +
+                    "<a href='/bus/reservation?specialValue=결제완료' style='color: red'>링크</a>를 통해 환불이 가능합니다." +
+                    "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                    scrollToBottom();
+
+            }
+
+            function showChat3() {
+                $("#chatting").append(
+                    "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
+                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "<b th:text='${session.loginMember.getName()}'></b>" + "</div>" +
+                    "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                    "<div class='message' style=\"color: white;font-size: medium;\">" + "마일리지는 어떻게 사용하나요?" + "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>" +
+                    "</div>"
+                )
+                $("#chatting").append(
+                    "<div style='max-width: 250px; word-wrap: break-word; margin-left: 15px;'>" +
+                    "<div class='sender' style='color: black; font-size: medium;'>" + "운영자" + "</div>" +
+                    "<div class='chat-bubble' style='background-color: white; border: 1px solid #3e73ff;'>" +
+                    "<div class='message' style='color: #3e73ff; font-size: medium;'>" +
+                    "문의 주셔서 감사합니다.<br>" +
+                    "마일리지는 승차권 결제시 특정한 조건에 맞게 사용하실 수 있습니다.<br>" +
+                    "추가적으로 각종 마일리지에 관련된 정보를 확인하실려면<br><a href='/mileage' style='color: red'>링크</a>를 통해 확인하실 수 있습니다." +
+                    "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                scrollToBottom();
+
+            }
+
+            function showChat2() {
+                $("#chatting").append(
+                    "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
+                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "<b th:text='${session.loginMember.getName()}'></b>" + "</div>" +
+                    "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                    "<div class='message' style=\"color: white;font-size: medium;\">" + "버스에 물건을 두고내렸는데 어떻게 하나요?" + "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>" +
+                    "</div>"
+                )
+                $("#chatting").append(
+                    "<div style='max-width: 250px; word-wrap: break-word; margin-left: 15px;'>" +
+                    "<div class='sender' style='color: black; font-size: medium;'>" + "운영자" + "</div>" +
+                    "<div class='chat-bubble' style='background-color: white; border: 1px solid #3e73ff;'>" +
+                    "<div class='message' style='color: #3e73ff; font-size: medium;'>" +
+                    "문의 주셔서 감사합니다.<br>" +
+                    "저희 메타버스는 고객님들의 편의를 위해 분실물 조회게시판 기능을 제공하고 있습니다.<br>" +
+                    "<a href='/board/list' style='color: red'>링크</a>를 통해 확인하실 수 있습니다" +
+                    "</div>" +
+                    "<div class='triangle'></div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                scrollToBottom();
+
+            }
+
 
             $(function roomCreate() {
                 $("#myForm").on('submit', function (e) {
@@ -425,8 +575,8 @@
         /*margin: 0 auto 20px;*/
         height: 700px;
         background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 5px;
+        /*border: 1px solid #e5e5e5;*/
+        /*border-radius: 5px;*/
     }
 
     .chat-bubbles {
@@ -435,8 +585,8 @@
         align-items: flex-start;
         overflow-y: scroll;
         max-height: 575px;
-        margin-left: 10px;
-        margin-right: 10px;
+        /*margin-left: 10px;*/
+        /*margin-right: 10px;*/
     }
 
     .chat-bubble {
@@ -461,6 +611,27 @@
         border-style: solid;
         border-width: 0 10px 10px 10px;
         border-color: transparent transparent #f1f1f1 transparent;
+    }
+
+    .chat-bubbles {
+        overflow: scroll;
+    }
+
+    .chat-bubbles::-webkit-scrollbar {
+        width: 15px;
+        height: 15px;
+    }
+
+    .chat-bubbles::-webkit-scrollbar-track {
+        background-color: rgba(240, 241, 242, 1);
+    }
+
+    .chat-bubbles::-webkit-scrollbar-thumb {
+        background-color: rgba(136, 136, 136, 0.5);
+    }
+
+    .chat-bubbles::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 33, 248, 0.7);
     }
 
 
