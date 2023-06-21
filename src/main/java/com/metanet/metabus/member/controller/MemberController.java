@@ -361,12 +361,4 @@ public class MemberController {
 
         return "mypage/mypage";
     }
-
-    /**
-     * 관리자 페이지
-     */
-    @GetMapping("/admin")
-    public String admin(Model model) {
-        return "mypage/admin";
-    }
 }
