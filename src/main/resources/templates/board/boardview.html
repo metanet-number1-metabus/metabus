@@ -18,29 +18,42 @@
                             <li class="breadcrumb-item active">분실물 보기</li>
                         </ol>
 
-                        <div class="cs-ctn-bin">
-                            <h5 style="margin-top: 5px">제목</h5>
-                            <input th:value="${board.title}" style="width:100%"  readonly>
-                            <h5 style="margin-top: 5px">내용</h5>
-                            <div style="border: 1px solid #aaaaaa;overflow-y:auto;max-height: 350px;">
-                                <span th:utext="${board.content}" >내용이 들어갈 내용입니다.</span>
-                                <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" alt="">
-                            </div>
-                            <h5 style="margin-top: 5px">출발지</h5>
-                            <input th:value="${board.departure}" style="width:100%"  readonly>
-                            <h5 style="margin-top: 5px">도착지</h5>
-                            <input th:value="${board.distination}" style="width:100%" readonly>
-                            <div th:if="${session.loginMember!=null}">
-                                <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
-                                    <div class="button-container">
-                                        <a th:href="@{/board/delete?(id=${board.id})}">글 삭제</a>
-                                        <!--            <a th:href="@{/board/modify/{id}(id=${board.id})}">글 수정</a>-->
+<!--                        <div class="cs-ctn-bin">-->
+<!--                            <h5 style="margin-top: 5px">제목</h5>-->
+<!--                            <input th:value="${board.title}" style="width:100%"  readonly>-->
+<!--                            <h5 style="margin-top: 5px">내용</h5>-->
+<!--                            <div style="border: 1px solid #aaaaaa;overflow-y:auto;max-height: 350px;">-->
+<!--                                <span th:utext="${board.content}" >내용이 들어갈 내용입니다.</span>-->
+<!--                                <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" alt="">-->
+<!--                            </div>-->
+<!--                            <h5 style="margin-top: 5px">출발지</h5>-->
+<!--                            <input th:value="${board.departure}" style="width:100%"  readonly>-->
+<!--                            <h5 style="margin-top: 5px">도착지</h5>-->
+<!--                            <input th:value="${board.distination}" style="width:100%" readonly>-->
+<!--                            <div th:if="${session.loginMember!=null}">-->
+<!--                                <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">-->
+<!--                                    <div class="button-container">-->
+<!--                                        <a th:href="@{/board/delete?(id=${board.id})}">글 삭제</a>-->
+<!--                                        &lt;!&ndash;            <a th:href="@{/board/modify/{id}(id=${board.id})}">글 수정</a>&ndash;&gt;-->
 
-                                    </div>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <h1 th:text="${board.title}" style="text-align: center;margin-right: 15%;margin-bottom: 10px;margin-top: 50px;"></h1>
+                        <div class="row">
+                            <div class="col-9" style="height: 100%;width: 100%;width: 700px;height: 650px"><img id="boardImg" style="width: 100%;height: 100%" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" class="rounded" alt=""></div>
+                            <div class="col-3"><div style="border-bottom: 2px solid #aaaaaa; border-top: 2px solid #aaaaaa;;width: 400px;height: 650px">
+                                <h5 style="margin-top: 5px;">내용</h5>
+                                <div style="border-bottom: 1px solid #aaaaaa;border-top: 1px solid #aaaaaa;overflow-y:auto;height: 85%">
+                                <span th:utext="${board.content}"  >내용이 들어갈 내용입니다.</span>
+                                </div>
+                                <div style="margin-bottom: 5px;">
+                                    <h5 style="margin-top: 5px;">출발지<span th:utext="${board.departure}" style="width:100%;margin-left: 30%;color: #aaaaaa"></span></h5>
+                                    <h5 style="margin-top: 5px;">도착지<span th:utext="${board.distination}" style="width:100%;margin-left: 30%;color: #aaaaaa"></span></h5>
+
                                 </div>
                             </div>
-                        </div>
-
 
 
                     </div>
