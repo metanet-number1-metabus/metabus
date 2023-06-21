@@ -52,26 +52,40 @@
                                     <div class="card-body">
                                         <table id="datatablesSimpleReservation">
                                             <thead>
-                                            <tr>
-<!--                                                RESERVATION 테이블-->
-<!--                                            구분: 만료(검정)/결제대기(빨강)/결제완료(초록)/예약취소(회색)-->
-<!--                                                비교방법(예시): reservation.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID-->
-<!--                                                1. reservationStatus가 UNPAID면서 DELETED_DATE이 null이 아니면 예약취소(회색) 상태-->
-<!--                                                2. reservationStatus가 UNPAID면서 DELETED_DATE이 null이면 결제대기(빨강) 상태-->
-<!--                                                3. reservationStatus가 PAID면 결제완료(초록)-->
-<!--                                                4. reservationStatus가 EXPIRED면 만료(검정)-->
-                                                <th>구분</th>
-<!--                                                예매자ID: MEMBER_ID-->
-                                                <th>예매자ID</th>
-<!--                                                예매일: CREATED_DATE-->
-                                                <th>예매일</th>
-<!--                                                출발일: DEPARTURE_DATE-->
-                                                <th>출발일</th>
-<!--                                                가격: PAYMENT-->
-                                                <th>가격</th>
-                                            </tr>
+                                                <tr>
+    <!--                                                RESERVATION 테이블-->
+    <!--                                            구분: 만료(검정)/결제대기(빨강)/결제완료(초록)/예약취소(회색)-->
+    <!--                                                비교방법(예시): reservation.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID-->
+    <!--                                                1. reservationStatus가 UNPAID면서 DELETED_DATE이 null이 아니면 예약취소(회색) 상태-->
+    <!--                                                2. reservationStatus가 UNPAID면서 DELETED_DATE이 null이면 결제대기(빨강) 상태-->
+    <!--                                                3. reservationStatus가 PAID면 결제완료(초록)-->
+    <!--                                                4. reservationStatus가 EXPIRED면 만료(검정)-->
+                                                    <th>구분</th>
+    <!--                                                예매자ID: MEMBER_ID-->
+                                                    <th>예매자ID</th>
+    <!--                                                예매일: CREATED_DATE-->
+                                                    <th>예매일</th>
+    <!--                                                출발일: DEPARTURE_DATE-->
+                                                    <th>출발일</th>
+    <!--                                                가격: PAYMENT-->
+                                                    <th>가격</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
+                                                <th:block th:each="reservationList:${reservationList}">
+                                                    <tr>
+                                                        <td>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID} and ${reservationList.deletedDate != null}" th:text='예약취소' th:style="${'color:grey'}"></span>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).UNPAID} and ${reservationList.deletedDate == null}" th:text='결제대기' th:style="${'color:red'}"></span>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).PAID}" th:text='결제완료' th:style="${'color:green'}"></span>
+                                                            <span th:if="${reservationList.reservationStatus == T(com.metanet.metabus.bus.entity.ReservationStatus).EXPIRED}" th:text='만료' th:style="${'color:black'}"></span>
+                                                        </td>
+                                                        <td th:text="${reservationList.memberId}"></td>
+                                                        <td th:text="${reservationList.createdDate}"></td>
+                                                        <td th:text="${reservationList.departureDate}"></td>
+                                                        <td th:text="${reservationList.payment}"></td>
+                                                    </tr>
+                                                </th:block>
 <!--                                            위의 조건대로 <td>만들면 댐-->
                                             <!--                  타임리프-->
                                             </tbody>
@@ -101,6 +115,13 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                                <th:block th:each="busList:${busList}">
+                                                    <tr>
+                                                        <td th:text="${busList.busNum}"></td>
+                                                        <td th:text="${busList.departureDate}"></td>
+                                                        <td th:text="${busList.seatNum}"></td>
+                                                    </tr>
+                                                </th:block>
                                             <!--                  타임리프-->
                                             </tbody>
 
@@ -140,6 +161,21 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        <th:block th:each="memberList:${memberList}">
+                                            <tr>
+                                                <td th:text="${memberList.memberId}"></td>
+                                                <td th:text="${memberList.createdDate}"></td>
+                                                <td>
+                                                    <span th:if="${memberList.deletedDate == null}" th:text='x'></span>
+                                                    <span th:unless="${memberList.deletedDate == null}" th:text='${memberList.deletedDate}'></span>
+                                                </td>
+                                                <td th:text="${memberList.email}"></td>
+                                                <td th:text="${memberList.grade}"></td>
+                                                <td th:text="${memberList.name}"></td>
+                                                <td th:text="${memberList.phoneNum}"></td>
+                                                <td th:text="${memberList.role}"></td>
+                                            </tr>
+                                        </th:block>
                                     <!--                  타임리프-->
                                     </tbody>
 
@@ -197,9 +233,23 @@
         // 2. 각 일에 맞는 결제대기+예약취소 데이터 COUNT (RESERVATION테이블) => reservations
         // 3. 각 일에 맞는 결제완료+만료 데이터 COUNT (RESERVATION테이블) => bookings
         // 자바스크립트로 서버데이터 쓰는 방법은 봉경에게 문의 (th:block)은 여기서 사용 못해용
-        const dates = ['2023-06-01', '2023-06-02', '2023-06-03', '2023-06-04', '2023-06-05', '2023-06-06']; // 일별 날짜 배열
-        const reservations = [10, 15, 8,30,2,28]; // 승차권 예약 수 배열
-        const bookings = [5, 12, 6,10,2,1]; // 승차권 예매 수 배열
+        function dateFormat(value){
+            const year = value.getFullYear();
+            const month = value.getMonth() + 1;
+            const date = value.getDate();
+            return year + '-' + month + '-' + date;
+        }
+        const date = new Date();
+        const today = new Date();
+        let date1 = new Date(date.setDate(date.getDate() - 1));
+        let date2 = new Date(date.setDate(date.getDate() - 1));
+        let date3 = new Date(date.setDate(date.getDate() - 1));
+        let date4 = new Date(date.setDate(date.getDate() - 1));
+        let date5 = new Date(date.setDate(date.getDate() - 1));
+        let dates = [dateFormat(date5) , dateFormat(date4), dateFormat(date3), dateFormat(date2), dateFormat(date1), dateFormat(today)]; // 일별 날짜 배열
+
+        const reservations = [[${countUnpaidList}]]; // 승차권 예약 수 배열
+        const bookings = [[${countPaidList}]]; // 승차권 예매 수 배열
 
         // 애니매이션
         const counter = ($counter, max) => {
@@ -236,9 +286,10 @@
             let myTable = new simpleDatatables.DataTable("#datatablesSimpleReservation", {
                 fixedColumns: false,
                 fixedHeight: false,
-                perPage: 10,
-                perPageSelect: [5, 10],
-                searchable: true
+                perPage: 5,
+                perPageSelect: [5],
+                searchable: true,
+                sortable: true
             });
 
         });
@@ -247,9 +298,10 @@
             let myTable = new simpleDatatables.DataTable("#datatablesSimpleBus", {
                 fixedColumns: false,
                 fixedHeight: false,
-                perPage: 10,
-                perPageSelect: [5, 10],
-                searchable: true
+                perPage: 5,
+                perPageSelect: [5],
+                searchable: true,
+                sortable: true
             });
 
         });
@@ -260,7 +312,8 @@
                 fixedHeight: false,
                 perPage: 10,
                 perPageSelect: [5, 10],
-                searchable: true
+                searchable: true,
+                sortable: true
             });
 
         });
