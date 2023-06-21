@@ -215,7 +215,9 @@
     </div>
 </div>
 <script type='text/javascript'>
+
     $("[data-toggle='tooltip']").tooltip();
+
     var emailStatus = false;
 
     $(document).ready(function(){
@@ -231,12 +233,8 @@
                 e.preventDefault();
                 return;
             }
-            $("#email").attr("readonly",true);
-            $("#codeId").attr("readonly",true);
-            $("#okBtnId").attr("disabled", true);
-            $("#reBtnId").attr("disabled", true);
+
             $("#submit").submit();
-            console.log("dddddddddddddddddddddddddddddddd")
         });
     });
 
