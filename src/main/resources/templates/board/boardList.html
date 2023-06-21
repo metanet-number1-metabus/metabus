@@ -9,20 +9,26 @@
     <!--main-->
     <main >
         <div class="container-fluid px-4">
-        <div class="content">
+        <div class="content" style="padding:">
         <div class="container-fluid" style="max-width: 1230px">
 
-            <div class="card">
-
+            <div class="card" style="border: none">
+                <div style="margin-left: 3%">
+                <h1 class="mt-4">분실물 게시판</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="/">홈</a></li>
+                    <li class="breadcrumb-item active">분실물 게시판</li>
+                </ol>
+                </div>
                 <div class="card-body">
 
                     <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-10">
+
+                        <div class="col-12" style="padding: 0">
                             <div class="layout">
 
 
-                                <form th:action="@{/board/list}" method="get" class="row g-1 d-flex justify-content-end">
+                                <form th:action="@{/board/list}" method="get" class="row g-1 d-flex justify-content-end" style="margin-right: 3%">
                                     <div class="col-auto">
                                         <label for="searchKeyword" class="visually-hidden">Password</label>
                                         <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="search..">
@@ -33,24 +39,37 @@
                                 </form>
 
                                 <div class="row">
-                                    <table class="table" id="article-table">
-                                        <thead>
-                                        <tr>
-                                            <th class="title col-2"><a>게시글 번호</a></th>
-                                            <th class="hashtag col-5"><a>제목</a></th>
-                                            <th class="created-at"><a>작성일</a></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="board : ${list}">
-                                            <td th:text="${board.id}">1</td>
-                                            <td>
-                                                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
-                                            </td>
-                                            <td th:text="${#strings.substring(board.createDate, 0, 10)}"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+<!--                                    <table class="table" id="article-table">-->
+<!--                                        <thead>-->
+<!--                                        <tr>-->
+<!--                                            <th class="title col-2"><a>게시글 번호</a></th>-->
+<!--                                            <th class="hashtag col-5"><a>제목</a></th>-->
+<!--                                            <th class="created-at"><a>작성일</a></th>-->
+<!--                                        </tr>-->
+<!--                                        </thead>-->
+<!--                                        <tbody>-->
+<!--                                        <tr th:each="board : ${list}">-->
+<!--                                            <td th:text="${board.id}">1</td>-->
+<!--                                            <td>-->
+<!--                                                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>-->
+<!--                                            </td>-->
+<!--                                            <td th:text="${#strings.substring(board.createDate, 0, 10)}"></td>-->
+<!--                                        </tr>-->
+<!--                                        </tbody>-->
+<!--                                    </table>-->
+                                    <div th:each="board : ${list}" class="col-3" id="boardListDiv" style="height: 220px;margin-bottom: 25px;margin-top: 15px;border-radius: 10px;padding: 0;">
+                                        <div style="position: relative;height: 100%">
+                                            <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" style="width: 85%; border-radius: 10px;" alt="">
+                                            <div style="position: absolute; top: 10px; left: 10px; border-radius: 10px; background-color: #3e73ff; color: white; padding: 5px;">
+                                                <b th:text="${board.departure}"/><b> </b><i class="fa-solid fa-arrow-right"></i><b> </b><b th:text="${board.distination}"/>
+                                            </div>
+                                        </div>
+                                        <div class="image-overlay">
+                                            <div class="image-overlay-content" >
+                                                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}" style="font-size: x-large;color: white;text-decoration: none;"></a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -67,7 +86,7 @@
 
                             </div>
 
-                            <div class="row">
+                            <div class="row" style="margin-right: 2%;margin-top: 5px">
                                 <nav id="pagination" aria-label="Page navigation example">
                                     <ul class="pagination justify-content-center">
                                         <li class="page-item"><a class="page-link" onclick="previousPage()">이전</a></li>
@@ -89,12 +108,10 @@
                     </div>
 
 
-
                 </div>
             </div>
 
-
-            </div>
+        </div>
         </div>
         </div>
     </main>
@@ -119,3 +136,35 @@
         window.location.href = "/board/list?" + urlParams.toString();
     }
 </script>
+<style>
+    #boardListDiv {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+
+    #boardListDiv img {
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    #boardListDiv .image-overlay-content {
+        position: absolute;
+        bottom: -70%;
+        left: 0;
+        width: 85%;
+        padding: 10px;
+        box-sizing: border-box;
+        color: white;
+        text-align: center;
+        opacity: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        transition: bottom 0.3s ease, opacity 0.3s ease;
+    }
+
+    #boardListDiv:hover .image-overlay-content {
+        bottom: 0;
+        opacity: 1;
+    }
+</style>

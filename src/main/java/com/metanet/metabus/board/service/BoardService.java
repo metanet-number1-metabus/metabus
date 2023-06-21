@@ -29,7 +29,8 @@ public class BoardService {
         /*저장된파일의이름,저장된파일의경로*/
         board.setFilepath("/files/" + fileName);
 
-      LostBoard board1 = new LostBoard(board.getTitle(), board.getContent(),fileName,"/files/" + fileName, LocalDateTime.now(), memid);
+      LostBoard board1 = new LostBoard(board.getTitle(), board.getContent(),fileName,"/files/" + fileName,
+              LocalDateTime.now(), memid,board.getDeparture(),board.getDistination());
         boardRepository.save(board1);
 
     }

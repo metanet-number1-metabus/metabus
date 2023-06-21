@@ -345,7 +345,7 @@
             function showChat1() {
                 $("#chatting").append(
                     "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
-                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "유저" + "</div>" +
+                    "<div class='sender' style=\"color: black;font-size: medium;\">"+"<b th:text='${session.loginMember.getName()}'></b>"+ "</div>" +
                     "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
                     "<div class='message' style=\"color: white;font-size: medium;\">" + "승차권 환불 어떻게 하나요?" + "</div>" +
                     "<div class='triangle'></div>" +
@@ -373,7 +373,7 @@
             function showChat3() {
                 $("#chatting").append(
                     "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
-                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "유저" + "</div>" +
+                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "<b th:text='${session.loginMember.getName()}'></b>" + "</div>" +
                     "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
                     "<div class='message' style=\"color: white;font-size: medium;\">" + "마일리지는 어떻게 사용하나요?" + "</div>" +
                     "<div class='triangle'></div>" +
@@ -401,7 +401,7 @@
             function showChat2() {
                 $("#chatting").append(
                     "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
-                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "유저" + "</div>" +
+                    "<div class='sender' style=\"color: black;font-size: medium;\">" + "<b th:text='${session.loginMember.getName()}'></b>" + "</div>" +
                     "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
                     "<div class='message' style=\"color: white;font-size: medium;\">" + "버스에 물건을 두고내렸는데 어떻게 하나요?" + "</div>" +
                     "<div class='triangle'></div>" +

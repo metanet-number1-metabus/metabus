@@ -4,32 +4,63 @@
       layout:decorate="layout/default_layout">
 
 <th:block layout:fragment="content">
-    <main class="container">
-        <h1 th:text="${board.title}">제목 입니다.</h1>
-        <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" alt="">
-        <p th:utext="${board.content}">내용이 들어갈 내용입니다.</p>
-        <div th:if="${session.loginMember!=null}">
-        <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
-        <div class="button-container">
-            <a th:href="@{/board/delete?(id=${board.id})}">글 삭제</a>
-            <a th:href="@{/board/modify/{id}(id=${board.id})}">글 수정</a>
 
-        </div>
-        </div>
-        </div>
-    </main>
+    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="content">
+                    <div class="container">
 
+                        <h1 class="mt-4">분실물 보기</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">홈</a></li>
+                            <li class="breadcrumb-item"><a href="/board/list">분실물 게시판</a></li>
+                            <li class="breadcrumb-item active">분실물 보기</li>
+                        </ol>
+
+                        <div class="cs-ctn-bin">
+                            <h5 style="margin-top: 5px">제목</h5>
+                            <input th:value="${board.title}" style="width:100%"  readonly>
+                            <h5 style="margin-top: 5px">내용</h5>
+                            <div style="border: 1px solid #aaaaaa;overflow-y:auto;max-height: 350px;">
+                                <span th:utext="${board.content}" >내용이 들어갈 내용입니다.</span>
+                                <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" alt="">
+                            </div>
+                            <h5 style="margin-top: 5px">출발지</h5>
+                            <input th:value="${board.departure}" style="width:100%"  readonly>
+                            <h5 style="margin-top: 5px">도착지</h5>
+                            <input th:value="${board.distination}" style="width:100%" readonly>
+                            <div th:if="${session.loginMember!=null}">
+                                <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">
+                                    <div class="button-container">
+                                        <a th:href="@{/board/delete?(id=${board.id})}">글 삭제</a>
+                                        <!--            <a th:href="@{/board/modify/{id}(id=${board.id})}">글 수정</a>-->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
 
 
 </th:block>
 </html>
 <style>
-    main {
+    cs-ctn-bin {
         font-family: Arial, sans-serif;
         background-color: #f5f5f5;
     }
 
-    .container {
+    .cs-ctn-bin {
         margin: 100px auto;
         max-width: 800px;
         border: 1px solid #ddd;
@@ -38,12 +69,6 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
-        text-align: center;
-        margin: 0 0 20px;
-        font-size: 28px;
-        color: #333;
-    }
 
     #boardImg {
         display: block;
