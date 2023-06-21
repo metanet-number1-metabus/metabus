@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -54,4 +55,5 @@ public class Member extends BaseEntity {
     public void updateMileage(Long mileage) {
         this.mileage = mileage;
     }
+
 }
