@@ -23,6 +23,10 @@ public class BaseEntity {
 
     private LocalDateTime deletedDate;
 
+    public void setDeletedDate(LocalDateTime deletedDate) {
+        this.deletedDate = deletedDate;
+    }
+
     public void delete(){
         this.deletedDate = LocalDateTime.now();
     }
@@ -34,4 +38,6 @@ public class BaseEntity {
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
+
+
 }
