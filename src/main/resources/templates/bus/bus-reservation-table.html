@@ -4,21 +4,27 @@
       layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
     <!--            본문-->
-    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+    <div id="layoutSidenav_content" class="bg-white">
         <main>
             <div class="container-fluid px-4">
                 <div class="content">
 
+                    <div class="container-fluid">
 
-                    <h1 class="mt-4 m-3 mb-0">승차권 보기</h1>
-                    <ol class="breadcrumb mb-4 m-3 mt-0 ">
-                        <li class="breadcrumb-item"><a href="/">홈</a></li>
-                        <li class="breadcrumb-item active">승차권 보기</li>
-                    </ol>
-
-                    <div class="container-fluid d-flex justify-content-center">
+                        <div class="row" style="width: 100%">
+                            <div class="col-12" style="margin-left: 5%">
+                                <h1 class="mt-4 m-3 mb-0">승차권 보기</h1>
+                            </div>
+                            <div class="col-12" style="margin-left: 5%">
+                                <ol class="breadcrumb mb-4 m-3 mt-0 ">
+                                    <li class="breadcrumb-item"><a href="/">홈</a></li>
+                                    <li class="breadcrumb-item active">승차권 보기</li>
+                                </ol>
+                            </div>
+                        </div>
 
                         <div class="row mt-5" style="width:100%">
+
 <!--                            표 ajax-->
                             <div class="col-12 col-lg-4 d-flex justify-content-center mb-5">
                                 <div class="rounded shadow-lg bg-white" style="height:687px" id="reservationTicketMobile">
@@ -132,8 +138,8 @@
                                 </div>
                             </div>
 <!--                            테이블-->
-                            <div class="col-12 col-lg-8">
-                                <div class="card">
+                            <div class="col-12 col-lg-8" style="max-width:1000px">
+                                <div class="card shadow">
                                     <div class="card-header">
                                         <i class="fa-solid fa-table"></i> 승차권 목록
                                     </div>
@@ -604,7 +610,10 @@
                         $("#modalSeatNum").append(reservationDataList.seatNum);
                         $("#modalCost").empty();
                         $("#modalCost").append(reservationDataList.payment + reservationDataList.usedMileage);
-                        $("#modalQR").attr("src","https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=https://www.metabus.site/pay/receipt/"+reservationDataList.impUid);
+                        console.log(reservationDataList.impUid);
+                        if(reservationDataList.impUid){
+                            $("#modalQR").attr("src","https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=https://www.metabus.site/pay/receipt/"+reservationDataList.impUid);
+                        }
 
                         $("#ticketctn").fadeIn(280);
                     });

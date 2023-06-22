@@ -60,6 +60,8 @@ function mobileReact() {
 
         const divElementHeader = document.getElementById('headerLoginMobile');
 
+        const noticeBusTimeTableMobile = document.getElementById('noticeBusTimeTableMobile');
+
         const reservatinTableMobile = document.getElementById('reservatinTableMobile');
 
         const paymentTicketMobile = document.getElementById('paymentTicketMobile');
@@ -94,6 +96,11 @@ function mobileReact() {
 
         if (containerElement){
             containerElement.style.width = '260px';
+        }
+
+        if (noticeBusTimeTableMobile){
+            noticeBusTimeTableMobile.style.height = '110px';
+            noticeBusTimeTableMobile.classList.add('overflow-scroll');
         }
 
         if (reservationTicketMobile){
