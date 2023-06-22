@@ -297,8 +297,21 @@ class BusRestControllerTest {
                 .usedMileage(0L)
                 .build();
 
-        List<Reservation> reservationList = new ArrayList<>();
-        reservationList.add(reservation);
+        ReservationResponse reservationResponse = ReservationResponse.builder()
+                .reservationStatus(reservation.getReservationStatus())
+                .departureDate(reservation.getDepartureDate())
+                .departureTime(reservation.getDepartureTime())
+                .departure(reservation.getDeparture())
+                .destination(reservation.getDestination())
+                .payment(reservation.getPayment())
+                .usedMileage(reservation.getUsedMileage())
+                .id(reservation.getId())
+                .impUid(reservation.getImpUid())
+                .busId(reservation.getBusId())
+                .build();
+
+        List<ReservationResponse> reservationList = new ArrayList<>();
+        reservationList.add(reservationResponse);
 
         when(reservationService.readUnpaidReservation(any(MemberDto.class))).thenReturn(reservationList);
 

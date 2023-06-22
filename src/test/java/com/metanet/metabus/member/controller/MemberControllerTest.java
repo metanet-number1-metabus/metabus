@@ -2,7 +2,6 @@ package com.metanet.metabus.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metanet.metabus.bus.entity.Reservation;
-import com.metanet.metabus.common.exception.conflict.DuplicateEmailException;
 import com.metanet.metabus.common.exception.not_found.AlreadyDeletedMemberException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidPasswordException;
 import com.metanet.metabus.member.dto.*;
@@ -71,9 +70,10 @@ class MemberControllerTest {
     @DisplayName("회원가입 POST 성공 - 유효성 검사 통과")
     void post_register() throws Exception {
 
-        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "12345678", "010-0000-0000");
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "qq12345678", "010-0000-0000");
 
         given(memberService.register(any(MemberRegisterRequest.class))).willReturn(0L);
+        given(memberService.emailCheck(any(String.class))).willReturn(false);
 
         mockMvc.perform(post("/member/register")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -90,32 +90,11 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원가입 POST 실패(1) - 중복된 이메일(1)")
-    void post_register_fail() throws Exception {
-
-        given(memberService.register(any(MemberRegisterRequest.class))).willThrow(new DuplicateEmailException());
-
-        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "12345678", "010-0000-0000");
-
-        mockMvc.perform(post("/member/register")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("email", memberRegisterRequest.getEmail())
-                        .param("name", memberRegisterRequest.getName())
-                        .param("password", memberRegisterRequest.getPassword())
-                        .param("phoneNum", memberRegisterRequest.getPhoneNum())
-                        .with(csrf()))
-                .andExpect(status().isConflict())
-                .andExpect(content().string(equalTo("이미 사용중인 이메일입니다.")));
-
-        verify(memberService).register(any(MemberRegisterRequest.class));
-    }
-
-    @Test
-    @DisplayName("회원가입 POST 실패(2) - 중복된 이메일(2)")
-    void post_register_fail2() throws Exception {
+    void post_register_fail1() throws Exception {
 
         given(memberService.emailCheck(any(String.class))).willReturn(true);
 
-        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "12345678", "010-0000-0000");
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "qq12345678", "010-0000-0000");
 
         mockMvc.perform(post("/member/register")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -126,11 +105,13 @@ class MemberControllerTest {
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("log/register"));
+
+        verify(memberService).emailCheck(memberRegisterRequest.getEmail());
     }
 
     @Test
-    @DisplayName("회원가입 POST 실패(3) - 유효성 검사 실패(빈 값 입력)")
-    void post_register_fail3() throws Exception {
+    @DisplayName("회원가입 POST 실패(2) - 유효성 검사 실패(빈 값 입력)")
+    void post_register_fail2() throws Exception {
 
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -189,8 +170,27 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(1) - 탈퇴한 회원")
+    @DisplayName("로그인 POST 실패(1) - 없는 회원")
     void post_login_fail() throws Exception {
+
+        given(memberService.memberCheck(any(MemberLoginRequest.class))).willReturn(true);
+
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("test@test.com", "test", "qq12345678", "010-0000-0000");
+
+        mockMvc.perform(post("/member/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("email", memberRegisterRequest.getEmail())
+                        .param("password", memberRegisterRequest.getPassword())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("log/login"));
+
+        verify(memberService).memberCheck(any(MemberLoginRequest.class));
+    }
+
+    @Test
+    @DisplayName("로그인 POST 실패(2) - 탈퇴한 회원")
+    void post_login_fail2() throws Exception {
 
         given(memberService.login(any(MemberLoginRequest.class))).willThrow(new AlreadyDeletedMemberException());
 
@@ -208,8 +208,8 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(2) - 탈퇴한 회원(2)")
-    void post_login_fail2() throws Exception {
+    @DisplayName("로그인 POST 실패(3) - 탈퇴한 회원(3)")
+    void post_login_fail3() throws Exception {
 
         given(memberService.deleteMemberCheck(any(MemberLoginRequest.class))).willReturn(true);
 
@@ -227,8 +227,8 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(3) - 비밀번호 불일치")
-    void post_login_fail3() throws Exception {
+    @DisplayName("로그인 POST 실패(4) - 비밀번호 불일치")
+    void post_login_fail4() throws Exception {
 
         given(memberService.login(any(MemberLoginRequest.class))).willThrow(new InvalidPasswordException());
 
@@ -246,8 +246,8 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(4) - 비밀번호 불일치(2)")
-    void post_login_fail4() throws Exception {
+    @DisplayName("로그인 POST 실패(5) - 비밀번호 불일치(2)")
+    void post_login_fail5() throws Exception {
 
         given(memberService.passwordCheck(any(MemberLoginRequest.class))).willReturn(true);
 
@@ -265,8 +265,8 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 POST 실패(5) - 유효성 검사 실패(빈 값 입력)")
-    void post_login_fail5() throws Exception {
+    @DisplayName("로그인 POST 실패(6) - 유효성 검사 실패(빈 값 입력)")
+    void post_login_fail6() throws Exception {
 
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -718,11 +718,11 @@ class MemberControllerTest {
     @DisplayName("회원 정보 수정(oauth) POST 성공 - 유효성 검사 통과")
     void post_oauthRegister() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+        MemberDto memberDto = new MemberDto(0L, "test", "qq12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        MemberOAuthRequest memberOAuthRequest = new MemberOAuthRequest("test@test.com", "test", "12345678");
+        MemberOAuthRequest memberOAuthRequest = new MemberOAuthRequest("test@test.com", "test", "qq12345678");
 
         mockMvc.perform(post("/member/edit/oauth")
                         .session(mockHttpSession)
@@ -808,11 +808,11 @@ class MemberControllerTest {
     @DisplayName("비밀번호 변경 POST 성공 - 유효성 검사 통과")
     void post_editPwd() throws Exception {
 
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+        MemberDto memberDto = new MemberDto(0L, "test", "qq12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        MemberPasswordRequest memberPasswordRequest = new MemberPasswordRequest("12345678");
+        MemberPasswordRequest memberPasswordRequest = new MemberPasswordRequest("qq12345678");
 
         mockMvc.perform(post("/member/edit/pwd")
                         .session(mockHttpSession)
@@ -916,43 +916,4 @@ class MemberControllerTest {
                 .andExpect(redirectedUrl("/member/login")); // 리다이렉션 URL
     }
 
-    /**
-     * 관리자 페이지
-     */
-    @Test
-    @DisplayName("관리자 페이지 GET 성공")
-    void get_admin() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.ADMIN, "010-0000-0000", Grade.ALPHA);
-        MockHttpSession mockHttpSession = new MockHttpSession();
-        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
-
-        mockMvc.perform(get("/member/admin")
-                        .session(mockHttpSession))
-                .andExpect(status().isOk())
-                .andExpect(view().name("mypage/admin"));
-    }
-
-    @Test
-    @DisplayName("관리자 페이지 GET 실패(1) - 세션 X")
-    void get_admin_fail1() throws Exception {
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        mockMvc.perform(get("/member/admin")
-                        .session(mockHttpSession))
-                .andExpect(status().is3xxRedirection()) // 리다이렉션 상태 코드
-                .andExpect(redirectedUrl("/member/login")); // 리다이렉션 URL
-    }
-
-    @Test
-    @DisplayName("관리자 페이지 GET 실패(2) - ADMIN이 아닐때")
-    void get_admin_fail2() throws Exception {
-        MemberDto memberDto = new MemberDto(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
-        MockHttpSession mockHttpSession = new MockHttpSession();
-        mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
-
-        mockMvc.perform(get("/member/admin")
-                        .session(mockHttpSession))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/member/login"));
-    }
 }

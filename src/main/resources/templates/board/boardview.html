@@ -33,7 +33,6 @@
 <!--                            <div th:if="${session.loginMember!=null}">-->
 <!--                                <div th:if="${session.loginMember.getRole().name().equals('ADMIN')}">-->
 <!--                                    <div class="button-container">-->
-<!--                                        <a th:href="@{/board/delete?(id=${board.id})}">글 삭제</a>-->
 <!--                                        &lt;!&ndash;            <a th:href="@{/board/modify/{id}(id=${board.id})}">글 수정</a>&ndash;&gt;-->
 
 <!--                                    </div>-->
@@ -51,7 +50,7 @@
                                 <div style="margin-bottom: 5px;">
                                     <h5 style="margin-top: 5px;">출발지<span th:utext="${board.departure}" style="width:100%;margin-left: 30%;color: #aaaaaa"></span></h5>
                                     <h5 style="margin-top: 5px;">도착지<span th:utext="${board.distination}" style="width:100%;margin-left: 30%;color: #aaaaaa"></span></h5>
-
+                                                                            <a th:href="@{/board/delete?(id=${board.id})}" style="margin-left: 85%;">글 삭제</a>
                                 </div>
                             </div>
 

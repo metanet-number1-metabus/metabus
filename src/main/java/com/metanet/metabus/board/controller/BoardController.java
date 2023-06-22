@@ -70,8 +70,7 @@ public class BoardController {
         if (file != null) {
 
             for (MultipartFile uploadedFile : file) {
-                if (
-                        ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
+                if (ImageUtils.isImageFile(uploadedFile)) { // 이미지 파일인지 확인
 
                 } else {
 

@@ -1,6 +1,6 @@
 package com.metanet.metabus.mileage.controller;
 
-import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.dto.ReservationResponse;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.dto.MemberDto;
 import com.metanet.metabus.member.entity.Grade;
@@ -30,7 +30,7 @@ public class MileageController {
         Long mileage = mileageService.findMileage(memberDto);
         List<MileageDto> mileageList = mileageService.findMileageByMember(memberDto);
         Grade memberGrade = mileageService.getMember(memberDto).getGrade();
-        List<Reservation> reservationList = reservationService.readPastReservation(memberDto);
+        List<ReservationResponse> reservationList = reservationService.readPastReservation(memberDto);
         int numberOfReservations = reservationList.size();
 
         model.addAttribute("allMileage", allMileage);
