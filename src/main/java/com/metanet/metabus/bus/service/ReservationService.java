@@ -25,6 +25,7 @@ import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -41,6 +42,7 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
 
+    @Transactional
     public List<Long> create(MemberDto memberDto, ReservationInfoRequest reservationInfoRequest) {
 
         List<Long> reservationIdList = new ArrayList<>();
@@ -314,7 +316,8 @@ public class ReservationService {
 
             throw new DuplicateSeatException();
         } else {
-            seat = seatRepository.save(Seat.of(seatNum, bus));
+            seat = Seat.of(seatNum, bus);
+            seat = seatRepository.saveAndFlush(seat);
         }
 
         return seat;
