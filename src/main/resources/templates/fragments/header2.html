@@ -100,7 +100,7 @@
                                 분실물 게시판
                             </a>
                             <th:block th:if="${session.loginMember}">
-                                <a  th:if="${!session.loginMember.getRole().name().equals('GUEST')}" class="nav-link"
+                                <a class="nav-link"
                                     th:href="${session.loginMember.getRole().name() == 'ADMIN' ? '/-1' : '/'+session.loginMember.getId()}">
                                     <div class="sb-nav-link-icon"><i class="fa-solid fa-headset"></i></div>
                                     1 : 1 문의

@@ -33,7 +33,7 @@ public class RoomController {
             return "redirect:/member/login";
         }
 
-        if(memberDto.getRole().name().equals("USER")){
+        if(!memberDto.getRole().name().equals("ADMIN")){
             chatService.createUserRoom(memberDto.getId(),memberDto.getName());
         }
 
