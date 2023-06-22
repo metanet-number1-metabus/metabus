@@ -3,13 +3,13 @@ package com.metanet.metabus.bus.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metanet.metabus.bus.dto.ReceiptResponse;
 import com.metanet.metabus.bus.dto.ReservationDto;
-import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.dto.ReservationResponse;
 import com.metanet.metabus.bus.service.PaymentService;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.controller.SessionConst;
 import com.metanet.metabus.member.dto.MemberDto;
+import com.metanet.metabus.member.dto.MemberInfoDto;
 import com.metanet.metabus.member.entity.Grade;
-import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.entity.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -99,7 +99,7 @@ class BusControllerTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationResponse> reservationList = new ArrayList<>();
 
         given(reservationService.readAllReservation(any(MemberDto.class))).willReturn(reservationList);
         given(reservationService.readUnpaidReservation(any(MemberDto.class))).willReturn(reservationList);
@@ -123,7 +123,7 @@ class BusControllerTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationResponse> reservationList = new ArrayList<>();
 
         given(reservationService.readAllReservation(any(MemberDto.class))).willReturn(reservationList);
         given(reservationService.readUnpaidReservation(any(MemberDto.class))).willReturn(reservationList);
@@ -147,7 +147,7 @@ class BusControllerTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationResponse> reservationList = new ArrayList<>();
 
         given(reservationService.readAllReservation(any(MemberDto.class))).willReturn(reservationList);
         given(reservationService.readUnpaidReservation(any(MemberDto.class))).willReturn(reservationList);
@@ -171,7 +171,7 @@ class BusControllerTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationResponse> reservationList = new ArrayList<>();
 
         given(reservationService.readAllReservation(any(MemberDto.class))).willReturn(reservationList);
         given(reservationService.readUnpaidReservation(any(MemberDto.class))).willReturn(reservationList);
@@ -195,7 +195,7 @@ class BusControllerTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationResponse> reservationList = new ArrayList<>();
 
         given(reservationService.readAllReservation(any(MemberDto.class))).willReturn(reservationList);
         given(reservationService.readUnpaidReservation(any(MemberDto.class))).willReturn(reservationList);
@@ -219,7 +219,7 @@ class BusControllerTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
-        List<Reservation> reservationList = new ArrayList<>();
+        List<ReservationResponse> reservationList = new ArrayList<>();
 
         given(reservationService.readAllReservation(any(MemberDto.class))).willReturn(reservationList);
         given(reservationService.readUnpaidReservation(any(MemberDto.class))).willReturn(reservationList);
@@ -240,6 +240,13 @@ class BusControllerTest {
     @DisplayName("예매 내역 결제 POST 성공")
     void post_getPaymentList_success() throws Exception {
 
+        MemberInfoDto memberInfoDto = MemberInfoDto.builder()
+                .id(1L)
+                .name("name")
+                .email("test@test.com")
+                .phoneNum("010-1234-5678")
+                .build();
+
         ReservationDto reservationDto = ReservationDto.builder()
                 .departure("간성")
                 .destination("동서울")
@@ -259,12 +266,10 @@ class BusControllerTest {
         List<ReservationDto> reservationList = new ArrayList<>();
         reservationList.add(reservationDto);
 
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
-
         given(reservationService.readByReservationId(reservationIds)).willReturn(reservationList);
         given(reservationService.getPaymentSum(reservationIds)).willReturn(10000L);
         given(reservationService.getStrReservationIds(reservationIds)).willReturn("1");
-        given(reservationService.getMember(reservationIds)).willReturn(member);
+        given(reservationService.getMember(reservationIds)).willReturn(memberInfoDto);
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
@@ -276,7 +281,7 @@ class BusControllerTest {
                 .andExpect(model().attribute("reservationList", reservationList))
                 .andExpect(model().attribute("paymentSum", 10000L))
                 .andExpect(model().attribute("strReservationIds", "1"))
-                .andExpect(model().attribute("member", member));
+                .andExpect(model().attribute("member", memberInfoDto));
     }
 
     @Test

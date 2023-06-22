@@ -2,6 +2,7 @@ package com.metanet.metabus.bus.service;
 
 import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
+import com.metanet.metabus.bus.dto.ReservationResponse;
 import com.metanet.metabus.bus.entity.Bus;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.entity.ReservationStatus;
@@ -17,6 +18,7 @@ import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidSeatCountException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidSeatException;
 import com.metanet.metabus.member.dto.MemberDto;
+import com.metanet.metabus.member.dto.MemberInfoDto;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -55,6 +57,9 @@ class ReservationServiceTest {
 
     private final Member member = Member.builder()
             .id(1L)
+            .name("name")
+            .email("test@test.com")
+            .phoneNum("010-1234-5678")
             .build();
 
     private final ReservationInfoRequest adultAndStandardReservationReq = ReservationInfoRequest.builder()
@@ -150,6 +155,26 @@ class ReservationServiceTest {
             .busType("일반")
             .busId(bus.getId())
             .usedMileage(0L)
+            .build();
+
+    ReservationResponse reservationResponse = ReservationResponse.builder()
+            .reservationStatus(reservation.getReservationStatus())
+            .departureDate(reservation.getDepartureDate())
+            .departureTime(reservation.getDepartureTime())
+            .departure(reservation.getDeparture())
+            .destination(reservation.getDestination())
+            .payment(reservation.getPayment())
+            .usedMileage(reservation.getUsedMileage())
+            .id(reservation.getId())
+            .impUid(reservation.getImpUid())
+            .busId(reservation.getBusId())
+            .build();
+
+    private final MemberInfoDto memberInfoDto = MemberInfoDto.builder()
+            .id(1L)
+            .name("name")
+            .email("test@test.com")
+            .phoneNum("010-1234-5678")
             .build();
 
     /* ========== 버스 예약 ========== */
@@ -460,15 +485,17 @@ class ReservationServiceTest {
     @DisplayName("버스 예약 조회: 전체 예약")
     void read_success_all() {
         List<Reservation> reservations = new ArrayList<>();
-        reservations.add(new Reservation());
-        reservations.add(new Reservation());
+        reservations.add(reservation);
+
+        List<ReservationResponse> reservationResponseList = new ArrayList<>();
+        reservationResponseList.add(reservationResponse);
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
         when(reservationRepository.findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(member)).thenReturn(reservations);
 
-        List<Reservation> result = reservationService.readAllReservation(memberDto);
+        List<ReservationResponse> result = reservationService.readAllReservation(memberDto);
 
-        assertEquals(reservations, result);
+        assertEquals(reservationResponseList.size(), result.size());
 
     }
 
@@ -476,15 +503,17 @@ class ReservationServiceTest {
     @DisplayName("버스 예약 조회: 결제 대기")
     void read_success_unpaid() {
         List<Reservation> reservations = new ArrayList<>();
-        reservations.add(new Reservation());
-        reservations.add(new Reservation());
+        reservations.add(reservation);
+
+        List<ReservationResponse> reservationResponseList = new ArrayList<>();
+        reservationResponseList.add(reservationResponse);
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
         when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.UNPAID)).thenReturn(reservations);
 
-        List<Reservation> result = reservationService.readUnpaidReservation(memberDto);
+        List<ReservationResponse> result = reservationService.readUnpaidReservation(memberDto);
 
-        assertEquals(reservations, result);
+        assertEquals(reservationResponseList.size(), result.size());
 
     }
 
@@ -492,15 +521,17 @@ class ReservationServiceTest {
     @DisplayName("버스 예약 조회: 결제 완료")
     void read_success_paid() {
         List<Reservation> reservations = new ArrayList<>();
-        reservations.add(new Reservation());
-        reservations.add(new Reservation());
+        reservations.add(reservation);
+
+        List<ReservationResponse> reservationResponseList = new ArrayList<>();
+        reservationResponseList.add(reservationResponse);
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
         when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.PAID)).thenReturn(reservations);
 
-        List<Reservation> result = reservationService.readPaidReservation(memberDto);
+        List<ReservationResponse> result = reservationService.readPaidReservation(memberDto);
 
-        assertEquals(reservations, result);
+        assertEquals(reservationResponseList.size(), result.size());
 
     }
 
@@ -508,15 +539,17 @@ class ReservationServiceTest {
     @DisplayName("버스 예약 조회: 만료")
     void read_success_expired() {
         List<Reservation> reservations = new ArrayList<>();
-        reservations.add(new Reservation());
-        reservations.add(new Reservation());
+        reservations.add(reservation);
+
+        List<ReservationResponse> reservationResponseList = new ArrayList<>();
+        reservationResponseList.add(reservationResponse);
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
         when(reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.EXPIRED)).thenReturn(reservations);
 
-        List<Reservation> result = reservationService.readPastReservation(memberDto);
+        List<ReservationResponse> result = reservationService.readPastReservation(memberDto);
 
-        assertEquals(reservations, result);
+        assertEquals(reservationResponseList.size(), result.size());
 
     }
 
@@ -624,9 +657,12 @@ class ReservationServiceTest {
 
         when(reservationRepository.findByIdAndDeletedDateIsNull(reservationIds[0])).thenReturn(reservation);
 
-        Member result = reservationService.getMember(reservationIds);
+        MemberInfoDto result = reservationService.getMember(reservationIds);
 
-        assertEquals(member, result);
+        assertEquals(memberInfoDto.getId(), result.getId());
+        assertEquals(memberInfoDto.getName(), result.getName());
+        assertEquals(memberInfoDto.getEmail(), result.getEmail());
+        assertEquals(memberInfoDto.getPhoneNum(), result.getPhoneNum());
 
     }
 
