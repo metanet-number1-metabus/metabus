@@ -2,6 +2,7 @@ package com.metanet.metabus.bus.service;
 
 import com.metanet.metabus.bus.dto.ReservationDto;
 import com.metanet.metabus.bus.dto.ReservationInfoRequest;
+import com.metanet.metabus.bus.dto.ReservationResponse;
 import com.metanet.metabus.bus.entity.Bus;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.entity.ReservationStatus;
@@ -18,6 +19,7 @@ import com.metanet.metabus.common.exception.not_found.SeatNotFoundException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidSeatCountException;
 import com.metanet.metabus.common.exception.unauthorized.InvalidSeatException;
 import com.metanet.metabus.member.dto.MemberDto;
+import com.metanet.metabus.member.dto.MemberInfoDto;
 import com.metanet.metabus.member.entity.Member;
 import com.metanet.metabus.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -98,28 +100,39 @@ public class ReservationService {
 
     }
 
-    public List<Reservation> readAllReservation(MemberDto memberDto) {
-        Member member = getMember(memberDto);
+    public List<ReservationResponse> readAllReservation(MemberDto memberDto) {
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(member);
+
+        Member member = getMember(memberDto);
+        List<Reservation> reservations = reservationRepository.findByMemberAndDeletedDateIsNullOrderByCreatedDateDesc(member);
+
+        return getReservationResponseList(reservations);
+
     }
 
-    public List<Reservation> readUnpaidReservation(MemberDto memberDto) {
-        Member member = getMember(memberDto);
+    public List<ReservationResponse> readUnpaidReservation(MemberDto memberDto) {
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.UNPAID);
+        Member member = getMember(memberDto);
+        List<Reservation> reservations = reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.UNPAID);
+
+        return getReservationResponseList(reservations);
+
     }
 
-    public List<Reservation> readPaidReservation(MemberDto memberDto) {
-        Member member = getMember(memberDto);
+    public List<ReservationResponse> readPaidReservation(MemberDto memberDto) {
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.PAID);
+        Member member = getMember(memberDto);
+        List<Reservation> reservations = reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.PAID);
+
+        return getReservationResponseList(reservations);
     }
 
-    public List<Reservation> readPastReservation(MemberDto memberDto) {
-        Member member = getMember(memberDto);
+    public List<ReservationResponse> readPastReservation(MemberDto memberDto) {
 
-        return reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.EXPIRED);
+        Member member = getMember(memberDto);
+        List<Reservation> reservations = reservationRepository.findByMemberAndDeletedDateIsNullAndReservationStatusOrderByDepartureDateDescCreatedDateDesc(member, ReservationStatus.EXPIRED);
+
+        return getReservationResponseList(reservations);
 
     }
 
@@ -200,10 +213,18 @@ public class ReservationService {
         return strReservationIds.toString();
     }
 
-    public Member getMember(Long[] reservationIds) {
+    public MemberInfoDto getMember(Long[] reservationIds) {
 
         Reservation reservation = reservationRepository.findByIdAndDeletedDateIsNull(reservationIds[0]);
-        return reservation.getMember();
+
+        Member member = reservation.getMember();
+
+        return MemberInfoDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .phoneNum(member.getPhoneNum())
+                .build();
 
     }
 
@@ -324,6 +345,29 @@ public class ReservationService {
     private Member getMember(MemberDto memberDto) {
         Long memberId = memberDto.getId();
         return memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+    }
+
+    private List<ReservationResponse> getReservationResponseList(List<Reservation> reservations) {
+
+        List<ReservationResponse> reservationResponseList = new ArrayList<>();
+
+
+        for (Reservation reservation : reservations) {
+            reservationResponseList.add(ReservationResponse.builder()
+                    .reservationStatus(reservation.getReservationStatus())
+                    .departureDate(reservation.getDepartureDate())
+                    .departureTime(reservation.getDepartureTime())
+                    .departure(reservation.getDeparture())
+                    .destination(reservation.getDestination())
+                    .payment(reservation.getPayment())
+                    .usedMileage(reservation.getUsedMileage())
+                    .id(reservation.getId())
+                    .impUid(reservation.getImpUid())
+                    .busId(reservation.getBusId())
+                    .build());
+        }
+
+        return reservationResponseList;
     }
 
 }
