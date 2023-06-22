@@ -123,6 +123,30 @@ class PaymentServiceTest {
     }
 
     @Test
+    @DisplayName("결제 완료 성공: 마일리지 사용X & 예약 한 개")
+    void complete_payment_success_no_mileage() {
+
+        PayRequest payRequest = PayRequest.builder()
+                .applyNum("33423394")
+                .memberId(member.getId())
+                .cardName("신한카드")
+                .cardNum("449914*********0")
+                .impUid("imp_178492282208")
+                .merchantName("메타버스")
+                .payment(21100L)
+                .payMethod("card")
+                .reservationIds("1")
+                .usedMileage(null)
+                .build();
+
+        when(memberRepository.findById(payRequest.getMemberId())).thenReturn(Optional.of(member));
+        when(reservationRepository.findByIdAndDeletedDateIsNull(anyLong())).thenReturn(reservation);
+
+        paymentService.completePayment(payRequest);
+
+    }
+
+    @Test
     @DisplayName("결제 완료 성공: 마일리지 사용 & 예약 한 개 이상")
     void complete_payments_success_with_mileage() {
 
@@ -145,6 +169,8 @@ class PaymentServiceTest {
         paymentService.completePayment(payRequest);
 
     }
+
+
 
     @Test
     @DisplayName("결제 취소 성공")
