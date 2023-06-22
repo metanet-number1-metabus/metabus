@@ -422,6 +422,10 @@
                                 alert("마일리지 사용을 위해선 적용버튼을 눌러주세요!");
                             }else {
                                 //성공시 모달창 열기 / 결제 api 호출 코드
+                                if ($("#applyBtnMobile").attr("data-flag") == "1"){
+                                    alert("마일리지를 새로 적용하시려면 되돌리기 버튼을 먼저 눌러주세요!");
+                                    return null;
+                                }
                                 payment();
                             }
 
@@ -501,10 +505,7 @@
         function mileageClk(e) {
             e.preventDefault();
 
-            if ($("#applyBtnMobile").attr == "1"){
-                alert("마일리지를 새로 적용하시려면 되돌리기 버튼을 먼저 눌러주세요!");
-                return null;
-            }
+
             const parsedValue = parseInt(mileageInput.value);
             const realPaymentSumValue = [[${paymentSum}]];
             if (mileageInput.value == NaN || mileageInput.value == "NaN") {
