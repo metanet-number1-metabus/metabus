@@ -4,7 +4,7 @@
       layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
     <!--            본문-->
-    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+    <div id="layoutSidenav_content" class="bg-white">
         <main>
             <div class="container-fluid px-4">
                 <div class="content">
@@ -13,19 +13,25 @@
 
                     <div class="container-fluid">
 
-                        <h1 class="mt-4">결제</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/">홈</a></li>
-                            <li class="breadcrumb-item"><a href="/bus/reservation">승차권 보기</a></li>
-                            <li class="breadcrumb-item active">결제</li>
-                        </ol>
+                        <div class="row" style="width: 100%">
+                            <div class="col-12" style="margin-left: 2%">
+                                <h1 class="mt-4 m-3 mb-0">결제</h1>
+                            </div>
+                            <div class="col-12" style="margin-left: 2%">
+                                <ol class="breadcrumb mb-4 m-3 mt-0 ">
+                                    <li class="breadcrumb-item"><a href="/">홈</a></li>
+                                    <li class="breadcrumb-item"><a href="/bus/reservation">승차권 보기</a></li>
+                                    <li class="breadcrumb-item active">결제</li>
+                                </ol>
+                            </div>
+                        </div>
 
 
                         <div class="row">
 
                             <div class="col-12">
 
-                                <div id="carouselExampleDark" class="carousel carousel-dark slide m-5 mb-1" data-bs-ride="carousel">
+                                <div id="carouselExampleDark" class="carousel carousel-dark slide m-5 mb-1 shadow" data-bs-ride="carousel">
                                     <div class="carousel-indicators">
                                         <!-- 반복문 실행 -->
                                         <th:block th:each="index : ${#numbers.sequence(0, reservationListSize-1)}">
@@ -238,7 +244,7 @@
                             <!--              col-->
 
                         </div>
-                        <div class="card row m-5 mt-2" id="payInfoMobile">
+                        <div class="card row m-5 mt-2 shadow" id="payInfoMobile">
                             <form class="needs-validation">
                                 <div class="card-body col-12 mt-2">
                                     <div class="card text-bg-light mb-3" style="width: 100%;height: 250px">
