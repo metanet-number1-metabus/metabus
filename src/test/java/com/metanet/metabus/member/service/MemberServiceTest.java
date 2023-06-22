@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 class MemberServiceTest {
 
@@ -286,33 +286,69 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("비밀번호 중복 체크 성공")
+    @DisplayName("비밀번호 체크 성공(1) - 일치하는 경우")
     void passwordCheck_success() {
 
-        MemberNotFoundException exception = Assertions.assertThrows(MemberNotFoundException.class, () -> {
-            memberService.passwordCheck(new MemberLoginRequest("test2@test.com", "12345678"));
-        });
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "qq12345678");
+        Member member = new Member(0L, "test", "qq12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
-        assertEquals(ErrorCode.MEMBER_NOT_FOUND, exception.getErrorCode());
+        given(memberRepository.findByEmail(memberLoginRequest.getEmail())).willReturn(Optional.of(member));
+        given(passwordEncoder.matches(memberLoginRequest.getPassword(), member.getPassword())).willReturn(false);
+
+        boolean result = memberService.passwordCheck(memberLoginRequest);
+
+        assertTrue(result);
+        verify(memberRepository).findByEmail(memberLoginRequest.getEmail());
+        verify(passwordEncoder).matches(memberLoginRequest.getPassword(), member.getPassword());
     }
 
     @Test
-    @DisplayName("비밀번호 중복 체크 성공(2)")
+    @DisplayName("비밀번호 체크 성공(2) - 불일치하는 경우")
     void passwordCheck_success2() {
-        Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
-        when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
-        when(passwordEncoder.matches(member.getPassword(), "12345678")).thenReturn(true);
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "qq12345678");
+        Member member = new Member(0L, "test", "ww12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
-        Assertions.assertDoesNotThrow(() -> memberService.passwordCheck(new MemberLoginRequest(member.getEmail(), member.getPassword())));
+        given(memberRepository.findByEmail(memberLoginRequest.getEmail())).willReturn(Optional.of(member));
+        given(!passwordEncoder.matches(memberLoginRequest.getPassword(), member.getPassword())).willReturn(true);
+
+        boolean result = memberService.passwordCheck(memberLoginRequest);
+
+        assertFalse(result);
+        verify(memberRepository).findByEmail(memberLoginRequest.getEmail());
+        verify(passwordEncoder).matches(memberLoginRequest.getPassword(), member.getPassword());
+    }
+
+    @Test
+    @DisplayName("비밀번호 체크 실패 -" +
+            " 회원이 존재하지 않는 경우")
+    void passwordCheck_fail() {
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("test@test.com", "password");
+
+        given(memberRepository.findByEmail(memberLoginRequest.getEmail())).willReturn(Optional.empty());
+
+        assertThrows(MemberNotFoundException.class, () -> memberService.passwordCheck(memberLoginRequest));
+
+        verify(memberRepository).findByEmail(memberLoginRequest.getEmail());
     }
 
     @Test
     @DisplayName("탈퇴한 회원 체크 성공")
-    void memberCheck_success() {
+    void deleteMemberCheck_success() {
         Member member = new Member(0L, "test", "12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
 
         when(memberRepository.findByEmailAndDeletedDateIsNotNull(member.getEmail())).thenReturn(Optional.of(member));
+
+        Assertions.assertDoesNotThrow(() -> memberService.deleteMemberCheck(new MemberLoginRequest(member.getEmail(), member.getPassword())));
+
+    }
+
+    @Test
+    @DisplayName("없는 회원 체크 성공")
+    void memberCheck_success() {
+        Member member = new Member(0L, "test", "qq12345678", "test@test.com", 0L, Role.USER, "010-0000-0000", Grade.ALPHA);
+
+        when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.empty());
 
         Assertions.assertDoesNotThrow(() -> memberService.memberCheck(new MemberLoginRequest(member.getEmail(), member.getPassword())));
 
