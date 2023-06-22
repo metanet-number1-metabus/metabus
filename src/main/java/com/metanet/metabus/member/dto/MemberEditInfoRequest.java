@@ -18,7 +18,7 @@ public class MemberEditInfoRequest {
     private String email;
 
     @NotBlank(message = "이름을 입력해주세요.")
-    @Size(max = 10, message = "10글자 이내로 입력해 주세요.")
+    @Size(max = 20, message = "20글자 이내로 입력해 주세요.")
     private String name;
 
     @NotBlank(message = "핸드폰 번호를 입력해주세요.")
