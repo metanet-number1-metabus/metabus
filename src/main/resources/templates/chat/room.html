@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${session.loginMember.getRole().name().equals('USER')}">
+                                <div th:if="${!session.loginMember.getRole().name().equals('ADMIN')}">
                                     <div style="margin-left: auto;margin-right: auto">
                                         <div class="row">
                                             <div class="col-lg-5 col-md-2"></div>
@@ -114,7 +114,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2" th:if="${session.loginMember.getRole().name().equals('USER')}"></div>
+                            <div class="col-2" th:if="${!session.loginMember.getRole().name().equals('ADMIN')}"></div>
                             <div class="col-8" style="">
                                 <div th:if="${chatList}">
                                     <div class="chat-container" style="margin-left: 0;height:auto">
