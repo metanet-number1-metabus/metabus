@@ -184,6 +184,15 @@ class BoardControllerTest {
     @Test
     @DisplayName("게시글 상세 조회")
     void boardViewTest() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
 
 
         Long boardId = 1L;
@@ -194,11 +203,22 @@ class BoardControllerTest {
         given(boardService.boardView(boardId)).willReturn(boardDto);
 
         mockMvc.perform(get("/board/view")
-                        .param("id", String.valueOf(1L)))
+                        .param("id", String.valueOf(1L)).session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("board/boardview"))
                 .andExpect(model().attributeExists("board"))
                 .andExpect(model().attribute("board", boardDto));
+    }
+
+    @Test
+    @DisplayName("게시글 상세 조회로그인안함")
+    void boardViewTestNull() throws Exception {
+
+
+        mockMvc.perform(get("/board/view")
+                        .param("id", String.valueOf(1L)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/member/login"));
     }
 
     @Test
