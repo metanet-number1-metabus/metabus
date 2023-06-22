@@ -316,13 +316,13 @@
                                             <span class="input-group-text"><i class="fa-solid fa-coins"></i></span>
                                             <input type="text" id="mileageInput" value="0" placeholder="1,000원 단위">
                                         </div>
-                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)">적용</button>
+                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)" data-flag="0">적용</button>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <p class="card-text me-2" style="float: left">적용 마일리지</p>
                                         <h2 style="float: left"><span id="useMileage"></span></h2>
                                         <span class="me-3" style="float: left">Point</span>
-                                        <button class="btn btn-danger" style="max-height: 29px" onclick="mileageUndo(event)"><i class="fa-solid fa-rotate-left"></i></button>
+                                        <button class="btn btn-danger" style="max-height: 29px" onclick="mileageUndo(event)"><i class="fa-solid fa-rotate-left" ></i></button>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <p class="card-text me-2">총 결제 금액</p>
@@ -390,6 +390,13 @@
         var toastLiveExample = document.getElementById('liveToast');
         var toastLiveExample2 = document.getElementById('liveToast2');
 
+        // input창에 문자 입력 불가, 1000원 단위 입력, 보유 마일리지보다 큰 값 입력 불가
+        const mileageInput = document.getElementById('mileageInput');
+        const haveMileage = document.getElementById('haveMileage');
+        const useMileage = document.getElementById('useMileage');
+        const realPaymentSum = document.getElementById('realPaymentSum');
+
+
         // 폼 함수
         (function () {
             'use strict'
@@ -405,8 +412,20 @@
                         } else {
                             event.preventDefault()
 
-                            //성공시 모달창 열기 / 결제 api 호출 코드
-                            payment();
+                            // console.log($("#applyBtnMobile").attr("data-flag"));
+                            // console.log($("#applyBtnMobile").attr("data-flag") == "0");
+                            //
+                            // console.log(mileageInput.value);
+                            // console.log(mileageInput.value > 0);
+
+                            if ($("#applyBtnMobile").attr("data-flag") == "0" && mileageInput.value > 0){
+                                alert("마일리지 사용을 위해선 적용버튼을 눌러주세요!");
+                            }else {
+                                //성공시 모달창 열기 / 결제 api 호출 코드
+                                payment();
+                            }
+
+
 
                         }
 
@@ -462,11 +481,6 @@
 
 
 
-        // input창에 문자 입력 불가, 1000원 단위 입력, 보유 마일리지보다 큰 값 입력 불가
-        const mileageInput = document.getElementById('mileageInput');
-        const haveMileage = document.getElementById('haveMileage');
-        const useMileage = document.getElementById('useMileage');
-        const realPaymentSum = document.getElementById('realPaymentSum');
         mileageInput.value = "";
 
         mileageInput.addEventListener('input', function(e) {
@@ -481,6 +495,7 @@
             useMileage.innerHTML = 0;
             mileageInput.value = "";
             realPaymentSum.innerHTML = [[${paymentSum}]];
+            $("#applyBtnMobile").attr("data-flag","0");
         }
 
         function mileageClk(e) {
@@ -499,7 +514,8 @@
 
                 const toast = new bootstrap.Toast(toastLiveExample2);
 
-                toast.show()
+                toast.show();
+                $("#applyBtnMobile").attr("data-flag","1");
 
             } else {
                 //검증 실패
