@@ -125,6 +125,9 @@ public class BoardController {
         model.addAttribute("board", boardDto);
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+        if (memberDto == null) {
+            return "redirect:/member/login";
+        }
         model.addAttribute("memberDto", memberDto);
 
         return "board/boardview";
