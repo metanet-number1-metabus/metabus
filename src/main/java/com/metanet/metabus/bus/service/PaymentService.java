@@ -127,11 +127,14 @@ public class PaymentService {
         Long paymentSum = payRequest.getPayment();
         Long usedMileage = payRequest.getUsedMileage();
 
+        if (usedMileage == null) {
+            usedMileage = 0L;
+        }
+
         double discountPercentage = 0;
         if (usedMileage != 0) {
             discountPercentage = (double) usedMileage / (paymentSum + usedMileage);
         }
-        System.out.println(discountPercentage);
 
         Payment payment = Payment.builder()
                 .applyNum(payRequest.getApplyNum())

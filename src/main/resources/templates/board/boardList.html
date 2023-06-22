@@ -9,17 +9,23 @@
     <!--main-->
     <main >
         <div class="container-fluid px-4">
-        <div class="content" style="padding:">
+        <div class="content" style="">
         <div class="container-fluid" style="max-width: 1230px">
 
-            <div class="card" style="border: none">
-                <div style="margin-left: 3%">
-                <h1 class="mt-4">분실물 게시판</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="/">홈</a></li>
-                    <li class="breadcrumb-item active">분실물 게시판</li>
-                </ol>
+            <div class="row mb-1" style="width: 100%">
+                <div class="col-12" >
+                    <h1 class="mt-4 m-3 mb-0">분실물 게시판</h1>
                 </div>
+                <div class="col-12" >
+                    <ol class="breadcrumb mb-4 m-3 mt-0 ">
+                        <li class="breadcrumb-item"><a href="/">홈</a></li>
+                        <li class="breadcrumb-item active">분실물 게시판</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card" style="border: none">
+
                 <div class="card-body">
 
                     <div class="row">
@@ -128,7 +134,7 @@
 
     function nextPage() {
         var nowPage = document.getElementById(nowPages);
-        goToPage(nowPage+1);
+        goToPage(nowPage+2);
     }
     function goToPage(page) {
         var urlParams = new URLSearchParams(window.location.search);

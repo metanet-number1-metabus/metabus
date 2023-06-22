@@ -4,7 +4,7 @@
       layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
     <!--            본문-->
-    <div id="layoutSidenav_content" class="bg-secondary bg-opacity-10">
+    <div id="layoutSidenav_content" class="bg-white">
 
         <main>
             <div class="container-fluid px-4">
@@ -23,52 +23,127 @@
                             <li class="breadcrumb-item active">버스 시간표</li>
                         </ol>
 
-                        <h2 class="mb-5"># [[${departureHome}]] --> [[${destinationHome}]]</h2>
+                        <div class="row card m-2 shadow">
 
-                        <div class="table-responsive custom-table-responsive">
 
-                            <table class="table custom-table" id="busTable">
-                                <thead>
-                                <tr>
+                            <div class="col-12">
+                                <div class="container-fluid">
+                                    <form class="needs-validation" novalidate>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2 card bg-secondary bg-opacity-10">
+                                                <p>출발지</p>
+                                                <span th:text="${departureHome}"></span>
+                                                <p class="mt-2">도착지</p>
+                                                <span th:text="${destinationHome}" class="mb-2"></span>
+                                            </div>
+                                            <div class="col-lg-6 col-md-8 col-12 mt-2 mb-2">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6">
+                                                        <p>출발지</p>
+                                                        <input th:value="${departureHome}" autocomplete="off" id="departurehome" name="departurehome" class="form-control" required>
+                                                        <div class="invalid-feedback">
+                                                            출발지를 정해주세요.
+                                                        </div>
+                                                        <div class="valid-feedback">
+                                                            선택하신 출발지 -> 목적지를 확인해주세요.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <p>도착지</p>
+                                                        <input th:value="${destinationHome}" autocomplete="off" id="destinationhome" name="destinationhome" class="form-control" required>
+                                                        <div class="invalid-feedback">
+                                                            목적지를 정해주세요.
+                                                        </div>
+                                                        <div class="valid-feedback">
+                                                            선택하신 출발지 -> 목적지를 확인해주세요.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-2">
+                                                        <p>출발일</p>
+                                                        <input class="form-control" autocomplete="off" id="departuredate" name="departuredate" placeholder="날짜를 선택해주세요." required>
+                                                        <div class="invalid-feedback">
+                                                            출발날짜를 선택 해주세요. (년도 무시)
+                                                        </div>
+                                                        <div class="valid-feedback">
+                                                            선택하신 출발날짜를 '월/일' 확인해주세요.
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                    <th scope="col"></th>
-                                    <th scope="col">버스 아이디</th>
-                                    <th scope="col">출발시간</th>
-                                    <th scope="col">도착시간</th>
-                                    <th scope="col">버스등급</th>
-                                    <th scope="col">비용</th>
-                                    <th scope="col">잔여석</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <!--                                <tr scope="row">-->
-                                <!--                                    <td>-->
-                                <!--                                        1392-->
-                                <!--                                    </td>-->
-                                <!--                                    <td><a href="#">James Yates</a></td>-->
-                                <!--                                    <td>-->
-                                <!--                                        Web Designer-->
-                                <!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
-                                <!--                                    </td>-->
-                                <!--                                    <td>+63 983 0962 971</td>-->
-                                <!--                                    <td>NY University</td>-->
-                                <!--                                </tr>-->
-                                <!--                                <tr class="spacer"><td colspan="100"></td></tr>-->
-                                <!--                                <tr>-->
+                                            </div>
+                                            <div class="col-lg-2 col-md-12 col-12 mt-2 mb-2 d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-primary" style="height: 50px;width: 110px;margin-top: 48px">조회하기</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
 
-                                <!--                                    <td>4616</td>-->
-                                <!--                                    <td><a href="#">Matthew Wasil</a></td>-->
-                                <!--                                    <td>-->
-                                <!--                                        Graphic Designer-->
-                                <!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
-                                <!--                                    </td>-->
-                                <!--                                    <td>+02 020 3994 929</td>-->
-                                <!--                                    <td>London College</td>-->
-                                <!--                                </tr>-->
 
-                                </tbody>
-                            </table>
                         </div>
+
+                        <div class="row m-2 mt-5 mb-4" style="max-height: 150px">
+                            <div class="col-md-3 col-12">
+                                <img src="/assets/img/notice-time-table.png" style="height: 50px">
+                            </div>
+                            <div class="col-md-9 col-12 mt-1" id="noticeBusTimeTableMobile">
+                                <p>
+                                - [중고생] 요금으로 예매 후 승차 시에는 학생증(청소년증)을 지참하셔야 합니다.<br>
+                                - 예매(또는 취소) 단계에서 회선 장애나 기타 통신장애 발생 시 예매(취소) 여부 조회를 반드시 직접 확인하셔야 합니다.<br>
+                                - 선택하신 좌석은 실제 좌석과 상이할 수 있습니다.<br>
+                                - 승객들의 원활한 승차, 수송을 위하여 10분 전까지 발권하여 주시기 바랍니다.<br>
+                                - 마일리지 승차권의 사용기간이 만료된 이후에 순차적으로 적립됩니다.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row card m-2 shadow">
+                            <div class="table-responsive custom-table-responsive">
+
+                                <table class="table custom-table" id="busTable">
+                                    <thead class="card-header">
+                                    <tr>
+
+                                        <th scope="col"></th>
+                                        <th scope="col">버스 아이디</th>
+                                        <th scope="col">출발시간</th>
+                                        <th scope="col">도착시간</th>
+                                        <th scope="col">버스등급</th>
+                                        <th scope="col">비용</th>
+                                        <th scope="col">잔여석</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--                                <tr scope="row">-->
+                                    <!--                                    <td>-->
+                                    <!--                                        1392-->
+                                    <!--                                    </td>-->
+                                    <!--                                    <td><a href="#">James Yates</a></td>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        Web Designer-->
+                                    <!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
+                                    <!--                                    </td>-->
+                                    <!--                                    <td>+63 983 0962 971</td>-->
+                                    <!--                                    <td>NY University</td>-->
+                                    <!--                                </tr>-->
+                                    <!--                                <tr class="spacer"><td colspan="100"></td></tr>-->
+                                    <!--                                <tr>-->
+
+                                    <!--                                    <td>4616</td>-->
+                                    <!--                                    <td><a href="#">Matthew Wasil</a></td>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        Graphic Designer-->
+                                    <!--                                        <small class="d-block">Far far away, behind the word mountains</small>-->
+                                    <!--                                    </td>-->
+                                    <!--                                    <td>+02 020 3994 929</td>-->
+                                    <!--                                    <td>London College</td>-->
+                                    <!--                                </tr>-->
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
 
 
                     </div>
@@ -304,6 +379,57 @@
                         </div>
                         <div class="toast-body">
                             선택하신 승객 수에 맞춰 좌석을 선택해 주세요!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="myModalSearch">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">노선 정보</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xl-6 overflow-scroll mt-2 scrollbarcs" style="height: 300px;">
+                                            <ul id="list" class="list-group">
+                                                <!-- 리스트 요소들은 JavaScript 코드로 동적으로 생성됩니다. -->
+                                            </ul>
+                                        </div>
+                                        <div class="col-xl-6 overflow-scroll mt-2 scrollbarcs" style="height: 300px;">
+                                            <ul id="list2" class="list-group">
+                                                <!-- 리스트 요소들은 JavaScript 코드로 동적으로 생성됩니다. -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <hr class="hr-dashed" style="width: 80%">
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <h3 id="departsShow" class="m-2">ㅇㅇㅇ</h3>
+                                        </div>
+                                        <div class="col-4 d-flex justify-content-center">
+                                            <i class="fa-solid fa-right-long m-2"></i>
+                                        </div>
+                                        <div class="col-4">
+                                            <h3 id="destinationShow" class="m-2">ㅇㅇㅇ</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <hr class="hr-dashed" style="width: 80%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateSelector()">확인</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -836,6 +962,168 @@
 
         }
 
+        $(function() {
+            const currentDate = new Date();
+            // const currentYear = currentDate.getFullYear();
+            $('#departuredate').datepicker({
+                dateFormat: 'mm/dd'
+                ,changeYear: false
+                ,dayNamesMin: ['일','월','화','수','목','금','토']
+                ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+                ,changeMonth: true //option값  월 선택 가능
+                ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+                ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+                ,yearSuffix: "년"
+                ,minDate: 0
+                ,maxDate: 60
+            });
+
+            $('#datepicker').datepicker('setDate', 'today');
+        });
+
+        const selector = document.getElementById('departurehome');
+        const selector2 = document.getElementById('destinationhome');
+
+        const departsShow = document.getElementById('departsShow');
+        const destinationShow = document.getElementById('destinationShow');
+
+        // 모달창 열기
+        selector.addEventListener('click', function() {
+            getDepListAjax();
+            const myModal = new bootstrap.Modal(document.getElementById('myModalSearch'));
+            myModal.show();
+        });
+        // 모달창 열기
+        selector2.addEventListener('click', function() {
+            getDepListAjax();
+            const myModal = new bootstrap.Modal(document.getElementById('myModalSearch'));
+            myModal.show();
+        });
+
+        // 리스트 동적으로 생성
+        function populateList(dep_data) {
+            const listElement = document.getElementById('list');
+            listElement.innerHTML = '';
+
+            console.log(dep_data.length);
+
+            for (let i = 0; i < dep_data.length; i++) {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.innerText = dep_data[i];
+                listItem.addEventListener('click', function() {
+                    updateSelectorValue(dep_data[i]);
+                    $(".list-group-item").removeClass("active");
+                    $(this).addClass("active");
+
+                    //옆에 리스트 활성화
+                    getDesListAjax(dep_data[i]);
+                });
+
+                listElement.appendChild(listItem);
+            }
+        }
+        function populateList2(dep_data) {
+            const listElement = document.getElementById('list2');
+            listElement.innerHTML = '';
+
+            console.log(dep_data.length);
+
+            for (let i = 0; i < dep_data.length; i++) {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.innerText = dep_data[i];
+                listItem.addEventListener('click', function() {
+                    updateSelectorValue2(dep_data[i]);
+                    $(".list-group-item").removeClass("active");
+                    $(this).addClass("active");
+                });
+
+                listElement.appendChild(listItem);
+            }
+        }
+
+        // 선택된 리스트 요소로 selector의 value 업데이트
+        function updateSelectorValue(value) {
+            selector.value = value;
+            departsShow.innerHTML = value;
+        }
+
+        function updateSelectorValue2(value) {
+            selector2.value = value;
+            destinationShow.innerHTML = value;
+        }
+
+        // 확인 버튼 클릭 시 모달창 닫기 및 selector 업데이트
+        function updateSelector() {
+            const myModal = bootstrap.Modal.getInstance(document.getElementById('myModalSearch'));
+            myModal.hide();
+            // 선택된 리스트 요소의 값 표시
+            console.log(selector.value);
+        }
+        //openAPI
+        var busDataList;
+        function getDepListAjax() {
+            // var url = "http://43.201.165.100:8888/metabusapi/get_departure_list";
+            var url = "https://metabus.site:8443/metabusapi/get_departure_list";
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log("API 로딩 성공")
+                    //데이터 리스팅
+                    populateList(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        function getDesListAjax(clickedItem) {
+            // var url = "http://43.201.165.100:8888/metabusapi/get_destination_list";
+            var url = "https://metabus.site:8443/metabusapi/get_destination_list";
+            var departure = clickedItem; //우리는 서버 사이드에서 디코딩 해줘서 그냥 한글로 써서 보내면 댐
+            var apiUrl = url + "?departure=" + departure;
+            console.log(apiUrl);
+            $.ajax({
+                url: apiUrl,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log("API 로딩 성공")
+                    //데이터 리스팅
+                    populateList2(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        // 폼 함수
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }else {
+                            form.action = "/bus/timetable"; // /search로 폼 전송을 원한다면 action 설정
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
 
     </script>
 </th:block>
@@ -871,6 +1159,20 @@
 
     .table-responsive::-webkit-scrollbar-thumb:hover {
         background-color: rgba(0, 33, 248, 0.7);
+    }
+    .hr-solid {
+        border : 0px;
+        border-top: 5px solid #000000;
+    }
+
+    .hr-dotted {
+        border : 0px;
+        border-top: 5px dotted #000000;
+    }
+
+    .hr-dashed {
+        border : 0px;
+        border-top: 5px dashed #000000;
     }
 </style>
 
