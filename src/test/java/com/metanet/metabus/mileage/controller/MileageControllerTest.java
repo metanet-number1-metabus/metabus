@@ -1,7 +1,7 @@
 package com.metanet.metabus.mileage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.dto.ReservationResponse;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.controller.SessionConst;
 import com.metanet.metabus.member.dto.MemberDto;
@@ -53,7 +53,7 @@ class MileageControllerTest {
         mockHttpSession.setAttribute(SessionConst.LOGIN_MEMBER, memberDto);
 
         List<MileageDto> mileageList = new ArrayList<>();
-        List<Reservation> numberOfReservations = new ArrayList<>();
+        List<ReservationResponse> numberOfReservations = new ArrayList<>();
 
         given(mileageService.findAllMileage(any(MemberDto.class))).willReturn(0L);
         given(mileageService.findUsedMileage(any(MemberDto.class))).willReturn(0L);

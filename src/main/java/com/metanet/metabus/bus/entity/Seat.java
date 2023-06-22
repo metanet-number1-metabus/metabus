@@ -13,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Builder
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "bus_id", "seatNum" }))
 public class Seat extends BaseEntity {
 
     @Id
@@ -21,7 +22,7 @@ public class Seat extends BaseEntity {
 
     private Long seatNum;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "bus_id", foreignKey = @ForeignKey(name = "fk_seat_bus"))
     private Bus bus;
 

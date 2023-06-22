@@ -2,11 +2,11 @@ package com.metanet.metabus.bus.controller;
 
 import com.metanet.metabus.bus.dto.ReceiptResponse;
 import com.metanet.metabus.bus.dto.ReservationDto;
-import com.metanet.metabus.bus.entity.Reservation;
+import com.metanet.metabus.bus.dto.ReservationResponse;
 import com.metanet.metabus.bus.service.PaymentService;
 import com.metanet.metabus.bus.service.ReservationService;
 import com.metanet.metabus.member.dto.MemberDto;
-import com.metanet.metabus.member.entity.Member;
+import com.metanet.metabus.member.dto.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,10 +55,10 @@ public class BusController {
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
 
-        List<Reservation> allReservationList = reservationService.readAllReservation(memberDto);
-        List<Reservation> unpaidReservationList = reservationService.readUnpaidReservation(memberDto);
-        List<Reservation> paidReservationList = reservationService.readPaidReservation(memberDto);
-        List<Reservation> pastReservationList = reservationService.readPastReservation(memberDto);
+        List<ReservationResponse> allReservationList = reservationService.readAllReservation(memberDto);
+        List<ReservationResponse> unpaidReservationList = reservationService.readUnpaidReservation(memberDto);
+        List<ReservationResponse> paidReservationList = reservationService.readPaidReservation(memberDto);
+        List<ReservationResponse> pastReservationList = reservationService.readPastReservation(memberDto);
 
         if (specialValue == null) {
             model.addAttribute("ReservationList", allReservationList);
@@ -92,7 +92,7 @@ public class BusController {
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
         String strReservationIds = reservationService.getStrReservationIds(reservationIds);
-        Member member = reservationService.getMember(reservationIds);
+        MemberInfoDto member = reservationService.getMember(reservationIds);
         Long mileage = reservationService.getMileage(memberDto);
 
         model.addAttribute("memberDto", memberDto);
