@@ -100,14 +100,14 @@ public class BoardController {
         String userAgent = request.getHeader("User-Agent");
 
         if (searchKeyword == null) {
-            if (userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone")) {
+            if (userAgent.contains("Android") || userAgent.contains("iPhone")) {
                 pageable = PageRequest.of(pageable.getPageNumber(), 4, pageable.getSort());
                 list = boardService.boardList(pageable);
             } else {
                 list = boardService.boardList(pageable);
             }
         } else {
-            if (userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone")) {
+            if (userAgent.contains("Android") || userAgent.contains("iPhone")) {
                 pageable = PageRequest.of(pageable.getPageNumber(), 4, pageable.getSort());
                 list = boardService.boardSearchList(searchKeyword, pageable);
             } else {

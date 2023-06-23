@@ -111,8 +111,8 @@ class BoardControllerTest {
 
 
     @Test
-    @DisplayName("게시판 목록 조회 list 속성이 존재하는 경우")
-    void boardListTest_WithListAttribute() throws Exception {
+    @DisplayName("게시판 목록 조회 list 속성이 존재하는 경우 웹")
+    void boardListTest_WithListAttributeW() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
 
@@ -134,7 +134,7 @@ class BoardControllerTest {
         given(boardService.boardList(any(Pageable.class))).willReturn(fakeList);
 
         mockMvc.perform(get("/board/list")
-                        .session(session))
+                        .session(session).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("board/boardList"))
                 .andExpect(model().attributeExists("list"))
@@ -145,8 +145,114 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("게시판 목록 조회 검색어 포함")
-    void boardListWithSearchKeywordTest() throws Exception {
+    @DisplayName("게시판 목록 조회 list 속성이 존재하는 경우 모바일")
+    void boardListTest_WithListAttributeM() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
+        List<LostBoardDto> boardList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
+
+
+        given(boardService.boardList(any(Pageable.class))).willReturn(fakeList);
+
+        mockMvc.perform(get("/board/list")
+                        .session(session).header("User-Agent", "Mozilla/5.0 (iPhone; CPU iP" +
+                                "hone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko)" +
+                                " Version/15.0 Mobile/15E148 Safari/604.1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("board/boardList"))
+                .andExpect(model().attributeExists("list"))
+                .andExpect(model().attributeExists("nowPage"))
+                .andExpect(model().attributeExists("startPage"))
+                .andExpect(model().attributeExists("endPage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+    @Test
+    @DisplayName("게시판 목록 조회 list 속성이 존재하는 경우 안드로이드")
+    void boardListTest_WithListAttributeMA() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
+        List<LostBoardDto> boardList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
+
+
+        given(boardService.boardList(any(Pageable.class))).willReturn(fakeList);
+
+        mockMvc.perform(get("/board/list")
+                        .session(session).header("User-Agent", "Mozilla/5.0 (Linux; Android 10; SM-G975F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Mobile Safari/537.36"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("board/boardList"))
+                .andExpect(model().attributeExists("list"))
+                .andExpect(model().attributeExists("nowPage"))
+                .andExpect(model().attributeExists("startPage"))
+                .andExpect(model().attributeExists("endPage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+    @Test
+    @DisplayName("게시판 목록 조회 list 속성이 존재하는 경우 아이폰")
+    void boardListTest_WithListAttributeMI() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
+        List<LostBoardDto> boardList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
+
+
+        given(boardService.boardList(any(Pageable.class))).willReturn(fakeList);
+
+        mockMvc.perform(get("/board/list")
+                        .session(session).header("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605." +
+                                "1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/" +
+                                "604.1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("board/boardList"))
+                .andExpect(model().attributeExists("list"))
+                .andExpect(model().attributeExists("nowPage"))
+                .andExpect(model().attributeExists("startPage"))
+                .andExpect(model().attributeExists("endPage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+    @Test
+    @DisplayName("게시판 목록 조회 검색어 포함 웹")
+    void boardListWithSearchKeywordTestW() throws Exception {
 
         MockHttpSession session = new MockHttpSession();
 
@@ -171,7 +277,8 @@ class BoardControllerTest {
 
         mockMvc.perform(get("/board/list")
                         .session(session)
-                        .param("searchKeyword", searchKeyword)) // 검색어를 파라미터로 전달
+                        .param("searchKeyword", searchKeyword)
+                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36")) // 검색어를 파라미터로 전달
                 .andExpect(status().isOk())
                 .andExpect(view().name("board/boardList"))
                 .andExpect(model().attributeExists("list"))
@@ -180,6 +287,126 @@ class BoardControllerTest {
                 .andExpect(model().attributeExists("endPage"))
                 .andExpect(model().attributeExists("memberDto"));
     }
+
+    @Test
+    @DisplayName("게시판 목록 조회 검색어 포함 모바일")
+    void boardListWithSearchKeywordTestM() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
+        String searchKeyword = "검색어";
+
+
+        List<LostBoardDto> boardList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
+
+
+        given(boardService.boardSearchList(eq(searchKeyword), any(Pageable.class))).willReturn(fakeList);
+
+        mockMvc.perform(get("/board/list")
+                        .session(session)
+                        .param("searchKeyword", searchKeyword)
+                        .header("User-Agent", "Mozilla/5.0 (iPhone; CPU iP" +
+                                "hone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko)" +
+                                " Version/15.0 Mobile/15E148 Safari/604.1")) // 검색어를 파라미터로 전달
+                .andExpect(status().isOk())
+                .andExpect(view().name("board/boardList"))
+                .andExpect(model().attributeExists("list"))
+                .andExpect(model().attributeExists("nowPage"))
+                .andExpect(model().attributeExists("startPage"))
+                .andExpect(model().attributeExists("endPage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+    @Test
+    @DisplayName("게시판 목록 조회 검색어 포함 안드로이드")
+    void boardListWithSearchKeywordTestMA() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
+        String searchKeyword = "검색어";
+
+
+        List<LostBoardDto> boardList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
+
+
+        given(boardService.boardSearchList(eq(searchKeyword), any(Pageable.class))).willReturn(fakeList);
+
+        mockMvc.perform(get("/board/list")
+                        .session(session)
+                        .param("searchKeyword", searchKeyword)
+                        .header("User-Agent", "Mozilla/5.0 (Linux; Android 10; SM-G975F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Mobile Safari/537.36")) // 검색어를 파라미터로 전달
+                .andExpect(status().isOk())
+                .andExpect(view().name("board/boardList"))
+                .andExpect(model().attributeExists("list"))
+                .andExpect(model().attributeExists("nowPage"))
+                .andExpect(model().attributeExists("startPage"))
+                .andExpect(model().attributeExists("endPage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+    @Test
+    @DisplayName("게시판 목록 조회 검색어 포함 아이폰")
+    void boardListWithSearchKeywordTestMI() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+
+
+        MemberDto memberDto = new MemberDto(1L, "나", "123456789", "test@test.com", 0L,
+                com.metanet.metabus.member.entity.Role.USER, "123456789", Grade.ALPHA);
+
+
+        session.setAttribute("loginMember", memberDto);
+
+        String searchKeyword = "검색어";
+
+
+        List<LostBoardDto> boardList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        boardList.add(new LostBoardDto(1L, "제목", "내용", now));
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LostBoardDto> fakeList = new PageImpl<>(boardList, pageable, boardList.size());
+
+
+        given(boardService.boardSearchList(eq(searchKeyword), any(Pageable.class))).willReturn(fakeList);
+
+        mockMvc.perform(get("/board/list")
+                        .session(session)
+                        .param("searchKeyword", searchKeyword)
+                        .header("User-Agent", "Mozilla/5.0 (iPhone; CPU iPho" +
+                                "ne OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Vers" +
+                                "ion/15.0 Mobile/15E148 Safari/604.1")) // 검색어를 파라미터로 전달
+                .andExpect(status().isOk())
+                .andExpect(view().name("board/boardList"))
+                .andExpect(model().attributeExists("list"))
+                .andExpect(model().attributeExists("nowPage"))
+                .andExpect(model().attributeExists("startPage"))
+                .andExpect(model().attributeExists("endPage"))
+                .andExpect(model().attributeExists("memberDto"));
+    }
+
+
 
     @Test
     @DisplayName("게시글 상세 조회")
@@ -209,6 +436,7 @@ class BoardControllerTest {
                 .andExpect(model().attributeExists("board"))
                 .andExpect(model().attribute("board", boardDto));
     }
+
 
     @Test
     @DisplayName("게시글 상세 조회로그인안함")
