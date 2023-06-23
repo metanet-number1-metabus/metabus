@@ -10,6 +10,7 @@ import com.metanet.metabus.member.controller.SessionConst;
 import com.metanet.metabus.member.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -89,17 +91,32 @@ public class BoardController {
 
     @GetMapping("/board/list")
     public String boardList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto, Model model,
-                            @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                            @PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, HttpServletRequest request,
                             String searchKeyword) {
 
 
         Page<LostBoardDto> list = null;
-        System.out.println(pageable);
+
+        String userAgent = request.getHeader("User-Agent");
+
         if (searchKeyword == null) {
-            list = boardService.boardList(pageable);
+            if (userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone")) {
+                pageable = PageRequest.of(pageable.getPageNumber(), 4, pageable.getSort());
+                list = boardService.boardList(pageable);
+            } else {
+                list = boardService.boardList(pageable);
+            }
         } else {
-            list = boardService.boardSearchList(searchKeyword, pageable);
+            if (userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone")) {
+                pageable = PageRequest.of(pageable.getPageNumber(), 4, pageable.getSort());
+                list = boardService.boardSearchList(searchKeyword, pageable);
+            } else {
+                list = boardService.boardSearchList(searchKeyword, pageable);
+            }
+
         }
+
+
 
 
         int nowPage = list.getPageable().getPageNumber() + 1;

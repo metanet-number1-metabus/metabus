@@ -63,7 +63,7 @@
 <!--                                        </tr>-->
 <!--                                        </tbody>-->
 <!--                                    </table>-->
-                                    <div th:each="board : ${list}" class="col-3" id="boardListDiv" style="height: 220px;margin-bottom: 25px;margin-top: 15px;border-radius: 10px;padding: 0;">
+                                    <div th:each="board : ${list}" class="col-6 col-md-3" id="boardListDiv" style="height: 220px;margin-bottom: 25px;margin-top: 15px;border-radius: 10px;padding: 0;">
                                         <div style="position: relative;height: 100%">
                                             <img id="boardImg" th:src="@{${'https://metabustest.s3.ap-northeast-2.amazonaws.com/' + board.filename}}" style="width: 85%; border-radius: 10px;" alt="">
                                             <div style="position: absolute; top: 10px; left: 10px; border-radius: 10px; background-color: #3e73ff; color: white; padding: 5px;">
