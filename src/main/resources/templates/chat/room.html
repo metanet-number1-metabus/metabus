@@ -295,7 +295,7 @@
                             $("#chatting").append(
                                 "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;'>" +
                                 "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
-                                "<div class='chat-bubble' style=\"background-color: white;border: 1px solid #3e73ff;\">" +
+                                "<div class='chat-bubble' id='chat-admin' style=\"background-color: white;border: 1px solid #3e73ff;\">" +
                                 "<div class='message' style=\"color: #3e73ff; font-size: medium;\">" + chatList[chat].message + "</div>" +
                                 "<div class='triangle'></div>" +
                                 "</div>"
@@ -304,7 +304,7 @@
                             $("#chatting").append(
                                 "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                                 "<div class='sender' style=\"color: black;font-size: medium;\">" + chatList[chat].sender + "</div>" +
-                                "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                                "<div class='chat-bubble' data-toggle='tooltip' id='chat-user' style=\"background-color: #3e73ff;\">" +
                                 "<div class='message' style=\"color: white; font-size: medium;\">" + chatList[chat].message + "</div>" +
                                 "<div class='triangle'></div>" +
                                 "</div>"
@@ -321,7 +321,7 @@
                     $("#chatting").append(
                         "<div style='max-width: 250px; word-wrap: break-word;margin-left: 15px;''>" +
                         "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
-                        "<div class='chat-bubble' style=\"background-color: white;border: 1px solid #3e73ff;\">" +
+                        "<div class='chat-bubble' id='chat-admin' style=\"background-color: white;border: 1px solid #3e73ff;\">" +
                         "<div class='message' style=\"color: #3e73ff;font-size: medium;\">" + chatMessage.message + "</div>" +
                         "<div class='triangle'></div>" +
                         "</div>" +
@@ -332,7 +332,7 @@
                     $("#chatting").append(
                         "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                         "<div class='sender' style=\"color: black;font-size: medium;\">" + chatMessage.sender + "</div>" +
-                        "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                        "<div class='chat-bubble' id='chat-user' style=\"background-color: #3e73ff;\">" +
                         "<div class='message' style=\"color: white;font-size: medium;\">" + chatMessage.message + "</div>" +
                         "<div class='triangle'></div>" +
                         "</div>" +
@@ -346,7 +346,7 @@
                 $("#chatting").append(
                     "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                     "<div class='sender' style=\"color: black;font-size: medium;\">"+"<b th:text='${session.loginMember.getName()}'></b>"+ "</div>" +
-                    "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                    "<div class='chat-bubble' id='chat-user' style=\"background-color: #3e73ff;\">" +
                     "<div class='message' style=\"color: white;font-size: medium;\">" + "승차권 환불 어떻게 하나요?" + "</div>" +
                     "<div class='triangle'></div>" +
                     "</div>" +
@@ -355,7 +355,7 @@
                 $("#chatting").append(
                     "<div style='max-width: 250px; word-wrap: break-word; margin-left: 15px;'>" +
                     "<div class='sender' style='color: black; font-size: medium;'>" + "운영자" + "</div>" +
-                    "<div class='chat-bubble' style='background-color: white; border: 1px solid #3e73ff;'>" +
+                    "<div class='chat-bubble' id='chat-admin' style='background-color: white; border: 1px solid #3e73ff;'>" +
                     "<div class='message' style='color: #3e73ff; font-size: medium;'>" +
                     "문의 주셔서 감사합니다.<br>" +
                     "승차권 환불은 만료되지 않은 승차권에 한에 환불 기능을 제공하고 있습니다.<br>" +
@@ -374,7 +374,7 @@
                 $("#chatting").append(
                     "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                     "<div class='sender' style=\"color: black;font-size: medium;\">" + "<b th:text='${session.loginMember.getName()}'></b>" + "</div>" +
-                    "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                    "<div class='chat-bubble' id='chat-user' style=\"background-color: #3e73ff;\">" +
                     "<div class='message' style=\"color: white;font-size: medium;\">" + "마일리지는 어떻게 사용하나요?" + "</div>" +
                     "<div class='triangle'></div>" +
                     "</div>" +
@@ -383,7 +383,7 @@
                 $("#chatting").append(
                     "<div style='max-width: 250px; word-wrap: break-word; margin-left: 15px;'>" +
                     "<div class='sender' style='color: black; font-size: medium;'>" + "운영자" + "</div>" +
-                    "<div class='chat-bubble' style='background-color: white; border: 1px solid #3e73ff;'>" +
+                    "<div class='chat-bubble' id='chat-admin' style='background-color: white; border: 1px solid #3e73ff;'>" +
                     "<div class='message' style='color: #3e73ff; font-size: medium;'>" +
                     "문의 주셔서 감사합니다.<br>" +
                     "마일리지는 승차권 결제시 특정한 조건에 맞게 사용하실 수 있습니다.<br>" +
@@ -402,7 +402,7 @@
                 $("#chatting").append(
                     "<div style='margin-left: 60%;max-width: 235px; word-wrap: break-word;'>" +
                     "<div class='sender' style=\"color: black;font-size: medium;\">" + "<b th:text='${session.loginMember.getName()}'></b>" + "</div>" +
-                    "<div class='chat-bubble' style=\"background-color: #3e73ff;\">" +
+                    "<div class='chat-bubble' id='chat-user' style=\"background-color: #3e73ff;\">" +
                     "<div class='message' style=\"color: white;font-size: medium;\">" + "버스에 물건을 두고내렸는데 어떻게 하나요?" + "</div>" +
                     "<div class='triangle'></div>" +
                     "</div>" +
@@ -411,7 +411,7 @@
                 $("#chatting").append(
                     "<div style='max-width: 250px; word-wrap: break-word; margin-left: 15px;'>" +
                     "<div class='sender' style='color: black; font-size: medium;'>" + "운영자" + "</div>" +
-                    "<div class='chat-bubble' style='background-color: white; border: 1px solid #3e73ff;'>" +
+                    "<div class='chat-bubble' id='chat-admin' style='background-color: white; border: 1px solid #3e73ff;'>" +
                     "<div class='message' style='color: #3e73ff; font-size: medium;'>" +
                     "문의 주셔서 감사합니다.<br>" +
                     "저희 메타버스는 고객님들의 편의를 위해 분실물 조회게시판 기능을 제공하고 있습니다.<br>" +
@@ -589,7 +589,18 @@
         /*margin-right: 10px;*/
     }
 
-    .chat-bubble {
+
+    #chat-user {
+        position: relative;
+        background-color: #f1f1f1;
+        border-radius: 15px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+
+
+    #chat-admin{
         position: relative;
         background-color: #f1f1f1;
         border-radius: 15px;
