@@ -13,7 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Builder
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "bus_id", "seatNum" }))
 public class Seat extends BaseEntity {
 
     @Id
