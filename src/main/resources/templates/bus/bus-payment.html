@@ -316,7 +316,7 @@
                                             <span class="input-group-text"><i class="fa-solid fa-coins"></i></span>
                                             <input type="text" id="mileageInput" value="0" placeholder="1,000원 단위">
                                         </div>
-                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)" data-flag="0">적용</button>
+                                        <button class="btn btn-primary" id="applyBtnMobile" style="max-height: 32.2px" onclick="mileageClk(event)" data-flag="0" data-done="0">적용</button>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <p class="card-text me-2" style="float: left">적용 마일리지</p>
@@ -422,11 +422,17 @@
                                 alert("마일리지 사용을 위해선 적용버튼을 눌러주세요!");
                             }else {
                                 //성공시 모달창 열기 / 결제 api 호출 코드
+                                // $("#applyBtnMobile").attr("data-done") == "0"
                                 if ($("#applyBtnMobile").attr("data-flag") == "1"){
-                                    alert("마일리지를 새로 적용하시려면 되돌리기 버튼을 먼저 눌러주세요!");
-                                    return null;
+                                    if ($("#applyBtnMobile").attr("data-done") == "1"){payment();}
+                                    else {
+                                        alert("마일리지를 새로 적용하시려면 되돌리기 버튼을 먼저 눌러주세요!");
+                                        mileageInput.value = "";
+                                        return null;
+                                    }
+                                }else{
+                                    payment();
                                 }
-                                payment();
                             }
 
 
@@ -500,6 +506,7 @@
             mileageInput.value = "";
             realPaymentSum.innerHTML = [[${paymentSum}]];
             $("#applyBtnMobile").attr("data-flag","0");
+            $("#applyBtnMobile").attr("data-done","0");
         }
 
         function mileageClk(e) {
@@ -522,6 +529,7 @@
 
                 toast.show();
                 $("#applyBtnMobile").attr("data-flag","1");
+                $("#applyBtnMobile").attr("data-done","1");
 
             } else {
                 //검증 실패

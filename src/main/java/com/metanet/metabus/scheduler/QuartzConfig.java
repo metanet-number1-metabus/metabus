@@ -39,7 +39,7 @@ public class QuartzConfig {
     public CronTriggerFactoryBean dailyTrigger(JobDetail dailyJobDetail) {
         CronTriggerFactoryBean triggerFactory = new CronTriggerFactoryBean();
         triggerFactory.setJobDetail(dailyJobDetail);
-        triggerFactory.setCronExpression("0 0 12 * * ?"); // 매일 정오에 실행
+        triggerFactory.setCronExpression("0 0 0 * * ?");
         return triggerFactory;
     }
 

@@ -54,13 +54,8 @@ public class MileageService {
 
         Member member = getMember(memberDto);
 
-        List<Mileage> upMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.UP);
-        for (Mileage mileage : upMileageList) {
-            allMileage += mileage.getPoint();
-        }
-
-        List<Mileage> cancelMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.CANCEL);
-        for (Mileage mileage : cancelMileageList) {
+        List<Mileage> allMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.UP);
+        for (Mileage mileage : allMileageList) {
             allMileage += mileage.getPoint();
         }
 
