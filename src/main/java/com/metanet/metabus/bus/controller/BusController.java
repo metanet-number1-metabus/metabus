@@ -85,9 +85,12 @@ public class BusController {
     }
 
     @PostMapping("/bus/payment")
-    public String getPaymentList(@RequestParam("data") Long[] reservationIds, HttpSession session, Model model) {
+    public String getPaymentList(@RequestParam("data") Long[] reservationIds, HttpSession session, Model model, HttpServletRequest request) {
 
         MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+
+        String userAgent = request.getHeader("User-Agent");
+        Boolean isMobile = false;
 
         List<ReservationDto> reservationList = reservationService.readByReservationId(reservationIds);
         Long paymentSum = reservationService.getPaymentSum(reservationIds);
@@ -95,6 +98,13 @@ public class BusController {
         MemberInfoDto member = reservationService.getMember(reservationIds);
         Long mileage = reservationService.getMileage(memberDto);
 
+        if (userAgent.contains("Android") || userAgent.contains("iPhone")) {
+            isMobile = true;
+        }else {
+            isMobile = false;
+        }
+
+        model.addAttribute("isMobile", isMobile);
         model.addAttribute("memberDto", memberDto);
         model.addAttribute("reservationListSize", reservationList.size());
         model.addAttribute("reservationList", reservationList);
