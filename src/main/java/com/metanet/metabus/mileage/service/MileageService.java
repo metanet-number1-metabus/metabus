@@ -65,16 +65,23 @@ public class MileageService {
     // 누적 사용 마일리지 조회
     public Long findUsedMileage(MemberDto memberDto) {
 
-        long usedMileage = 0L;
-
         Member member = getMember(memberDto);
 
+        long usedMileage = 0L;
         List<Mileage> usedMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.DOWN);
+
         for (Mileage mileage : usedMileageList) {
             usedMileage += mileage.getPoint();
         }
 
-        return usedMileage;
+        long cancelMileage = 0L;
+        List<Mileage> cancelMileageList = mileageRepository.findByMemberAndSaveStatus(member, SaveStatus.CANCEL);
+
+        for (Mileage mileage : cancelMileageList) {
+            cancelMileage += mileage.getPoint();
+        }
+
+        return usedMileage - cancelMileage;
     }
 
     // 현재 마일리지 조회 및 멤버에 저장
