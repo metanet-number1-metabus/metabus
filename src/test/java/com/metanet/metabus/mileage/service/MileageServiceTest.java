@@ -188,6 +188,7 @@ class MileageServiceTest {
 
         List<Mileage> savedMileages = new ArrayList<>();
         List<Mileage> usedMileages = new ArrayList<>();
+        List<Mileage> cancelMileages = new ArrayList<>();
 
         Mileage savedMileage = Mileage.builder()
                 .member(member)
@@ -201,16 +202,24 @@ class MileageServiceTest {
                 .saveStatus(SaveStatus.DOWN)
                 .build();
 
+        Mileage cancelMileage = Mileage.builder()
+                .member(member)
+                .point(1000L)
+                .saveStatus(SaveStatus.CANCEL)
+                .build();
+
         savedMileages.add(savedMileage);
         usedMileages.add(usedMileage);
+        cancelMileages.add(cancelMileage);
 
         when(memberRepository.findById(memberDto.getId())).thenReturn(Optional.of(member));
         when(mileageRepository.findByMemberAndSaveStatus(member, savedMileage.getSaveStatus())).thenReturn(savedMileages);
         when(mileageRepository.findByMemberAndSaveStatus(member, usedMileage.getSaveStatus())).thenReturn(usedMileages);
+        when(mileageRepository.findByMemberAndSaveStatus(member, cancelMileage.getSaveStatus())).thenReturn(cancelMileages);
 
         Long expected = mileageService.findMileage(memberDto);
 
-        assertEquals(expected, 0);
+        assertEquals(expected, 1000);
     }
 
     @Test
