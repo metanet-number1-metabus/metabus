@@ -412,12 +412,7 @@
                         } else {
                             event.preventDefault()
 
-                            // console.log($("#applyBtnMobile").attr("data-flag"));
-                            // console.log($("#applyBtnMobile").attr("data-flag") == "0");
-                            //
-                            // console.log(mileageInput.value);
-                            // console.log(mileageInput.value > 0);
-
+                            /*[# th:if="${isMobile == false}"]*/
                             if ($("#applyBtnMobile").attr("data-flag") == "0" && mileageInput.value > 0){
                                 alert("마일리지 사용을 위해선 적용버튼을 눌러주세요!");
                             }else {
@@ -434,7 +429,11 @@
                                     payment();
                                 }
                             }
+                            /*[/]*/
 
+                            /*[# th:if="${isMobile == true}"]*/
+                            alert("결제는 PC에서만 가능합니다!");
+                            /*[/]*/
 
 
                         }
@@ -444,6 +443,7 @@
                 })
         })()
 
+        /*[# th:if="${isMobile == false}"]*/
         function payment(data) {
             const strReservationIds = [[${strReservationIds}]];
             const memberId = [[${member.id}]];
@@ -488,7 +488,7 @@
                 }
             })
         }
-
+        /*[/]*/
 
 
         mileageInput.value = "";
@@ -512,7 +512,7 @@
         function mileageClk(e) {
             e.preventDefault();
 
-
+            /*[# th:if="${isMobile == false}"]*/
             const parsedValue = parseInt(mileageInput.value);
             const realPaymentSumValue = [[${paymentSum}]];
             if (mileageInput.value == NaN || mileageInput.value == "NaN") {
@@ -539,7 +539,11 @@
                 mileageInput.value = "";
 
             }
+            /*[/]*/
 
+            /*[# th:if="${isMobile == true}"]*/
+            alert("해당 기능은 PC에서만 가능합니다!");
+            /*[/]*/
         }
 
         function mobileReactForPayment() {
