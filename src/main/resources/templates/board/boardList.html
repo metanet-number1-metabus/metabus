@@ -62,6 +62,7 @@
 <!--                                            <td th:text="${#strings.substring(board.createDate, 0, 10)}"></td>-->
 <!--                                        </tr>-->
 <!--                                        </tbody>-->
+
 <!--                                    </table>-->
                                     <div th:each="board : ${list}" class="col-6 col-md-3" id="boardListDiv" style="height: 220px;margin-bottom: 25px;margin-top: 15px;border-radius: 10px;padding: 0;">
                                         <div style="position: relative;height: 100%">
@@ -104,6 +105,7 @@
                                             <th:block th:if="${page == nowPage}">
                                                 <strong class="page-link" id="nowPages" style="color: red;" th:text="${page}"></strong>
                                             </th:block>
+                                            <b id="endPages" th:text="${endPage}" style="display: none"></b>
                                         </li>
                                         <li class="page-item" th:if="${endPage >= 2}"><a class="page-link" onclick="nextPage()">다음</a></li>
                                     </ul>
@@ -133,9 +135,14 @@
     }
 
     function nextPage() {
-        var nowPage = document.getElementById(nowPages);
-        goToPage(nowPage+2);
+        var nowPage = document.getElementById("nowPages").innerText;
+        var endPage = document.getElementById("endPages").innerText;
+        if(nowPage!=endPage){
+            goToPage(parseInt(nowPage));
+        }
+
     }
+
     function goToPage(page) {
         var urlParams = new URLSearchParams(window.location.search);
         urlParams.set("page", page);
