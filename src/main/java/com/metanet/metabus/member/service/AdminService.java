@@ -2,6 +2,7 @@ package com.metanet.metabus.member.service;
 
 import com.metanet.metabus.bus.dto.BusPopularRoutesRequest;
 import com.metanet.metabus.bus.dto.ReservationStatusRequest;
+import com.metanet.metabus.bus.entity.Bus;
 import com.metanet.metabus.bus.entity.Reservation;
 import com.metanet.metabus.bus.entity.ReservationStatus;
 import com.metanet.metabus.bus.entity.Seat;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +39,7 @@ public class AdminService {
 
             LocalDate deleteDate = null;
 
-            if(reservation.getDeletedDate() != null){
+            if (reservation.getDeletedDate() != null) {
                 deleteDate = reservation.getDeletedDate().toLocalDate();
             }
 
@@ -54,19 +57,30 @@ public class AdminService {
 
     public List<BusPopularRoutesRequest> findAllBus() {
 
-        List<Seat> seatList = seatRepository.findAll();
-        List<BusPopularRoutesRequest> busPopularRoutesRequestList = new ArrayList<>();
+        List<Seat> seatList = seatRepository.findByDeletedDateIsNull();
+        Set<Bus> busList = new HashSet<>();
 
         for (Seat seat : seatList) {
-            LocalDate nowDate = LocalDate.now();
-            if (seat.getBus().getDepartureDate().isAfter(nowDate)) {
+            busList.add(seat.getBus());
+        }
+
+        List<BusPopularRoutesRequest> busPopularRoutesRequestList = new ArrayList<>();
+
+        for (Bus bus : busList) {
+            LocalDate today = LocalDate.now();
+
+            if (bus.getDepartureDate().isAfter(today) || bus.getDepartureDate().isEqual(today)) {
+
+                Long seatCount = seatRepository.countByBusAndDeletedDateIsNull(bus);
+
                 busPopularRoutesRequestList.add(BusPopularRoutesRequest.builder()
-                        .busNum(seat.getBus().getBusNum())
-                        .departureDate(seat.getBus().getDepartureDate())
-                        .seatNum(seat.getSeatNum())
+                        .busNum(bus.getBusNum())
+                        .departureDate(bus.getDepartureDate())
+                        .seatNum(seatCount)
                         .build());
             }
         }
+
         return busPopularRoutesRequestList;
     }
 
@@ -80,7 +94,7 @@ public class AdminService {
             LocalDate createdDate = member.getCreatedDate().toLocalDate();
             LocalDate deleteDate = null;
 
-            if(member.getDeletedDate() != null){
+            if (member.getDeletedDate() != null) {
                 deleteDate = member.getDeletedDate().toLocalDate();
             }
 
@@ -99,7 +113,7 @@ public class AdminService {
         return memberInfoRequestList;
     }
 
-    public List<Long> countReservation(ReservationStatus reservationStatus){
+    public List<Long> countReservation(ReservationStatus reservationStatus) {
         LocalDate today = LocalDate.now();
         List<Reservation> reservationList = reservationRepository.findByReservationStatus(reservationStatus);
 
@@ -107,22 +121,16 @@ public class AdminService {
         Long count = 0L;
 
         for (int i = 5; i >= 0; i--) {
-            for (Reservation reservation: reservationList) {
-                System.out.println("reservation.getCreatedDate().toLocalDate()" + reservation.getCreatedDate().toLocalDate());
-                System.out.println("today.minusDays(i)" + today.minusDays(i));
-                if(reservation.getCreatedDate().toLocalDate().equals(today.minusDays(i)) ){
+            for (Reservation reservation : reservationList) {
+                if (reservation.getCreatedDate().toLocalDate().equals(today.minusDays(i))) {
                     count++;
                 }
             }
-            System.out.println(count);
             countReservationList.add(count);
             count = 0L;
         }
         return countReservationList;
     }
-
-
-
 
 
 }
