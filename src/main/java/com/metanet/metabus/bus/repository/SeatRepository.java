@@ -11,4 +11,8 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     List<Seat> findByBus(Bus bus);
 
     Optional<Seat> findBySeatNumAndBusAndDeletedDateIsNull(Long seatNum, Bus bus);
+
+    List<Seat> findByDeletedDateIsNull();
+
+    Long countByBusAndDeletedDateIsNull(Bus bus);
 }
